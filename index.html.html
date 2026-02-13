@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bag of Holding | Tormenta20</title>
+    <style>
+        :root {
+            --cor-fundo: #eaddca; 
+            --cor-borda: #5d4037; 
+            --cor-detalhe: #8d2b2b; 
+            --cor-texto: #3e2723;
+            --cor-input: #fdf5e6;
+            --cor-pergaminho: #f4e4bc;
+            --fonte-titulo: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        body { 
+            background-color: #1a1210; color: var(--cor-texto);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; display: flex; justify-content: center; min-height: 100vh;
+        }
+
+        .tela { 
+            display: none; width: 100%; max-width: 800px; margin: 20px;
+            background: var(--cor-fundo); border: 4px solid var(--cor-borda);
+            border-radius: 15px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            position: relative; animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1, h2, h3 { font-family: var(--fonte-titulo); color: var(--cor-borda); text-transform: uppercase; text-align: center; margin-top: 0; }
+
+        /* STATUS ATUAL/MAX */
+        .stats-combate { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .stat-box { 
+            background: rgba(93, 64, 55, 0.1); border: 2px solid var(--cor-borda);
+            padding: 10px; border-radius: 10px; text-align: center;
+        }
+        .stat-box label { font-size: 0.75em; font-weight: bold; color: var(--cor-detalhe); display: block; margin-bottom: 5px; }
+        .inputs-split { display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .inputs-split input { 
+            width: 42%; background: var(--cor-input); font-weight: bold; 
+            font-size: 1.2em; text-align: center; border: 1px solid #bba; border-radius: 4px; padding: 5px 0;
+        }
+
+        /* PAINEL DE CARGA */
+        .painel-carga {
+            background: var(--cor-borda); color: white;
+            padding: 8px 15px; border-radius: 20px;
+            display: inline-block; font-size: 0.9em; margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-weight: bold;
+        }
+
+        .card { 
+            background: var(--cor-input); border-left: 6px solid var(--cor-detalhe); 
+            padding: 15px; border-radius: 6px; margin-bottom: 12px; position: relative;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* ABAS COM ÍCONES */
+        .abas { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); }
+        .aba-btn { 
+            flex: 1; background: #d7ccc8; border: 2px solid var(--cor-borda); border-bottom: none; 
+            padding: 12px 5px; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0;
+            display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9em;
+        }
+        .aba-btn.ativa { background: var(--cor-borda); color: white; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--cor-fundo); padding: 25px; border: 4px solid var(--cor-borda); width: 100%; max-width: 450px; border-radius: 12px; }
+
+        .caderno { background: var(--cor-pergaminho); border: 2px solid #c4a484; padding: 25px; color: #4b3621; font-family: 'Georgia', serif; }
+        
+        .btn-grande { background: var(--cor-borda); color: white; border: none; padding: 14px; margin: 6px 0; cursor: pointer; border-radius: 8px; width: 100%; font-weight: bold; text-transform: uppercase; }
+        .btn-adicionar { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--cor-detalhe); color: white; border-radius: 50%; border: 3px solid var(--cor-fundo); cursor: pointer; font-size: 35px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 99; }
+
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #c0b283; border-radius: 6px; background: var(--cor-input); box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <div id="tela-login" class="tela" style="display: block;">
+        <h1 style="font-size: 2.5em;">🎒 Bag of Holding</h1>
+        <hr style="border: 1px solid var(--cor-borda); margin: 20px 0;">
+        <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">📜 Painel do Mestre</button>
+        <button class="btn-grande" style="background:#6d4c41" onclick="carregarListaJogadores()">👤 Acessar Ficha</button>
+        <div id="lista-jogadores-login" style="margin-top: 15px;"></div>
+        <center><button onclick="abrirModal('modal-criar')" style="background:none; border:none; color:var(--cor-detalhe); cursor:pointer; text-decoration:underline; margin-top:25px; font-weight:bold;">✨ CRIAR NOVO HERÓI</button></center>
+    </div>
+
+    <div id="tela-mestre" class="tela">
+        <h2>📜 Salão dos Heróis</h2>
+        <div id="grid-mestre"></div>
+        <button class="btn-grande" style="background:#555" onclick="location.reload()">🏠 Voltar ao Início</button>
+    </div>
+
+    <div id="tela-mochila" class="tela">
+        <center>
+            <div class="painel-carga">
+                ⚖️ Carga: <span id="carga-atual">0</span> / <span id="carga-max">0</span>
+            </div>
+        </center>
+        <h1 id="nome-personagem-display">Herói</h1>
+        
+        <div class="stats-combate">
+            <div class="stat-box"><label>❤️ VIDA (PV)</label><div class="inputs-split"><input type="number" id="pv" onchange="salvarStatus()"><span style="font-weight:bold">/</span><input type="number" id="pv_max" onchange="salvarStatus()"></div></div>
+            <div class="stat-box"><label>✨ MANA (PM)</label><div class="inputs-split"><input type="number" id="pm" onchange="salvarStatus()"><span style="font-weight:bold">/</span><input type="number" id="pm_max" onchange="salvarStatus()"></div></div>
+            <div class="stat-box"><label>🛡️ DEFESA</label><div class="inputs-split"><input type="number" id="def" onchange="salvarStatus()"><span style="font-weight:bold">/</span><input type="number" id="def_max" onchange="salvarStatus()"></div></div>
+        </div>
+
+        <nav class="abas">
+            <button class="aba-btn ativa" onclick="mudarAba('grimorio', this)">📖 Grimório</button>
+            <button class="aba-btn" onclick="mudarAba('inventario', this)">🎒 Mochila</button>
+        </nav>
+
+        <div id="grimorio" class="secao-conteudo ativa"></div>
+        <div id="inventario" class="secao-conteudo" style="display:none"></div>
+
+        <div style="background:var(--cor-borda); color:white; padding:12px; border-radius:10px; margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+            <span>💰 TIBARES:</span>
+            <input type="text" id="t-display" oninput="formatarDinheiro(this)" style="width:140px; border:none; background:rgba(255,255,255,0.2); color:white; padding:8px; border-radius:5px; text-align:right; font-weight:bold;">
+        </div>
+        <button id="btn-mestre-voltar" style="display:none;" class="btn-grande" onclick="mostrarPainelMestre()">⬅ VOLTAR AO PAINEL MESTRE</button>
+        <button id="btn-sair-jogador" class="btn-grande" style="background:none; color:gray; border:1px solid #ccc;" onclick="location.reload()">SAIR DA FICHA</button>
+    </div>
+
+    <div id="modal-login-mestre" class="modal"><div class="modal-content"><h3>Senha Mestre</h3><input type="password" id="input-senha-mestre"><button class="btn-grande" onclick="validarMestre()">Entrar</button><button class="btn-grande" style="background:none; color:gray;" onclick="fecharModal('modal-login-mestre')">Cancelar</button></div></div>
+    <div id="modal-senha-jogador" class="modal"><div class="modal-content"><h3 id="titulo-senha-jogador">Senha</h3><input type="password" id="input-senha-jogador"><button class="btn-grande" onclick="validarJogador()">Entrar</button><button class="btn-grande" style="background:none; color:gray;" onclick="fecharModal('modal-senha-jogador')">Voltar</button></div></div>
+    
+    <div id="modal-item" class="modal">
+        <div class="modal-content">
+            <h3>Novo Registro</h3>
+            <select id="tipo-item" onchange="togglePeso()">
+                <option value="inventario">Item</option>
+                <option value="magias">Magia</option>
+            </select>
+            <input type="text" id="nome-item" placeholder="Nome" list="lista-sugestoes" oninput="autoPreencher(this.value)">
+            <datalist id="lista-sugestoes"></datalist>
+            <textarea id="desc-item" placeholder="Descrição..." rows="3"></textarea>
+            <div id="ui-peso-container">
+                <div style="display:flex; gap:10px;">
+                    <div>Qtd: <input type="number" id="qtd-item" value="1"></div>
+                    <div>Peso: <input type="number" id="peso-item" value="1"></div>
+                </div>
+            </div>
+            <button class="btn-grande" onclick="salvarNovoRegistro()">Salvar</button>
+            <button class="btn-grande" style="background:none; color:gray;" onclick="fecharModal('modal-item')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="modal-conjurar" class="modal">
+        <div class="modal-content caderno">
+            <h2 id="conj-titulo">Magia</h2>
+            <p id="conj-desc"></p>
+            <hr style="border:0; border-top:1px dashed #4b3621">
+            <div id="conj-lista"></div>
+            <div style="font-weight:bold; margin:15px 0; text-align:right;">Custo: <span id="custo-total">1</span> PM</div>
+            <button class="btn-grande" style="background:#4b3621" onclick="confirmarGastoPM()">🪄 Lançar Magia</button>
+            <button class="btn-grande" style="background:none; color:#4b3621;" onclick="fecharModal('modal-conjurar')">Fechar Livro</button>
+        </div>
+    </div>
+
+    <div id="modal-criar" class="modal">
+        <div class="modal-content">
+            <h3>✨ Novo Herói</h3>
+            <input type="text" id="n-nome" placeholder="Nome do Personagem">
+            <input type="password" id="n-senha" placeholder="Senha de Acesso">
+            <input type="number" id="n-for" placeholder="Força (Ex: 2)">
+            <button class="btn-grande" onclick="criarPersonagem()">Gravar Ficha</button>
+            <button class="btn-grande" style="background:none; color:gray;" onclick="fecharModal('modal-criar')">Voltar</button>
+        </div>
+    </div>
+
+    <button id="btn-add" class="btn-adicionar" onclick="abrirFormularioItem()" style="display:none;">+</button>
+
+    <script>
+        const BANCO_MAGIAS = {
+            "Curar Ferimentos": { desc: "Cura 1d8+1 PV.", apr: [{c: 1, d: "+1d8+1 Cura"}, {c: 2, d: "Alcance Curto"}] },
+            "Adaga Mental": { desc: "2d6 dano psíquico.", apr: [{c: 2, d: "+1d6 dano"}] },
+            "Seta Infalível": { desc: "Duas setas 1d4+1 cada.", apr: [{c: 2, d: "+1 seta"}] }
+        };
+
+        let db = JSON.parse(localStorage.getItem('bagT20_vMestre')) || { mestreSenha: "123", personagens: [] };
+        let pAtivo = null;
+        let idLogin = null;
+
+        function salvar() { localStorage.setItem('bagT20_vMestre', JSON.stringify(db)); }
+
+        function validarMestre() {
+            if(document.getElementById('input-senha-mestre').value === db.mestreSenha) {
+                fecharModal('modal-login-mestre'); mostrarPainelMestre();
+            }
+        }
+
+        function mostrarPainelMestre() {
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('tela-mochila').style.display = 'none';
+            document.getElementById('tela-mestre').style.display = 'block';
+            const grid = document.getElementById('grid-mestre');
+            grid.innerHTML = "";
+            db.personagens.forEach(p => {
+                grid.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;"><div onclick="abrirFichaMestre(${p.id})" style="cursor:pointer; flex:1;"><h3>${p.nome}</h3></div><button onclick="deletarFicha(${p.id})" style="color:red; background:none; border:none;">🗑️ EXCLUIR</button></div>`;
+            });
+        }
+
+        function carregarListaJogadores() {
+            const list = document.getElementById('lista-jogadores-login');
+            list.innerHTML = "";
+            db.personagens.forEach(p => {
+                list.innerHTML += `<button class="btn-grande" style="background:#5d4037" onclick="prepararLoginJogador(${p.id})">${p.nome}</button>`;
+            });
+        }
+
+        function prepararLoginJogador(id) { idLogin = id; abrirModal('modal-senha-jogador'); }
+
+        function validarJogador() {
+            const p = db.personagens.find(x => x.id === idLogin);
+            if(document.getElementById('input-senha-jogador').value === p.senha) {
+                pAtivo = p; fecharModal('modal-senha-jogador'); abrirFichaGenerica();
+            }
+        }
+
+        function abrirFichaMestre(id) {
+            pAtivo = db.personagens.find(x => x.id === id);
+            document.getElementById('btn-mestre-voltar').style.display = 'block';
+            document.getElementById('btn-sair-jogador').style.display = 'none';
+            abrirFichaGenerica();
+        }
+
+        function abrirFichaGenerica() {
+            document.querySelectorAll('.tela').forEach(t => t.style.display = 'none');
+            document.getElementById('tela-mochila').style.display = 'block';
+            document.getElementById('btn-add').style.display = 'block';
+            document.getElementById('nome-personagem-display').innerText = pAtivo.nome;
+            document.getElementById('pv').value = pAtivo.pv; document.getElementById('pv_max').value = pAtivo.pv_max;
+            document.getElementById('pm').value = pAtivo.pm; document.getElementById('pm_max').value = pAtivo.pm_max;
+            document.getElementById('def').value = pAtivo.def; document.getElementById('def_max').value = pAtivo.def_max;
+            document.getElementById('t-display').value = (pAtivo.tibares || 0).toLocaleString('pt-BR');
+            renderConteudo();
+        }
+
+        function renderConteudo() {
+            const g = document.getElementById('grimorio'); const i = document.getElementById('inventario');
+            let carga = 0; g.innerHTML = ""; i.innerHTML = "";
+
+            pAtivo.magias.forEach((m, idx) => {
+                g.innerHTML += `<div class="card"><button style="float:right; border:none; background:none;" onclick="removerItem('magias', ${idx})">✖</button><h3>${m.nome}</h3><p>${m.desc}</p><button class="btn-grande" style="padding:6px; font-size:0.8em" onclick="abrirJanelaConjurar('${m.nome}')">✨ CONJURAR</button></div>`;
+            });
+
+            pAtivo.itens.forEach((it, idx) => {
+                carga += (it.peso * it.qtd);
+                i.innerHTML += `<div class="card"><button style="float:right; border:none; background:none;" onclick="removerItem('itens', ${idx})">✖</button><h3>${it.nome}</h3><p>${it.desc}</p><small><b>Qtd:</b> ${it.qtd} | <b>Peso:</b> ${it.peso * it.qtd}</small></div>`;
+            });
+
+            document.getElementById('carga-atual').innerText = carga;
+            document.getElementById('carga-max').innerText = 10 + (2 * (pAtivo.for || 0));
+        }
+
+        function salvarStatus() {
+            pAtivo.pv = Number(document.getElementById('pv').value); pAtivo.pv_max = Number(document.getElementById('pv_max').value);
+            pAtivo.pm = Number(document.getElementById('pm').value); pAtivo.pm_max = Number(document.getElementById('pm_max').value);
+            pAtivo.def = Number(document.getElementById('def').value); pAtivo.def_max = Number(document.getElementById('def_max').value);
+            salvar();
+        }
+        function abrirJanelaConjurar(n) {
+            const mag = BANCO_MAGIAS[n] || { desc: "...", apr: [] };
+            document.getElementById('conj-titulo').innerText = n; document.getElementById('conj-desc').innerText = mag.desc;
+            const lista = document.getElementById('conj-lista'); lista.innerHTML = "";
+            mag.apr.forEach(a => { lista.innerHTML += `<div class="item-aprimorar"><input type="checkbox" class="chk-apr" data-custo="${a.c}" onchange="recalcularCusto()"><span><b>+${a.c} PM</b>: ${a.d}</span></div>`; });
+            document.getElementById('custo-total').innerText = "1"; abrirModal('modal-conjurar');
+        }
+        function recalcularCusto() {
+            let total = 1; document.querySelectorAll('.chk-apr:checked').forEach(c => total += parseInt(c.dataset.custo));
+            document.getElementById('custo-total').innerText = total;
+        }
+        function confirmarGastoPM() {
+            const custo = parseInt(document.getElementById('custo-total').innerText);
+            if(pAtivo.pm >= custo) { pAtivo.pm -= custo; document.getElementById('pm').value = pAtivo.pm; salvarStatus(); fecharModal('modal-conjurar'); }
+        }
+        function criarPersonagem() {
+            const p = { id: Date.now(), nome: document.getElementById('n-nome').value, senha: document.getElementById('n-senha').value, for: Number(document.getElementById('n-for').value), pv: 20, pv_max: 20, pm: 10, pm_max: 10, def: 10, def_max: 10, magias: [], itens: [], tibares: 0 };
+            db.personagens.push(p); salvar(); location.reload();
+        }
+        function deletarFicha(id) { if(confirm("Apagar ficha?")) { db.personagens = db.personagens.filter(x => x.id !== id); salvar(); mostrarPainelMestre(); } }
+        function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
+        function abrirFormularioItem() { abrirModal('modal-item'); const dl = document.getElementById('lista-sugestoes'); dl.innerHTML = ""; Object.keys(BANCO_MAGIAS).forEach(m => dl.innerHTML += `<option value="${m}">`); }
+        function autoPreencher(val) { if(BANCO_MAGIAS[val]) document.getElementById('desc-item').value = BANCO_MAGIAS[val].desc; }
+        function togglePeso() { document.getElementById('ui-peso-container').style.display = (document.getElementById('tipo-item').value === 'magias' ? 'none' : 'block'); }
+        function salvarNovoRegistro() {
+            const tipo = document.getElementById('tipo-item').value;
+            pAtivo[tipo].push({ nome: document.getElementById('nome-item').value, desc: document.getElementById('desc-item').value, qtd: Number(document.getElementById('qtd-item').value), peso: Number(document.getElementById('peso-item').value) });
+            salvar(); renderConteudo(); fecharModal('modal-item');
+        }
+        function removerItem(t, i) { pAtivo[t].splice(i, 1); salvar(); renderConteudo(); }
+        function formatarDinheiro(i) { let n = Number(i.value.replace(/\D/g, '')); pAtivo.tibares = n; i.value = n.toLocaleString('pt-BR'); salvar(); }
+        function mudarAba(id, btn) {
+            document.getElementById('grimorio').style.display = (id=='grimorio'?'block':'none');
+            document.getElementById('inventario').style.display = (id=='inventario'?'block':'none');
+            document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativa')); btn.classList.add('ativa');
+        }
+    </script>
+</body>
+</html>
