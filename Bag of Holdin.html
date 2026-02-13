@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bag of Holding | T20</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎒</text></svg>">
+    
+    <style>
+        :root {
+            --cor-fundo: #eaddca; 
+            --cor-borda: #5d4037; 
+            --cor-detalhe: #8d2b2b; 
+            --cor-texto: #3e2723;
+            --cor-input: #fdf5e6;
+            --cor-ouro: #b8860b;
+            --fonte-titulo: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        body { 
+            background-color: #2c1e1a; 
+            color: var(--cor-texto);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .tela { 
+            display: none; 
+            width: 100%; 
+            max-width: 800px; 
+            margin: 20px;
+            background: var(--cor-fundo);
+            border: 4px solid var(--cor-borda);
+            border-radius: 15px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.5);
+            padding: 20px;
+            animation: fadeIn 0.4s;
+            position: relative;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1, h2, h3 { font-family: var(--fonte-titulo); color: var(--cor-borda); text-transform: uppercase; letter-spacing: 1px; }
+
+        header { border-bottom: 2px solid var(--cor-borda); padding-bottom: 20px; margin-bottom: 20px; text-align: center; }
+        
+        .stats-combate { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            margin: 15px 0;
+        }
+
+        .stat-box { 
+            background: rgba(0,0,0,0.05); 
+            border: 1px solid var(--cor-borda);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-box label { font-size: 0.75em; font-weight: bold; margin-bottom: 5px; color: var(--cor-detalhe); }
+        .stat-box input { 
+            background: var(--cor-input); 
+            border: 1px solid #ccc; 
+            width: 70%; 
+            text-align: center; 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .painel-carga {
+            background: rgba(93, 64, 55, 0.08);
+            border-left: 5px solid var(--cor-borda);
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .abas { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); }
+        .aba-btn { 
+            background: #d7ccc8; 
+            border: 1px solid var(--cor-borda);
+            border-bottom: none;
+            padding: 10px 25px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            border-radius: 8px 8px 0 0;
+            transition: 0.2s;
+            color: var(--cor-borda);
+        }
+        .aba-btn.ativa { background: var(--cor-borda); color: white; }
+
+        .secao-conteudo { display: none; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .secao-conteudo.ativa { display: grid; }
+        
+        .card { 
+            background: var(--cor-input); 
+            border: 1px solid #c0b283; 
+            border-left: 6px solid var(--cor-detalhe);
+            padding: 15px; 
+            border-radius: 4px; 
+            position: relative;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .btn-grande { 
+            background: var(--cor-borda); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            margin: 10px 0; 
+            cursor: pointer; 
+            font-family: var(--fonte-titulo); 
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-opcoes { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--cor-borda); padding: 5px; line-height: 1; }
+
+        .area-dinheiro { 
+            background: var(--cor-borda); 
+            color: #dcd0c0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            gap: 15px; 
+            border-radius: 0 0 11px 11px;
+            margin-top: 20px;
+        }
+        .area-dinheiro input { background: rgba(255,255,255,0.1); border: 1px solid #8d6e63; color: #fff; text-align: center; width: 140px; padding: 5px; font-weight: bold; }
+
+        .btn-adicionar { 
+            position: fixed; bottom: 85px; right: 25px; width: 65px; height: 65px; 
+            background: var(--cor-detalhe); color: white; border-radius: 50%; 
+            border: 3px solid var(--cor-fundo); cursor: pointer; font-size: 36px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 100;
+        }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 500; justify-content: center; align-items: center; }
+        .modal-content { background: var(--cor-fundo); padding: 30px; border: 6px solid var(--cor-borda); width: 90%; max-width: 420px; border-radius: 12px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid var(--cor-borda); border-radius: 4px; background: var(--cor-input); box-sizing: border-box; }
+        
+        .flex-row { display: flex; gap: 10px; }
+        .flex-row div { flex: 1; }
+
+        .btn-conjurar {
+            margin-top: 10px;
+            width: 100%;
+            background: var(--cor-detalhe);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        .btn-conjurar:hover { filter: brightness(1.2); }
+    </style>
+</head>
+<body>
+
+    <div id="tela-login" class="tela" style="display: block; text-align: center;">
+        <h1 style="font-size: 2.8em; margin-bottom: 0;">🎒 Bag of Holding</h1>
+        <p style="letter-spacing: 3px; font-weight: bold; color: var(--cor-detalhe);">SISTEMA T20</p>
+        <hr style="border: 1px solid var(--cor-borda); margin: 20px 0;">
+        <button class="btn-grande" onclick="loginMestre()">Acesso do Mestre</button>
+        <button class="btn-grande" style="background:#6d4c41" onclick="abrirListaJogadores()">Acesso do Jogador</button>
+        <div id="lista-jogadores-login" style="margin-top: 20px; display: none;"></div>
+        <button onclick="abrirModalCriar()" style="background:none; border:none; color: var(--cor-detalhe); cursor:pointer; margin-top:25px; text-decoration: underline; font-weight: bold;">CRIAR NOVA FICHA</button>
+    </div>
+
+    <div id="tela-mestre" class="tela">
+        <h2>📜 Painel de Controle</h2>
+        <div id="grid-personagens-mestre"></div>
+        <button class="btn-grande" style="margin-top:20px;" onclick="abrirModalCriar()">+ Novo Personagem</button>
+        <button class="btn-grande" style="background:transparent; color: var(--cor-borda); border: 2px solid var(--cor-borda);" onclick="logout()">Voltar ao Início</button>
+    </div>
+
+    <div id="tela-mochila" class="tela">
+        <button class="btn-opcoes" onclick="abrirModalEdicao()">⋮</button>
+        <header>
+            <h1 id="nome-personagem-display" style="margin: 5px 0;">Herói</h1>
+            <div class="stats-combate">
+                <div class="stat-box"><label>PV</label><input type="number" id="pv" onchange="atualizar()"></div>
+                <div class="stat-box"><label>PM</label><input type="number" id="pm" onchange="atualizar()"></div>
+                <div class="stat-box"><label>DEFESA</label><input type="number" id="def" onchange="atualizar()"></div>
+            </div>
+            
+            <div class="painel-carga">
+                <strong style="color: var(--cor-detalhe); font-size: 0.9em;">📊 CAPACIDADE DE CARGA</strong><br>
+                <span style="font-size: 1.1em; font-weight: bold;">Carga: <span id="carga-atual">0</span> / <span id="carga-cap">10</span> espaços</span><br>
+                <small>Itens Mágicos Ativos: <span id="magicos-atual">0</span> / 4</small>
+                <div id="alerta-sobrecarga" style="color:red; display:none; font-weight:bold; font-size:0.85em; margin-top:8px;">⚠️ SOBRECARREGADO: -2 DEFESA / DESL. REDUZIDO</div>
+                <div id="alerta-maximo" style="color:white; background:red; display:none; padding:5px; font-size:0.85em; margin-top:8px; text-align: center; border-radius: 4px;">🚫 CARGA MÁXIMA: PERSONAGEM IMÓVEL</div>
+            </div>
+        </header>
+
+        <nav class="abas">
+            <button class="aba-btn ativa" onclick="mudarAba('magias', this)">Grimório</button>
+            <button class="aba-btn" onclick="mudarAba('inventario', this)">Inventário</button>
+        </nav>
+
+        <main id="magias" class="secao-conteudo ativa"></main>
+        <main id="inventario" class="secao-conteudo"></main>
+
+        <div class="area-dinheiro">
+            <span>💰 Tibares:</span>
+            <input type="text" id="t-display" oninput="formatarDinheiro(this)">
+        </div>
+        <button id="btn-voltar-mestre" style="display:none; margin-top:15px; cursor:pointer;" onclick="irParaTelaMestre()">⬅ Painel do Mestre</button>
+    </div>
+
+    <div id="modal-criar" class="modal">
+        <div class="modal-content">
+            <h3>Novo Aventureiro</h3>
+            <label>Nome do Personagem:</label>
+            <input type="text" id="novo-nome" placeholder="Ex: Valeros">
+            <label>Força (Afeta Carga x10):</label>
+            <input type="number" id="novo-for" value="0">
+            <label>Senha de Acesso:</label>
+            <input type="password" id="novo-senha" placeholder="****">
+            <button class="btn-grande" onclick="confirmarCriacao()">Gravar Ficha</button>
+            <button onclick="fecharModalCriar()" style="background:none; border:none; cursor:pointer; color: #666; width: 100%;">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="modal-edicao" class="modal">
+        <div class="modal-content">
+            <h3>Ajustar Atributos</h3>
+            <label>Alterar Força:</label>
+            <input type="number" id="edit-for">
+            <button class="btn-grande" onclick="salvarEdicao()">Salvar Alterações</button>
+            <button onclick="fecharModalEdicao()" style="background:none; border:none; cursor:pointer; color: #666; width: 100%;">Voltar</button>
+        </div>
+    </div>
+
+    <div id="modal-item" class="modal">
+        <div class="modal-content">
+            <h3>Adicionar Tesouro</h3>
+            <select id="tipo-item"><option value="inventario">Item no Inventário</option><option value="magias">Magia no Grimório</option></select>
+            <input type="text" id="nome-item" placeholder="Nome do Objeto">
+            <textarea id="desc-item" placeholder="Descrição ou Efeito..." rows="3"></textarea>
+            
+            <div id="carga-extra-ui">
+                <div class="flex-row">
+                    <div>
+                        <label>Quantidade:</label>
+                        <input type="number" id="qtd-item" value="1" min="1">
+                    </div>
+                    <div>
+                        <label>Espaço Unitário:</label>
+                        <input type="number" id="espaco-item" value="1" min="0">
+                    </div>
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+                    <input type="checkbox" id="item-magico" style="width: auto;"> Item Mágico (Gasta Limite)
+                </label>
+            </div>
+            <button class="btn-grande" onclick="salvarNovoItem()">Guardar na Bolsa</button>
+            <button onclick="fecharModalItem()" style="background:none; border:none; cursor:pointer; color: #666; width: 100%;">Fechar</button>
+        </div>
+    </div>
+
+    <button id="btn-add" class="btn-adicionar" onclick="abrirModalItem()" style="display:none;">+</button>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('bagT20_vFinal_Fixed')) || { mestreSenha: "123", personagens: [] };
+        let usuarioTipo = ""; let personagemAtivo = null;
+
+        const BANCO_MAGIAS = {
+            "Arma Espiritual": { apr: [{c:1, d:"+1 Defesa"}, {c:2, d:"+1 Defesa extra"}, {c:2, d:"Sustentada"}, {c:2, d:"Dano Essência"}, {c:2, d:"+1d6 Dano"}, {c:5, d:"Duas armas"}] },
+            "Arma Mágica": { apr: [{c:2, d:"+1 Bônus"}, {c:2, d:"+1d6 Elemental"}, {c:3, d:"+2d6 Elemental"}] },
+            "Bênção": { apr: [{c:1, d:"Cadáver (1 sem)"}, {c:2, d:"+1 Bônus"}] },
+            "Curar Ferimentos": { apr: [{c:0, d:"Truque: Dano Luz"}, {c:1, d:"+1d8+1 Cura"}, {c:2, d:"Remove fadiga"}, {c:2, d:"Alcance Curto"}, {c:5, d:"Alvo múltiplos"}] },
+            "Escudo da Fé": { apr: [{c:1, d:"Pad/Toq/Cena"}, {c:1, d:"Camuflagem Leve"}, {c:2, d:"+1 Defesa"}, {c:2, d:"Conexão Mística"}, {c:3, d:"Duração 1 dia"}] },
+            "Névoa": { apr: [{c:1, d:"Sob a água"}, {c:2, d:"Aliados enxergam"}, {c:2, d:"Enjoada"}, {c:2, d:"Cáustica"}, {c:3, d:"+2d4 ácido"}, {c:5, d:"Sólida"}] },
+            "Proteção Divina": { apr: [{c:2, d:"+1 Bônus"}, {c:2, d:"Reação/Curto"}, {c:2, d:"Esfera 3m"}, {c:5, d:"Imune Mente/Medo"}] }
+        };
+
+        function salvarDB() { localStorage.setItem('bagT20_vFinal_Fixed', JSON.stringify(db)); }
+
+        function loginMestre() {
+            if(prompt("Senha do Mestre:") === db.mestreSenha) { usuarioTipo = "mestre"; irParaTelaMestre(); }
+        }
+
+        function abrirListaJogadores() {
+            const list = document.getElementById('lista-jogadores-login');
+            list.innerHTML = "";
+            db.personagens.forEach(p => {
+                list.innerHTML += `<button class="btn-grande" style="background:#5d4037;" onclick="validarSenhaJogador(${p.id})">${p.nome}</button>`;
+            });
+            list.style.display = 'block';
+        }
+
+        function validarSenhaJogador(id) {
+            const p = db.personagens.find(x => x.id === id);
+            if(prompt(`Senha para ${p.nome}:`) === p.senha) { usuarioTipo = "jogador"; personagemAtivo = p; abrirMochila(); }
+        }
+
+        function irParaTelaMestre() {
+            const grid = document.getElementById('grid-personagens-mestre');
+            grid.innerHTML = "";
+            db.personagens.forEach(p => {
+                grid.innerHTML += `
+                <div style="background:#d7ccc8; margin:8px 0; padding:15px; border:2px solid var(--cor-borda); display:flex; justify-content:space-between; align-items:center; border-radius:8px;">
+                    <div onclick="focarMestre(${p.id})" style="cursor:pointer;">
+                        <b style="font-size:1.1em;">${p.nome}</b><br>
+                        <small>Senha: ${p.senha} | FOR: ${p.for}</small>
+                    </div>
+                    <button onclick="deletar(${p.id})" style="background:var(--cor-detalhe); color:white; border:none; padding:8px 12px; border-radius:4px; cursor:pointer;">X</button>
+                </div>`;
+            });
+            mostrarTela('tela-mestre');
+        }
+
+        function focarMestre(id) { personagemAtivo = db.personagens.find(p => p.id === id); abrirMochila(); }
+
+        function abrirMochila() {
+            mostrarTela('tela-mochila');
+            document.getElementById('nome-personagem-display').innerText = personagemAtivo.nome;
+            document.getElementById('pv').value = personagemAtivo.pv;
+            document.getElementById('pm').value = personagemAtivo.pm;
+            document.getElementById('def').value = personagemAtivo.def;
+            document.getElementById('t-display').value = (personagemAtivo.tibares || 0).toLocaleString('pt-BR');
+            document.getElementById('btn-voltar-mestre').style.display = (usuarioTipo === "mestre") ? "block" : "none";
+            document.getElementById('btn-add').style.display = 'block';
+            render();
+        }
+
+        function atualizar() {
+            personagemAtivo.pv = Number(document.getElementById('pv').value);
+            personagemAtivo.pm = Number(document.getElementById('pm').value);
+            personagemAtivo.def = Number(document.getElementById('def').value);
+            salvarDB(); render();
+        }
+
+        function render() {
+            const m = document.getElementById('magias'); const i = document.getElementById('inventario');
+            m.innerHTML = ""; i.innerHTML = "";
+            let carga = 0; let magicos = 0;
+
+            personagemAtivo.magias.forEach((item, idx) => {
+                m.innerHTML += `
+                    <div class="card">
+                        <button style="float:right; border:none; background:none; cursor:pointer;" onclick="remover('magias', ${idx})">✖</button>
+                        <h3 style="margin-bottom:5px;">${item.nome}</h3>
+                        <p style="font-size:0.85em; color:#555;">${item.desc}</p>
+                        <button class="btn-conjurar" onclick="conjurarMagiaT20('${item.nome}')">✨ CONJURAR (1 PM+)</button>
+                    </div>`;
+            });
+
+            personagemAtivo.itens.forEach((item, idx) => {
+                const qtd = Number(item.qtd || 1);
+                const esp = Number(item.espaco || 0);
+                const cargaItem = qtd * esp;
+                
+                carga += cargaItem;
+                if(item.magico) magicos++;
+                
+                i.innerHTML += `<div class="card">
+                    <button style="float:right; border:none; background:none; cursor:pointer;" onclick="remover('itens', ${idx})">✖</button>
+                    <div style="font-size:0.75em; margin-bottom:8px;">
+                        <span style="background:var(--cor-borda); color:white; padding:3px 8px; border-radius:3px;">Qtd: ${qtd}</span>
+                        <span style="background:#a67c52; color:white; padding:3px 8px; border-radius:3px; margin-left:5px;">Total: ${cargaItem} Esp.</span>
+                        ${item.magico ? '<span style="background:var(--cor-ouro); color:white; padding:3px 8px; border-radius:3px; margin-left:5px;">✨ MÁGICO</span>' : ''}
+                    </div>
+                    <h3 style="margin-top:0;">${item.nome}</h3><p style="font-size:0.9em; color:#555;">${item.desc}</p>
+                </div>`;
+            });
+
+            const forAtual = personagemAtivo.for || 0;
+            const cap = forAtual === 0 ? 10 : 10 + 2 * forAtual;
+            const max = cap * 2;
+
+            document.getElementById('carga-atual').innerText = carga;
+            document.getElementById('carga-cap').innerText = cap;
+            document.getElementById('magicos-atual').innerText = magicos;
+            document.getElementById('alerta-sobrecarga').style.display = (carga > cap && carga <= max) ? 'block' : 'none';
+            document.getElementById('alerta-maximo').style.display = (carga > max) ? 'block' : 'none';
+        }
+
+        function conjurarMagiaT20(nome) {
+            const mag = BANCO_MAGIAS[nome];
+            let custoTotal = 1; 
+
+            if(!mag) {
+                if(confirm(`Conjurar ${nome} por 1 PM?`)) {
+                    if(personagemAtivo.pm >= 1) {
+                        personagemAtivo.pm -= 1;
+                        alert(`${nome} conjurada!`);
+                    } else { alert("PM insuficiente!"); }
+                }
+            } else {
+                let resumo = `CONJURAR: ${nome} (Custo Base: 1 PM)\n\nDigite os números dos aprimoramentos separados por vírgula (ex: 1,3) ou deixe vazio para o básico:\n\n`;
+                mag.apr.forEach((a, i) => { resumo += `${i+1}) +${a.c} PM: ${a.d}\n`; });
+                
+                let escolha = prompt(resumo);
+                if (escolha === null) return;
+
+                if (escolha.trim() !== "") {
+                    escolha.split(",").forEach(i => {
+                        let opt = mag.apr[parseInt(i.trim()) - 1];
+                        if(opt) custoTotal += opt.c;
+                    });
+                }
+
+                if (personagemAtivo.pm < custoTotal) {
+                    alert(`PM insuficiente! Você precisa de ${custoTotal} PM e possui ${personagemAtivo.pm}.`);
+                } else {
+                    personagemAtivo.pm -= custoTotal;
+                    alert(`${nome} conjurada! Total gasto: ${custoTotal} PM.`);
+                }
+            }
+            document.getElementById('pm').value = personagemAtivo.pm;
+            salvarDB(); 
+            render(); 
+        }
+
+        function formatarDinheiro(input) {
+            let n = Number(input.value.replace(/\D/g, ''));
+            personagemAtivo.tibares = n;
+            input.value = n.toLocaleString('pt-BR');
+            salvarDB();
+        }
+
+        function mudarAba(id, btn) {
+            document.querySelectorAll('.secao-conteudo').forEach(s => s.classList.remove('ativa'));
+            document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativa'));
+            document.getElementById(id).classList.add('ativa');
+            btn.classList.add('ativa');
+        }
+
+        function abrirModalCriar() { document.getElementById('modal-criar').style.display = 'flex'; }
+        function fecharModalCriar() { document.getElementById('modal-criar').style.display = 'none'; }
+        function confirmarCriacao() {
+            const p = { id: Date.now(), nome: document.getElementById('novo-nome').value, for: Number(document.getElementById('novo-for').value), senha: document.getElementById('novo-senha').value, pv: 10, pm: 10, def: 10, tibares: 0, magias: [], itens: [] };
+            if(!p.nome || !p.senha) return alert("Nome e Senha são obrigatórios!");
+            db.personagens.push(p); salvarDB(); fecharModalCriar(); location.reload();
+        }
+
+        function abrirModalEdicao() { document.getElementById('edit-for').value = personagemAtivo.for; document.getElementById('modal-edicao').style.display = 'flex'; }
+        function fecharModalEdicao() { document.getElementById('modal-edicao').style.display = 'none'; }
+        function salvarEdicao() { personagemAtivo.for = Number(document.getElementById('edit-for').value); salvarDB(); render(); fecharModalEdicao(); }
+
+        function abrirModalItem() { document.getElementById('modal-item').style.display = 'flex'; }
+        function fecharModalItem() { document.getElementById('modal-item').style.display = 'none'; }
+        
+        function salvarNovoItem() {
+            const tipo = document.getElementById('tipo-item').value;
+            const novo = { 
+                nome: document.getElementById('nome-item').value, 
+                desc: document.getElementById('desc-item').value, 
+                qtd: document.getElementById('qtd-item').value,
+                espaco: document.getElementById('espaco-item').value, 
+                magico: document.getElementById('item-magico').checked 
+            };
+            if(!novo.nome) return;
+            personagemAtivo[tipo].push(novo); salvarDB(); render(); fecharModalItem();
+        }
+
+        function remover(tipo, idx) { if(confirm("Remover permanentemente?")) { personagemAtivo[tipo].splice(idx, 1); salvarDB(); render(); } }
+        function deletar(id) { if(confirm("Excluir ficha?")) { db.personagens = db.personagens.filter(p => p.id !== id); salvarDB(); irParaTelaMestre(); } }
+        function mostrarTela(id) { document.querySelectorAll('.tela').forEach(t => t.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
+        function logout() { location.reload(); }
+    </script>
+</body>
+</html>
