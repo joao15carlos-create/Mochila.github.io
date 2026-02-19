@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎒Bag of Holding | Tormenta20 System Manager</title>
+    <title>Bag of Holding | Tormenta20 System Manager</title>
     <style>
         /* =========================================
            VARIÁVEIS GLOBAIS E TEMA
@@ -342,10 +342,10 @@
 </head>
 <body>
 <div id="tela-login" class="tela fade-in" style="display: block;">
-    <h1 style="font-size: 2.5em; margin-bottom: 10px;">  🎒 Bag of Holding</h1>
+    <h1 style="font-size: 2.5em; margin-bottom: 10px;">   Bag of Holding</h1>
     <p style="text-align: center; color: var(--cor-detalhe); margin-bottom: 30px; font-weight: bold;">Gerenciador Oficial Tormenta20</p>
 
-    <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">  📜 Painel do Mestre</button>
+    <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">   Painel do Mestre</button>
     <button class="btn-grande" style="background:#4a6572" onclick="carregarListaJogadores()">   Entrar como Herói</button>
 
     <div id="lista-jogadores-login" style="margin-top: 25px; display: grid; gap: 10px;"></div>
@@ -383,7 +383,7 @@
             <small id="sub-nome" style="color:var(--cor-detalhe); font-weight: bold; font-size: 1.2em;">Nível 1</small>
         </div>
         <div style="display: flex; gap: 10px;">
-            <button onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">  </button>
+            <button ⚙️ onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">  </button>
             <button class="btn-sair" onclick="deslogar()">Trocar</button>
         </div>
     </div>
@@ -639,7 +639,7 @@
 </div>
 <div id="modal-compendio" class="modal">
     <div class="modal-content">
-        <h3 id="titulo-compendio"> 📖  Biblioteca Global</h3>
+        <h3 id="titulo-compendio">   Biblioteca Global</h3>
         <p id="subtitulo-compendio" style="text-align:center; font-size:0.9em; color:#555">Base de dados compartilhada.</p>
         <div id="lista-compendio" style="max-height: 400px; overflow-y: auto;"></div>
         <button class="btn-grande" onclick="fecharModal('modal-compendio')">Fechar</button>
@@ -1240,7 +1240,7 @@
         await db.collection("personagens").add(p);
         location.reload();
     }
-    async function abrirCompendio() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "  📖 Biblioteca Global"; carregarGlobal('magias_globais', 'magia');
+    async function abrirCompendio() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "   Biblioteca Global"; carregarGlobal('magias_globais', 'magia');
     }
     async function abrirArsenal() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "   Arsenal Global"; carregarGlobal('itens_globais', 'item');
     }
