@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎒 Bag of Holding | Tormenta20 System Manager</title>
     <style>
-        /* =========================================
-           VARIÁVEIS GLOBAIS E TEMA
-           ========================================= */
         :root {
             --cor-fundo: #eaddca;
             --cor-borda: #5d4037;
@@ -20,348 +17,93 @@
             --fonte-titulo: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
             --fonte-padrao: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        body {
-            background-color: #1a1210;
-            color: var(--cor-texto);
-            font-family: var(--fonte-padrao);
-            margin: 0;
-            padding-bottom: 120px;
-            overflow-x: hidden;
-        }
-        h1, h2, h3 {
-            font-family: var(--fonte-titulo);
-            color: var(--cor-borda);
-            text-transform: uppercase;
-            text-align: center;
-            margin-top: 0;
-            letter-spacing: 1px;
-        }
-        /* =========================================
-           TELAS E CONTAINERS
-           ========================================= */
-        .tela {
-            display: none;
-            width: 95%;
-            max-width: 800px;
-            margin: 30px auto;
-            background: var(--cor-fundo);
-            border: 4px solid var(--cor-borda);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            position: relative;
-            box-sizing: border-box;
-        }
+        body { background-color: #1a1210; color: var(--cor-texto); font-family: var(--fonte-padrao); margin: 0; padding-bottom: 120px; overflow-x: hidden; }
+        h1, h2, h3 { font-family: var(--fonte-titulo); color: var(--cor-borda); text-transform: uppercase; text-align: center; margin-top: 0; letter-spacing: 1px; }
+        .tela { display: none; width: 95%; max-width: 800px; margin: 30px auto; background: var(--cor-fundo); border: 4px solid var(--cor-borda); border-radius: 15px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative; box-sizing: border-box; }
         .fade-in { animation: fadeIn 0.5s; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* =========================================
-           BOTÕES
-           ========================================= */
-        .btn-grande {
-            background: var(--cor-borda);
-            color: white;
-            border: none;
-            padding: 16px;
-            margin: 10px 0;
-            cursor: pointer;
-            border-radius: 8px;
-            width: 100%;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 4px 0 #2d1d1a;
-            transition: all 0.2s;
-            font-size: 1rem;
-        }
-        .btn-grande:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-        .btn-sair {
-            background: #d32f2f !important;
-            color: white !important;
-            padding: 8px 18px !important;
-            border-radius: 6px !important;
-            border: none !important;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9em;
-            text-transform: uppercase;
-        }
-        .btn-add {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 75px;
-            height: 75px;
-            background: var(--cor-detalhe);
-            color: white;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            font-size: 45px;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: 8px;
-        }
-        /* =========================================
-           INPUTS & TOGGLES
-           ========================================= */
-        input, textarea, select {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 2px solid #bcaaa4;
-            background: #fdfaf3;
-            box-sizing: border-box;
-            font-weight: bold;
-            font-size: 1em;
-            color: var(--cor-texto);
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--cor-detalhe);
-            background: #fff;
-        }
-        /* Toggle Switch para o Mestre */
-        .switch-container {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid var(--cor-borda);
-            margin-bottom: 15px;
-            justify-content: space-between;
-        }
-        .switch-label {
-            font-weight: bold;
-            color: var(--cor-texto);
-        }
-        .switch-toggle {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-grande { background: var(--cor-borda); color: white; border: none; padding: 16px; margin: 10px 0; cursor: pointer; border-radius: 8px; width: 100%; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 0 #2d1d1a; transition: all 0.2s; font-size: 1rem; }
+        .btn-grande:active { transform: translateY(4px); box-shadow: none; }
+        .btn-sair { background: #d32f2f !important; color: white !important; padding: 8px 18px !important; border-radius: 6px !important; border: none !important; cursor: pointer; font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
+        .btn-add { position: fixed; bottom: 30px; right: 30px; width: 75px; height: 75px; background: var(--cor-detalhe); color: white; border-radius: 50%; border: 4px solid #fff; font-size: 45px; cursor: pointer; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding-bottom: 8px; }
+        input, textarea, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: 2px solid #bcaaa4; background: #fdfaf3; box-sizing: border-box; font-weight: bold; font-size: 1em; color: var(--cor-texto); }
+        input:focus, textarea:focus { outline: none; border-color: var(--cor-detalhe); background: #fff; }
+        .switch-container { display: flex; align-items: center; background: #fff; padding: 15px; border-radius: 8px; border: 2px solid var(--cor-borda); margin-bottom: 15px; justify-content: space-between; }
+        .switch-label { font-weight: bold; color: var(--cor-texto); }
+        .switch-toggle { position: relative; display: inline-block; width: 60px; height: 34px; }
         .switch-toggle input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--cor-detalhe); }
         input:checked + .slider:before { transform: translateX(26px); }
-
-        /* =========================================
-           DASHBOARD JOGADOR
-           ========================================= */
-        .status-container-pro {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 25px 0;
-        }
-        .status-hero-card {
-            display: grid;
-            grid-template-columns: 80px 1fr 100px;
-            align-items: center;
-            background: #fff;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-left: 12px solid var(--cor-borda);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        .status-container-pro { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+        .status-hero-card { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 12px solid var(--cor-borda); cursor: pointer; transition: transform 0.2s; }
         .status-hero-card:active { transform: scale(0.98); }
         .card-pv { border-left-color: var(--cor-pv); background: linear-gradient(to right, #fff, #ffebee); }
         .card-pm { border-left-color: var(--cor-pm); background: linear-gradient(to right, #fff, #e3f2fd); }
         .card-def { border-left-color: var(--cor-def); background: linear-gradient(to right, #fff, #eceff1); }
-        .estado-morto {
-            background: #3e2723 !important;
-            border-left-color: #000 !important;
-        }
+        .estado-morto { background: #3e2723 !important; border-left-color: #000 !important; }
         .estado-morto .status-main-val { color: #ff0000 !important; text-shadow: 0 0 10px #000; }
         .estado-morto .status-label { color: #fff !important; }
         .status-label { font-weight: 800; font-size: 0.85em; color: #666; text-transform: uppercase; }
         .status-main-val { font-size: 2.8em; font-weight: 900; text-align: center; font-family: var(--fonte-titulo); line-height: 1; }
         .status-sub-info { text-align: right; font-weight: bold; font-size: 0.9em; opacity: 0.8; }
-        .tibares-card {
-            background: var(--cor-tibares);
-            color: #3e2723;
-            margin: 15px 0;
-            padding: 18px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 900;
-            cursor: pointer;
-            border: 2px solid #b8860b;
-            font-size: 1.3em;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        /* =========================================
-           PAINEL DO MESTRE
-           ========================================= */
-        #grid-mestre {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-        .monitor-mestre-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 18px;
-            border: 2px solid var(--cor-borda);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            position: relative;
-        }
-        .monitor-header {
-            display: flex;
-            justify-content: space-between; align-items: center;
-            margin-bottom: 12px; border-bottom: 2px solid #eee; padding-bottom: 8px;
-        }
-        .monitor-bar-bg {
-            background: #e0e0e0;
-            height: 26px; border-radius: 13px; margin: 12px 0;
-            overflow: hidden; position: relative; border: 1px solid #999;
-        }
+        .tibares-card { background: var(--cor-tibares); color: #3e2723; margin: 15px 0; padding: 18px; border-radius: 10px; text-align: center; font-weight: 900; cursor: pointer; border: 2px solid #b8860b; font-size: 1.3em; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        #grid-mestre { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .monitor-mestre-card { background: #fff; border-radius: 12px; padding: 18px; border: 2px solid var(--cor-borda); box-shadow: 0 4px 8px rgba(0,0,0,0.15); position: relative; }
+        .monitor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+        .monitor-bar-bg { background: #e0e0e0; height: 26px; border-radius: 13px; margin: 12px 0; overflow: hidden; position: relative; border: 1px solid #999; }
         .monitor-bar-fill { height: 100%; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-        .bar-label {
-            position: absolute;
-            width: 100%; text-align: center; font-size: 0.9em; font-weight: 900;
-            color: #000; line-height: 26px; text-shadow: 0 0 5px #fff; left: 0;
-            top: 0; z-index: 2;
-        }
-        /* =========================================
-           ABAS E LISTAS
-           ========================================= */
-        .abas {
-            display: flex;
-            gap: 10px; margin-bottom: 20px;
-            border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px;
-        }
-        .aba-btn {
-            flex: 1;
-            background: #d7ccc8; border: 2px solid var(--cor-borda); padding: 14px;
-            cursor: pointer; font-weight: bold; border-radius: 10px 10px 0 0; opacity: 0.7;
-            transition: 0.3s;
-        }
-        .aba-btn.ativa {
-            background: var(--cor-borda);
-            color: white; opacity: 1; transform: translateY(2px);
-        }
-        .magia-container, .item-card {
-            margin-bottom: 10px;
-            border: 1px solid #ccc; border-radius: 10px;
-            overflow: hidden; background: #fff;
-        }
-        .item-card {
-            display: flex;
-            justify-content: space-between; align-items: center;
-            padding: 15px; cursor: pointer; transition: background 0.2s;
-        }
+        .bar-label { position: absolute; width: 100%; text-align: center; font-size: 0.9em; font-weight: 900; color: #000; line-height: 26px; text-shadow: 0 0 5px #fff; left: 0; top: 0; z-index: 2; }
+        .abas { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px; }
+        .aba-btn { flex: 1; background: #d7ccc8; border: 2px solid var(--cor-borda); padding: 14px; cursor: pointer; font-weight: bold; border-radius: 10px 10px 0 0; opacity: 0.7; transition: 0.3s; }
+        .aba-btn.ativa { background: var(--cor-borda); color: white; opacity: 1; transform: translateY(2px); }
+        .magia-container, .item-card { margin-bottom: 10px; border: 1px solid #ccc; border-radius: 10px; overflow: hidden; background: #fff; }
+        .item-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; cursor: pointer; transition: background 0.2s; }
         .item-card:hover { background-color: #f9f9f9; }
-        .magia-header-click {
-            background: var(--cor-detalhe);
-            color: #f4e4bc; padding: 15px;
-            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-        }
-        .magia-conteudo-oculto {
-            display: none;
-            padding: 20px; line-height: 1.6; border-top: 1px solid #ccc; background-color: #fffbf0;
-        }
-        .categoria-titulo {
-            background: #5d4037;
-            color: white; padding: 8px 15px; border-radius: 6px;
-            margin-top: 20px; margin-bottom: 10px; font-size: 0.9em; font-weight: bold;
-            text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; gap: 8px;
-        }
+        .magia-header-click { background: var(--cor-detalhe); color: #f4e4bc; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .magia-conteudo-oculto { display: none; padding: 20px; line-height: 1.6; border-top: 1px solid #ccc; background-color: #fffbf0; }
+        .categoria-titulo { background: #5d4037; color: white; padding: 8px 15px; border-radius: 6px; margin-top: 20px; margin-bottom: 10px; font-size: 0.9em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .badge { font-size: 0.75em; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 5px; }
         .badge-vestido { background: #1565c0; color: white; }
         .badge-empunhado { background: #c62828; color: white; }
         .badge-ajudante { background: #2e7d32; color: white; }
-        /* =========================================
-           MODAIS
-           ========================================= */
-        .modal {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 2000;
-            justify-content: center; align-items: center; padding: 15px;
-        }
-        .modal-content {
-            background: var(--cor-fundo);
-            padding: 30px; border: 5px solid var(--cor-borda);
-            width: 100%; max-width: 550px; border-radius: 20px; max-height: 85vh;
-            overflow-y: auto; box-sizing: border-box;
-            animation: popIn 0.3s;
-        }
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .badge-categoria {
-            display: inline-block;
-            padding: 4px 8px; border-radius: 4px;
-            background: #eee; font-size: 0.8em; font-weight: bold; color: #555; margin-bottom: 10px;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--cor-fundo); padding: 30px; border: 5px solid var(--cor-borda); width: 100%; max-width: 550px; border-radius: 20px; max-height: 85vh; overflow-y: auto; box-sizing: border-box; animation: popIn 0.3s; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .badge-categoria { display: inline-block; padding: 4px 8px; border-radius: 4px; background: #eee; font-size: 0.8em; font-weight: bold; color: #555; margin-bottom: 10px; }
         .radio-group { display: flex; gap: 10px; margin: 10px 0; }
-        .radio-group label {
-            flex: 1;
-            background: #fff; padding: 10px; border: 2px solid #ccc; border-radius: 6px;
-            text-align: center; cursor: pointer; font-size: 0.9em;
-        }
+        .radio-group label { flex: 1; background: #fff; padding: 10px; border: 2px solid #ccc; border-radius: 6px; text-align: center; cursor: pointer; font-size: 0.9em; }
         .radio-group input[type="radio"] { display: none; }
-        .radio-group input[type="radio"]:checked + label {
-            background: var(--cor-detalhe);
-            color: white; border-color: var(--cor-detalhe);
-        }
+        .radio-group input[type="radio"]:checked + label { background: var(--cor-detalhe); color: white; border-color: var(--cor-detalhe); }
+        .mestre-item-row { background: #fff; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+        .mestre-item-row-info { flex: 1; }
+        .mestre-item-row-info b { font-size: 1em; }
+        .mestre-item-row-info small { color: #666; display: block; margin-top: 2px; }
+        .mestre-acoes { display: flex; gap: 5px; }
+        .mestre-acoes button { border: none; padding: 7px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85em; font-weight: bold; color: white; }
     </style>
 </head>
 <body>
+
+<!-- TELA LOGIN -->
 <div id="tela-login" class="tela fade-in" style="display: block;">
     <h1 style="font-size: 2.5em; margin-bottom: 10px;">🎒 Bag of Holding</h1>
     <p style="text-align: center; color: var(--cor-detalhe); margin-bottom: 30px; font-weight: bold;">Gerenciador Oficial Tormenta20</p>
-
     <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">👑 Painel do Mestre</button>
     <button class="btn-grande" style="background:#4a6572" onclick="carregarListaJogadores()">⚔️ Entrar como Herói</button>
-
     <div id="lista-jogadores-login" style="margin-top: 25px; display: grid; gap: 10px;"></div>
-
     <div style="text-align: center; margin-top: 30px;">
-        <button onclick="abrirModal('modal-criar')" style="background:none; border:none; color:var(--cor-detalhe); cursor:pointer; text-decoration:underline; font-weight:bold; font-size: 1.1em;">
-            ✨ Criar Novo Herói
-        </button>
+        <button onclick="abrirModal('modal-criar')" style="background:none; border:none; color:var(--cor-detalhe); cursor:pointer; text-decoration:underline; font-weight:bold; font-size: 1.1em;">✨ Criar Novo Herói</button>
     </div>
 </div>
+
+<!-- TELA MESTRE -->
 <div id="tela-mestre" class="tela fade-in">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px;">
         <h2 style="margin:0">🎲 Monitor da Mesa</h2>
         <button class="btn-sair" onclick="deslogar()">🚪 Sair</button>
     </div>
-
     <div class="switch-container">
         <span class="switch-label">⚖️ Regra: Peso da Moeda (1 slot a cada 1000 T$)</span>
         <label class="switch-toggle">
@@ -369,13 +111,14 @@
             <span class="slider"></span>
         </label>
     </div>
-
     <button class="btn-grande" style="background:#8d2b2b" onclick="abrirCompendio()">✨ Gerenciar Magias Globais</button>
     <button class="btn-grande" style="background:#d4af37; color: #3e2723;" onclick="abrirArsenal()">⚔️ Gerenciar Arsenal Global</button>
     <button class="btn-grande" style="background:#2e7d32;" onclick="abrirTesouroGrupo()">💰 Ver Tesouro do Grupo</button>
-
+    <button class="btn-grande" style="background:#4a3572;" onclick="abrirItensJogadores()">📦 Itens dos Jogadores</button>
     <div id="grid-mestre"></div>
 </div>
+
+<!-- TELA MOCHILA JOGADOR -->
 <div id="tela-mochila" class="tela fade-in">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
         <div>
@@ -423,17 +166,16 @@
     </div>
     <div id="conteudo-inventario" style="display:none">
         <div id="barra-carga" style="background:var(--cor-borda); color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px; font-weight:bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);"></div>
-
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <button class="btn-grande" style="background:#d4af37; color:#3e2723; font-size:0.8em; padding: 10px;" onclick="abrirArsenal()">⚔️ Arsenal Global</button>
             <button class="btn-grande" style="background:#2e7d32; font-size:0.8em; padding: 10px;" onclick="abrirTesouroGrupo()">💰 Tesouro do Grupo</button>
         </div>
-
         <div id="itens-lista"></div>
     </div>
-
     <button id="btn-mestre-voltar" style="display:none; background:#d32f2f; margin-top: 30px;" class="btn-grande" onclick="mostrarPainelMestre()">🔙 VOLTAR AO MONITOR</button>
 </div>
+
+<!-- MODAL CALCULADORA -->
 <div id="modal-calculadora" class="modal">
     <div class="modal-content">
         <h3 id="calc-titulo">Modificar Valor</h3>
@@ -445,12 +187,13 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL DETALHE ITEM -->
 <div id="modal-detalhe-item" class="modal">
     <div class="modal-content">
         <input type="hidden" id="detalhe-item-index">
         <h3 id="detalhe-titulo-item">Nome do Item</h3>
         <span id="detalhe-badge-cat" class="badge-categoria">Categoria</span>
-
         <div style="background:#fff; padding:15px; border-radius:8px; border:1px solid #ddd; margin-bottom:15px;">
             <p id="detalhe-desc-item" style="margin-top:0; white-space: pre-wrap;"></p>
             <div style="margin-top:10px; font-weight:bold; color:#666;">
@@ -468,6 +211,8 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL TRANSFERIR -->
 <div id="modal-transferir" class="modal">
     <div class="modal-content">
         <h3>🔄 Transferir Item</h3>
@@ -480,12 +225,12 @@
     </div>
 </div>
 
+<!-- MODAL EDITAR PERFIL -->
 <div id="modal-editar-perfil" class="modal">
     <div class="modal-content">
         <h3>⚙️ Editar Ficha</h3>
         <label>Nome do Personagem</label>
         <input type="text" id="e-nome">
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
             <div><label>🌟 Nível</label><input type="number" id="e-nv"></div>
             <div><label>💪 Força</label><input type="number" id="e-for"></div>
@@ -494,7 +239,6 @@
             <div><label>🛡️ Defesa Base</label><input type="number" id="e-def-base"></div>
             <div><label>💰 Tibares (Ouro)</label><input type="number" id="e-tib"></div>
         </div>
-
         <div style="background:#fdfaf3; padding:10px; border:1px solid #bcaaa4; border-radius:8px; margin-top:15px;">
             <label style="color:#2e7d32; font-weight:bold; display:block; margin-bottom:5px;">🎒 Bônus de Carga (Mochila/Poder)</label>
             <div style="display:grid; grid-template-columns: 80px 1fr; gap:10px; align-items:center;">
@@ -502,31 +246,27 @@
                 <input type="text" id="e-bonus-desc" placeholder="Fonte (Ex: Mochila Arcana)" style="margin:0">
             </div>
         </div>
-
         <label style="margin-top:15px; display:block; font-weight:bold; color:#666">✨ Prepara Magias?</label>
         <select id="e-prepara">
             <option value="nao">Não</option>
             <option value="sim">Sim</option>
         </select>
-
         <button class="btn-grande" onclick="salvarEdicaoPerfil()">💾 Salvar Alterações</button>
         <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-editar-perfil')">✖️ Fechar</button>
     </div>
 </div>
 
+<!-- MODAL ITEM/MAGIA -->
 <div id="modal-item" class="modal">
     <div class="modal-content">
         <h3 id="modal-titulo">📝 Novo Registro</h3>
         <input type="hidden" id="edit-id-global">
         <input type="hidden" id="edit-index-local">
-
         <select id="tipo-registro" onchange="ajustarCampos()">
             <option value="magia">✨ Magia / Habilidade</option>
             <option value="item">📦 Item / Equipamento</option>
         </select>
-
         <input type="text" id="nome-reg" placeholder="Nome do Registro">
-
         <div id="campos-magia">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <input type="text" id="m-escola" placeholder="Escola">
@@ -544,10 +284,8 @@
             <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">✨ Aprimoramentos (+):</label>
             <textarea id="m-aprimora" rows="3" style="margin-top:5px;" placeholder="+ Aumenta o dano em 1d6..."></textarea>
         </div>
-
         <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📝 Descrição:</label>
         <textarea id="desc-reg" rows="5" style="margin-top:5px;"></textarea>
-
         <div id="campos-item" style="display:none">
             <label style="color:#666; font-weight:bold; display:block; margin-bottom:5px;">🏷️ Categoria:</label>
             <select id="i-categoria">
@@ -558,7 +296,6 @@
                 <option value="pergaminhos">📜 Pergaminhos</option>
                 <option value="magicos">✨ Itens Mágicos</option>
             </select>
-
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background:#f0eadd; padding:10px; border-radius:8px; border:1px solid #d7ccc8; margin-top:10px;">
                 <div>
                     <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;">📦 Espaços (Slots)</label>
@@ -569,7 +306,6 @@
                     <input type="number" id="i-qtd" placeholder="1" value="1" style="margin:0; text-align:center;">
                 </div>
             </div>
-
             <label style="color:#666; font-weight:bold; margin-top:15px; display:block;">🏷️ Estado:</label>
             <div class="radio-group">
                 <input type="radio" id="st-nenhum" name="estado-item" value="nenhum" checked>
@@ -579,7 +315,6 @@
                 <input type="radio" id="st-vestido" name="estado-item" value="vestido">
                 <label for="st-vestido">👕 Vestido (Max 4)</label>
             </div>
-
             <label style="color:#666; font-weight:bold; margin-top:10px; display:block;">📍 Onde está?</label>
             <select id="i-localizacao" onchange="toggleNomeAjudante()">
                 <option value="personagem">👤 Com o Personagem</option>
@@ -588,17 +323,16 @@
             </select>
             <input type="text" id="i-nome-ajudante" placeholder="Nome do Ajudante" style="display:none; border-color:#2e7d32;">
         </div>
-
         <div id="div-enviar-arsenal" style="margin-top:15px; display:flex; align-items:center; gap:10px; padding-top:10px; border-top:1px solid #ddd;">
             <input type="checkbox" id="i-publico" style="width:auto; margin:0;">
             <label for="i-publico" style="font-weight:bold; color:var(--cor-detalhe); font-size:0.9em;">🌐 Salvar também no Arsenal Global?</label>
         </div>
-
         <button class="btn-grande" onclick="salvarNovo()">💾 Salvar</button>
         <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-item')">🔙 Voltar</button>
     </div>
 </div>
 
+<!-- MODAL LOGIN JOGADOR -->
 <div id="modal-login-jogador" class="modal">
     <div class="modal-content">
         <h3 id="txt-login-nome">🔐 Login</h3>
@@ -607,6 +341,8 @@
         <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-jogador')">🔙 Voltar</button>
     </div>
 </div>
+
+<!-- MODAL LOGIN MESTRE -->
 <div id="modal-login-mestre" class="modal">
     <div class="modal-content">
         <h3>👑 Acesso do Mestre</h3>
@@ -615,6 +351,8 @@
         <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-mestre')">🔙 Voltar</button>
     </div>
 </div>
+
+<!-- MODAL CRIAR HERÓI -->
 <div id="modal-criar" class="modal">
     <div class="modal-content">
         <h3>⚒️ Forjar Novo Herói</h3>
@@ -637,19 +375,138 @@
         <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-criar')">❌ Cancelar</button>
     </div>
 </div>
+
+<!-- MODAL COMPÊNDIO / BIBLIOTECA / ARSENAL / TESOURO -->
 <div id="modal-compendio" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width:650px;">
         <h3 id="titulo-compendio">📚 Biblioteca Global</h3>
         <p id="subtitulo-compendio" style="text-align:center; font-size:0.9em; color:#555">Base de dados compartilhada.</p>
         <div id="lista-compendio" style="max-height: 400px; overflow-y: auto;"></div>
         <button class="btn-grande" onclick="fecharModal('modal-compendio')">✖️ Fechar</button>
     </div>
 </div>
+
+<!-- ============ NOVOS MODAIS DO MESTRE ============ -->
+
+<!-- MODAL: ITENS DOS JOGADORES (consulta geral) -->
+<div id="modal-itens-jogadores" class="modal">
+    <div class="modal-content" style="max-width:700px;">
+        <h3>📦 Itens dos Jogadores</h3>
+        <p style="text-align:center; font-size:0.9em; color:#555;">Visão geral de todos os itens em jogo.</p>
+        <div id="lista-itens-jogadores" style="max-height:500px; overflow-y:auto;"></div>
+        <button class="btn-grande" style="margin-top:10px;" onclick="fecharModal('modal-itens-jogadores')">✖️ Fechar</button>
+    </div>
+</div>
+
+<!-- MODAL: GERENCIAR ITENS DE UM JOGADOR -->
+<div id="modal-mestre-itens" class="modal">
+    <div class="modal-content" style="max-width:650px;">
+        <h3 id="titulo-mestre-itens">📦 Itens de: Jogador</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+            <button class="btn-grande" style="background:#5d4037; padding:10px; font-size:0.85em; margin:0;" onclick="abrirAdicionarItemAoJogador()">➕ Novo Item</button>
+            <button class="btn-grande" style="background:#d4af37; color:#3e2723; padding:10px; font-size:0.85em; margin:0;" onclick="abrirArsenalParaMestre()">⚔️ Do Arsenal</button>
+        </div>
+        <div id="lista-mestre-itens" style="max-height:380px; overflow-y:auto;"></div>
+        <button class="btn-grande" style="background:#555; margin-top:10px;" onclick="fecharModal('modal-mestre-itens')">✖️ Fechar</button>
+    </div>
+</div>
+
+<!-- MODAL: MESTRE ADICIONAR ITEM CUSTOMIZADO -->
+<div id="modal-mestre-add-item" class="modal">
+    <div class="modal-content">
+        <h3 id="titulo-mestre-add-item">➕ Adicionar Item</h3>
+        <label style="font-weight:bold; color:#666;">🏷️ Categoria:</label>
+        <select id="ma-categoria">
+            <option value="mundanos">🛍️ Itens Mundanos</option>
+            <option value="armaduras">🛡️ Armaduras e Escudos</option>
+            <option value="armas">⚔️ Armas</option>
+            <option value="pocoes">🧪 Poções</option>
+            <option value="pergaminhos">📜 Pergaminhos</option>
+            <option value="magicos">✨ Itens Mágicos</option>
+        </select>
+        <input type="text" id="ma-nome" placeholder="Nome do Item">
+        <textarea id="ma-desc" rows="3" placeholder="Descrição (opcional)"></textarea>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div><label style="font-weight:bold; color:#666;">📦 Espaços</label><input type="number" id="ma-espacos" value="1" min="0" style="margin-top:5px;"></div>
+            <div><label style="font-weight:bold; color:#666;">🔢 Quantidade</label><input type="number" id="ma-qtd" value="1" min="1" style="margin-top:5px;"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+            <button class="btn-grande" style="background:#2e7d32; margin:0;" onclick="salvarItemMestre()">💾 Adicionar</button>
+            <button class="btn-grande" style="background:#555; margin:0;" onclick="fecharModal('modal-mestre-add-item'); abrirModal('modal-mestre-itens');">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: MESTRE MOVER ITEM -->
+<div id="modal-mestre-mover" class="modal">
+    <div class="modal-content">
+        <h3>🔄 Mover Item</h3>
+        <p style="text-align:center; color:#555;">Selecione o destino para o item:</p>
+        <select id="select-mestre-destino"></select>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+            <button class="btn-grande" style="background:#2e7d32; margin:0;" onclick="confirmarMoverItem()">📤 Mover</button>
+            <button class="btn-grande" style="background:#555; margin:0;" onclick="fecharModal('modal-mestre-mover'); abrirModal('modal-mestre-itens');">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: GERENCIAR MAGIAS DE UM JOGADOR -->
+<div id="modal-mestre-magias" class="modal">
+    <div class="modal-content" style="max-width:650px;">
+        <h3 id="titulo-mestre-magias">✨ Magias de: Jogador</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+            <button class="btn-grande" style="background:#8d2b2b; padding:10px; font-size:0.85em; margin:0;" onclick="abrirAdicionarMagiaAoJogador()">➕ Nova Magia</button>
+            <button class="btn-grande" style="background:#4a6572; padding:10px; font-size:0.85em; margin:0;" onclick="abrirBibliotecaParaMestre()">📚 Da Biblioteca</button>
+        </div>
+        <div id="lista-mestre-magias" style="max-height:380px; overflow-y:auto;"></div>
+        <button class="btn-grande" style="background:#555; margin-top:10px;" onclick="fecharModal('modal-mestre-magias')">✖️ Fechar</button>
+    </div>
+</div>
+
+<!-- MODAL: MESTRE ADICIONAR MAGIA CUSTOMIZADA -->
+<div id="modal-mestre-add-magia" class="modal">
+    <div class="modal-content">
+        <h3 id="titulo-mestre-add-magia">✨ Adicionar Magia</h3>
+        <input type="text" id="mm-nome" placeholder="Nome da Magia">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <input type="text" id="mm-escola" placeholder="Escola (ex: Evocação)">
+            <input type="text" id="mm-circulo" placeholder="Círculo / Custo PM">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <input type="text" id="mm-execucao" placeholder="Execução">
+            <input type="text" id="mm-alcance" placeholder="Alcance">
+        </div>
+        <textarea id="mm-desc" rows="3" placeholder="Descrição"></textarea>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+            <button class="btn-grande" style="background:#8d2b2b; margin:0;" onclick="salvarMagiaMestre()">💾 Adicionar</button>
+            <button class="btn-grande" style="background:#555; margin:0;" onclick="fecharModal('modal-mestre-add-magia'); abrirModal('modal-mestre-magias');">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: GERENCIAR TIBARES DE UM JOGADOR -->
+<div id="modal-mestre-tibares" class="modal">
+    <div class="modal-content">
+        <h3 id="titulo-mestre-tibares">💰 Tibares de: Jogador</h3>
+        <div style="background:var(--cor-tibares); padding:20px; border-radius:10px; text-align:center; margin:15px 0; border:2px solid #b8941f;">
+            <div style="font-size:0.85em; color:#5d4037; margin-bottom:5px; font-weight:bold; text-transform:uppercase;">Saldo Atual</div>
+            <div id="tibares-mestre-atual" style="font-size:2.5em; font-weight:900; color:#3e2723;">0 T$</div>
+        </div>
+        <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">💰 Valor (negativo para remover):</label>
+        <input type="number" id="input-mestre-tibares" placeholder="Ex: 100 para adicionar, -50 para remover">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+            <button class="btn-grande" style="background:#2e7d32; margin:0;" onclick="aplicarTibaresMestre()">✅ Aplicar</button>
+            <button class="btn-grande" style="background:#555; margin:0;" onclick="fecharModal('modal-mestre-tibares')">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- BOTÃO FLUTUANTE -->
 <button class="btn-add" id="btn-flutuante" style="display:none" onclick="abrirModal('modal-item')">➕</button>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
-    // CONFIGURAÇÃO FIREBASE
     const firebaseConfig = {
         apiKey: "AIzaSyCwv-I1QdEZJlAJAMX4aOvGxaCRRQiHGM8",
         authDomain: "mochila-548a0.firebaseapp.com",
@@ -660,16 +517,19 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
     let heroiAtivo = null;
     let idTemp = null;
     let campoAtual = '';
     let modoMestreAtivo = false;
     let listenerHeroi = null;
-    
-    // --- REGRAS GLOBAIS ---
     let regrasGlobais = { pesoMoeda: false };
-    
-    // Escuta mudanças nas regras (Tempo Real)
+
+    // Variáveis do modo mestre
+    let mestreAlvoId = null;
+    let mestreAlvoNome = null;
+    let mestreItemIdx = null;
+
     db.collection("configuracoes").doc("geral").onSnapshot((doc) => {
         if (doc.exists) {
             regrasGlobais = doc.data();
@@ -708,6 +568,7 @@
         document.getElementById('sub-nome').innerText = `Nível ${heroiAtivo.nivel}`;
         document.getElementById('stat-tib').innerText = (heroiAtivo.tibares || 0).toLocaleString();
         document.getElementById('btn-aba-p').style.display = heroiAtivo.preparaMagias ? 'block' : 'none';
+
         let pv = heroiAtivo.pv;
         let pvMax = heroiAtivo.pvMax;
         const limiteMorte = -Math.floor(pvMax / 2);
@@ -717,6 +578,7 @@
         document.getElementById('v-pv-max').innerText = pvMax;
         document.getElementById('v-pm').innerText = heroiAtivo.pm;
         document.getElementById('v-pm-max').innerText = heroiAtivo.pmMax;
+
         if (pv <= limiteMorte) {
             cardPv.classList.add('estado-morto');
             lblPv.innerText = "💀 MORTO";
@@ -724,6 +586,7 @@
             cardPv.classList.remove('estado-morto');
             lblPv.innerText = "❤️ VIDA (PV)";
         }
+
         const defBase = heroiAtivo.defesaBase !== undefined ? heroiAtivo.defesaBase : (heroiAtivo.defesa || 10);
         const defAtual = heroiAtivo.defesaAtual !== undefined ? heroiAtivo.defesaAtual : defBase;
         document.getElementById('v-def').innerText = defAtual;
@@ -747,25 +610,14 @@
                     btnPrep = `<button onclick="togglePrepararMagia('${m.nome}'); event.stopPropagation();" style="background:var(--cor-detalhe);color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;margin-right:10px;font-size:0.8em">⭐ Preparar</button>`;
                 }
             }
-
             let aprimoraHtml = formatarAprimoramento(m.aprimora);
             g.innerHTML += `
             <div class="magia-container">
             <div class="magia-header-click" onclick="toggleMagia(${idx})">
-            <div>
-            <b style="font-size:1.1em">✨ ${m.nome}</b><br>
-            <small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small>
+            <div><b style="font-size:1.1em">✨ ${m.nome}</b><br><small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
+            <div>${btnPrep}<button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">🗑️</button></div>
             </div>
-            <div>
-            ${btnPrep}
-            <button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">🗑️</button>
-            </div>
-            </div>
-            <div id="magia-info-${idx}" class="magia-conteudo-oculto">
-            ${linhaDetalhes}
-            <p style="margin-top:0">${m.desc}</p>
-            ${aprimoraHtml}
-            </div>
+            <div id="magia-info-${idx}" class="magia-conteudo-oculto">${linhaDetalhes}<p style="margin-top:0">${m.desc}</p>${aprimoraHtml}</div>
             </div>`;
         });
 
@@ -783,8 +635,7 @@
                     <div style="padding:15px; display:flex; justify-content:space-between; align-items:center; background:#fff;">
                     <div><b style="font-size:1.1em">✨ ${m.nome}</b><br><small>${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
                     <button onclick="togglePrepararMagia('${m.nome}')" style="background:#d32f2f;color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-weight:bold;font-size:0.8em;">➖ Remover</button>
-                    </div>
-                    </div>`;
+                    </div></div>`;
                 });
             }
         }
@@ -811,16 +662,12 @@
                     let iconState = "";
                     if(it.estado === 'vestido') iconState = `<span class="badge badge-vestido">👕 VESTIDO</span>`;
                     if(it.estado === 'empunhado') iconState = `<span class="badge badge-empunhado">⚔️ EMPUNHADO</span>`;
-
                     let iconLocal = "";
                     if(it.localizacao === 'ajudante') iconLocal = `<span class="badge badge-ajudante">🤝 ${it.nomeAjudante || 'Ajudante'}</span>`;
                     if(it.localizacao === 'tesouro') iconLocal = `<span class="badge badge-ajudante">💰 No Tesouro</span>`;
                     iL.innerHTML += `
                     <div class="item-card" onclick="verItemDetalhe(${it.originalIndex})">
-                    <div>
-                    <b style="font-size:1.1em">${it.nome}</b> ${iconState} ${iconLocal}<br>
-                    <span style="color:#666">${it.qtd}x • ${it.espacos || 1} slots</span>
-                    </div>
+                    <div><b style="font-size:1.1em">${it.nome}</b> ${iconState} ${iconLocal}<br><span style="color:#666">${it.qtd}x • ${it.espacos || 1} slots</span></div>
                     <button onclick="removerAlgo('itens', ${it.originalIndex}); event.stopPropagation();" style="color:#d32f2f;border:none;background:none;font-size:22px;cursor:pointer">🗑️</button>
                     </div>`;
                 });
@@ -828,29 +675,26 @@
         });
 
         if(heroiAtivo.itens.length === 0) iL.innerHTML = "<p style='text-align:center; color:#777; margin-top:20px'>🎒 Mochila vazia.</p>";
-        
-        // CÁLCULO DE CARGA CONDICIONAL
-        let pesoMoedas = 0;
-        if (regrasGlobais.pesoMoeda) {
-            pesoMoedas = Math.floor((heroiAtivo.tibares || 0) / 1000);
-        }
 
+        // ✅ CÁLCULO DE CARGA COM FORÇA NEGATIVA CORRIGIDO
+        let pesoMoedas = 0;
+        if (regrasGlobais.pesoMoeda) pesoMoedas = Math.floor((heroiAtivo.tibares || 0) / 1000);
         const pesoTotal = slotsUsados + pesoMoedas;
         const forca = Number(heroiAtivo.forca) || 0;
         const bonusCarga = Number(heroiAtivo.bonusCarga) || 0;
-        const cargaMax = 10 + (2 * forca) + bonusCarga;
+        const cargaMax = forca >= 0
+            ? 10 + (2 * forca) + bonusCarga
+            : 10 - forca + bonusCarga;
 
         const barraCarga = document.getElementById('barra-carga');
         if (barraCarga) {
             let corBarra = pesoTotal > cargaMax ? '#d32f2f' : 'var(--cor-borda)';
             barraCarga.style.background = corBarra;
             let infoMoedas = (regrasGlobais.pesoMoeda && pesoMoedas > 0) ? ` <small>(+${pesoMoedas} das moedas)</small>` : '';
+            const formulaDesc = forca >= 0 ? `10 + (2x Força ${forca})` : `10 - Força (${forca})`;
             barraCarga.innerHTML = `
                 <div style="font-size: 1.1em;">⚖️ CARGA: ${pesoTotal} / ${cargaMax}</div>
-                <div style="font-size: 0.75em; opacity: 0.9; margin-top: 5px;">
-                    Capacidade: 10 + (2x Força ${forca}) + Bônus ${bonusCarga}${infoMoedas}
-                </div>
-            `;
+                <div style="font-size: 0.75em; opacity: 0.9; margin-top: 5px;">${formulaDesc} + Bônus ${bonusCarga}${infoMoedas}</div>`;
         }
     }
 
@@ -893,7 +737,6 @@
         document.getElementById('detalhe-desc-item').innerText = item.desc || "Sem descrição.";
         document.getElementById('detalhe-qtd').innerText = item.qtd;
         document.getElementById('detalhe-espacos').innerText = item.espacos || 1;
-
         let txtEstado = "Estado: 🎒 Guardado";
         if(item.estado === 'vestido') txtEstado = "Estado: 👕 Vestido (+ Bônus Ativo)";
         if(item.estado === 'empunhado') txtEstado = "Estado: ⚔️ Empunhado";
@@ -903,9 +746,7 @@
         if(item.localizacao === 'tesouro') txtLocal = "📍 Local: 💰 No Tesouro";
         document.getElementById('detalhe-local-txt').innerText = txtLocal;
         const btnUsar = document.getElementById('btn-usar-item');
-        if (item.categoria === 'pocoes' || item.categoria === 'pergaminhos') btnUsar.style.display = 'block';
-        else btnUsar.style.display = 'none';
-
+        btnUsar.style.display = (item.categoria === 'pocoes' || item.categoria === 'pergaminhos') ? 'block' : 'none';
         abrirModal('modal-detalhe-item');
     }
 
@@ -914,10 +755,7 @@
         const item = heroiAtivo.itens[idx];
         if(confirm(`🧪 Deseja usar 1x ${item.nome}?`)) {
             item.qtd--;
-            if(item.qtd <= 0) {
-                heroiAtivo.itens.splice(idx, 1);
-                fecharModal('modal-detalhe-item');
-            }
+            if(item.qtd <= 0) { heroiAtivo.itens.splice(idx, 1); fecharModal('modal-detalhe-item'); }
             await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
             renderTudo();
         }
@@ -928,13 +766,10 @@
         const item = heroiAtivo.itens[idx];
         if(confirm(`💰 Enviar ${item.nome} para o Tesouro do Grupo?`)) {
             const itemTesouro = {...item};
-            itemTesouro.localizacao = 'tesouro';
-            delete itemTesouro.estado; delete itemTesouro.nomeAjudante;
-
+            delete itemTesouro.estado; delete itemTesouro.localizacao; delete itemTesouro.nomeAjudante;
             await db.collection("tesouro_grupo").add(itemTesouro);
             heroiAtivo.itens.splice(idx, 1);
             await db.collection("personagens").doc(heroiAtivo.id).update({itens: heroiAtivo.itens});
-
             alert("💰 Item enviado para o Baú!");
             fecharModal('modal-detalhe-item');
             renderTudo();
@@ -946,7 +781,6 @@
         const item = heroiAtivo.itens[idx];
         fecharModal('modal-detalhe-item');
         abrirModal('modal-item');
-
         document.getElementById('modal-titulo').innerText = "✏️ Editar Item";
         document.getElementById('edit-index-local').value = idx;
         document.getElementById('tipo-registro').value = 'item';
@@ -961,7 +795,6 @@
         document.getElementById('i-localizacao').value = item.localizacao || 'personagem';
         document.getElementById('i-nome-ajudante').value = item.nomeAjudante || '';
         toggleNomeAjudante();
-
         document.getElementById('div-enviar-arsenal').style.display = 'flex';
         ajustarCampos();
     }
@@ -970,39 +803,24 @@
         abrirModal('modal-compendio');
         document.getElementById('titulo-compendio').innerText = "💰 Tesouro do Grupo";
         document.getElementById('subtitulo-compendio').innerText = "Itens compartilhados. Não ocupam espaço.";
-
         const snap = await db.collection("tesouro_grupo").orderBy('nome').get();
         const lista = document.getElementById('lista-compendio');
         lista.innerHTML = "";
-
         if(snap.empty) { lista.innerHTML = "<p style='text-align:center'>🎒 O baú está vazio.</p>"; return; }
-
         snap.forEach(doc => {
             const m = doc.data(); const id = doc.id;
-            let btns = heroiAtivo ? `<button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick='pegarDoTesouro("${id}", ${JSON.stringify(m)})'>🤝 Pegar</button>` : `<small>Apenas Jogadores</small>`;
-
-            lista.innerHTML += `
-            <div style="background:white;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || '📦 Item'}</span></div>
-            <div>${btns}</div>
-            </div>
-            <p style="font-size:0.9em; margin:5px 0">${m.desc}</p>
-            <small>Qtd: ${m.qtd}</small>
-            </div>`;
+            let btns = heroiAtivo ? `<button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick='pegarDoTesouro("${id}", ${JSON.stringify(m).replace(/"/g,'&quot;')})'>🤝 Pegar</button>` : `<small>Apenas Jogadores</small>`;
+            lista.innerHTML += `<div style="background:white;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd"><div style="display:flex;justify-content:space-between;align-items:center;"><div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || '📦 Item'}</span></div><div>${btns}</div></div><p style="font-size:0.9em; margin:5px 0">${m.desc || ''}</p><small>Qtd: ${m.qtd}</small></div>`;
         });
     }
 
     async function pegarDoTesouro(idDoc, itemData) {
         if(!heroiAtivo) return;
         if(confirm(`🤝 Pegar ${itemData.nome} do baú?`)) {
-            const novoItem = {...itemData};
-            novoItem.localizacao = 'personagem';
+            const novoItem = {...itemData, localizacao: 'personagem'};
             heroiAtivo.itens.push(novoItem);
-
             await db.collection("tesouro_grupo").doc(idDoc).delete();
             await db.collection("personagens").doc(heroiAtivo.id).update({ itens: heroiAtivo.itens });
-
             alert("✅ Item retirado do baú!");
             abrirTesouroGrupo();
             renderTudo();
@@ -1013,11 +831,7 @@
         const tipo = document.getElementById('tipo-registro').value;
         const globalId = document.getElementById('edit-id-global').value;
         const localIndex = document.getElementById('edit-index-local').value;
-
-        const d = {
-            nome: document.getElementById('nome-reg').value,
-            desc: document.getElementById('desc-reg').value
-        };
+        const d = { nome: document.getElementById('nome-reg').value, desc: document.getElementById('desc-reg').value };
         if(!d.nome) return alert("❌ O nome é obrigatório!");
         if (tipo === 'magia') {
             d.escola = document.getElementById('m-escola').value;
@@ -1028,79 +842,40 @@
             d.duracao = document.getElementById('m-duracao').value;
             d.tipo = document.getElementById('m-tipo').value;
             d.resistencia = document.getElementById('m-resistencia').value;
-            if (globalId) {
-                await db.collection("magias_globais").doc(globalId).update(d);
-                alert("✅ Magia Global atualizada!");
-            } else {
-                if (modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Biblioteca")) {
-                    await db.collection("magias_globais").add(d);
-                }
-                else if (heroiAtivo) {
-                    heroiAtivo.magias.push(d);
-                    await db.collection("magias_globais").add(d);
-                }
+            if (globalId) { await db.collection("magias_globais").doc(globalId).update(d); alert("✅ Magia Global atualizada!"); }
+            else {
+                if (modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Biblioteca")) await db.collection("magias_globais").add(d);
+                else if (heroiAtivo) { heroiAtivo.magias.push(d); await db.collection("magias_globais").add(d); }
             }
         } else {
             d.categoria = document.getElementById('i-categoria').value;
             d.espacos = Number(document.getElementById('i-espacos').value);
             d.qtd = Number(document.getElementById('i-qtd').value);
             d.localizacao = document.getElementById('i-localizacao').value;
-
             const radios = document.getElementsByName('estado-item');
             for(let r of radios) if(r.checked) d.estado = r.value;
             if(d.estado === 'vestido' && heroiAtivo && !globalId) {
                 let countVestidos = 0;
-                heroiAtivo.itens.forEach((it, idx) => {
-                    if (localIndex === "" || idx != localIndex) {
-                        if (it.estado === 'vestido') countVestidos++;
-                    }
-                });
-                if(countVestidos >= 4) return alert("👕 Você já tem 4 itens vestidos! Remova um antes.");
+                heroiAtivo.itens.forEach((it, idx) => { if (localIndex === "" || idx != localIndex) if (it.estado === 'vestido') countVestidos++; });
+                if(countVestidos >= 4) return alert("👕 Você já tem 4 itens vestidos!");
             }
-            if(d.localizacao === 'ajudante') {
-                d.nomeAjudante = document.getElementById('i-nome-ajudante').value;
-                if(!d.nomeAjudante) return alert("🤝 Informe o nome do Ajudante!");
-            }
-            if (globalId) {
-                delete d.estado;
-                delete d.localizacao; delete d.nomeAjudante;
-                await db.collection("itens_globais").doc(globalId).update(d);
-                alert("✅ Item Global atualizado!");
-            } else if (localIndex !== "") {
+            if(d.localizacao === 'ajudante') { d.nomeAjudante = document.getElementById('i-nome-ajudante').value; if(!d.nomeAjudante) return alert("🤝 Informe o nome do Ajudante!"); }
+            if (globalId) { delete d.estado; delete d.localizacao; delete d.nomeAjudante; await db.collection("itens_globais").doc(globalId).update(d); alert("✅ Item Global atualizado!"); }
+            else if (localIndex !== "") {
                 heroiAtivo.itens[localIndex] = d;
-                if(document.getElementById('i-publico').checked) {
-                    const copy = {...d};
-                    delete copy.estado; delete copy.localizacao; delete copy.nomeAjudante;
-                    await db.collection("itens_globais").add(copy);
-                    alert("🌐 Cópia enviada ao Arsenal Global!");
-                }
+                if(document.getElementById('i-publico').checked) { const copy = {...d}; delete copy.estado; delete copy.localizacao; delete copy.nomeAjudante; await db.collection("itens_globais").add(copy); alert("🌐 Cópia enviada ao Arsenal Global!"); }
             } else {
-                const enviarArsenal = document.getElementById('i-publico').checked;
-                if(modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Arsenal Global")) {
-                    delete d.estado;
-                    delete d.localizacao; delete d.nomeAjudante;
-                    await db.collection("itens_globais").add(d);
-                } else if(heroiAtivo) {
+                if(modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Arsenal Global")) { delete d.estado; delete d.localizacao; delete d.nomeAjudante; await db.collection("itens_globais").add(d); }
+                else if(heroiAtivo) {
                     heroiAtivo.itens.push(d);
-                    if(enviarArsenal) {
-                        const copy = {...d};
-                        delete copy.estado; delete copy.localizacao; delete copy.nomeAjudante;
-                        await db.collection("itens_globais").add(copy);
-                    }
+                    if(document.getElementById('i-publico').checked) { const copy = {...d}; delete copy.estado; delete copy.localizacao; delete copy.nomeAjudante; await db.collection("itens_globais").add(copy); }
                 }
             }
         }
         if(heroiAtivo && !globalId) await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
-        if(localIndex === "" && !globalId && !document.getElementById('modal-titulo').innerText.includes("Global") && !modoMestreAtivo) {
-            alert("✅ Salvo com sucesso!");
-            limparFormularioItem();
-        } else {
-            fecharModal('modal-item');
-        }
-        if(globalId || document.getElementById('modal-titulo').innerText.includes("Global") || modoMestreAtivo) {
-            if(tipo === 'magia') abrirCompendio();
-            if(tipo === 'item') abrirArsenal();
-        }
+        if(localIndex === "" && !globalId && !document.getElementById('modal-titulo').innerText.includes("Global") && !modoMestreAtivo) { alert("✅ Salvo com sucesso!"); limparFormularioItem(); }
+        else fecharModal('modal-item');
+        if(globalId || document.getElementById('modal-titulo').innerText.includes("Global") || modoMestreAtivo) { if(tipo === 'magia') abrirCompendio(); if(tipo === 'item') abrirArsenal(); }
     }
 
     function deslogar() {
@@ -1132,9 +907,7 @@
         if(document.getElementById('pass-mestre').value === "mestre123") {
             modoMestreAtivo = true;
             fecharModal('modal-login-mestre'); mostrarPainelMestre();
-            if(document.getElementById('chk-regras-moeda')) {
-                document.getElementById('chk-regras-moeda').checked = regrasGlobais.pesoMoeda;
-            }
+            if(document.getElementById('chk-regras-moeda')) document.getElementById('chk-regras-moeda').checked = regrasGlobais.pesoMoeda;
         } else alert("❌ Senha inválida!");
     }
 
@@ -1146,44 +919,388 @@
             const grid = document.getElementById('grid-mestre'); grid.innerHTML = "";
             snap.forEach(doc => {
                 const h = doc.data();
-                let pvCalc = h.pv;
-                if(pvCalc < 0) pvCalc = 0;
+                let pvCalc = h.pv < 0 ? 0 : h.pv;
                 const perPV = Math.min((pvCalc / h.pvMax) * 100, 100);
                 const perPM = Math.min((h.pm / h.pmMax) * 100, 100);
                 const mortoLbl = h.pv <= -Math.floor(h.pvMax/2) ? '<span style="color:red; font-weight:bold"> 💀 (MORTO)</span>' : '';
+                const nomeSeguro = (h.nome || '').replace(/'/g, "\\'");
                 grid.innerHTML += `
                 <div class="monitor-mestre-card">
                 <div class="monitor-header">
-                <div>
-                <b>${h.nome} ${mortoLbl}</b><br>
-                <small style="color:#666; font-weight:normal">🔑 Senha: ${h.senha}</small>
-                </div>
+                <div><b>${h.nome} ${mortoLbl}</b><br><small style="color:#666; font-weight:normal">🔑 Senha: ${h.senha}</small></div>
                 <div style="display:flex; gap:5px;">
                 <button onclick="idTemp='${doc.id}'; validarJogador(true)" style="background:var(--cor-borda);color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">👁️ ABRIR</button>
-                <button onclick="deletarPersonagem('${doc.id}', '${h.nome}')" style="background:#d32f2f;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">🗑️</button>
-                </div>
-                </div>
+                <button onclick="deletarPersonagem('${doc.id}', '${nomeSeguro}')" style="background:#d32f2f;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">🗑️</button>
+                </div></div>
                 <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPV}%; background:var(--cor-pv)"></div><div class="bar-label">❤️ ${h.pv} / ${h.pvMax} PV</div></div>
                 <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPM}%; background:var(--cor-pm)"></div><div class="bar-label">💙 ${h.pm} / ${h.pmMax} PM</div></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-top:10px; padding-top:10px; border-top:1px solid #eee;">
+                <button onclick="abrirGerenciarItens('${doc.id}', '${nomeSeguro}')" style="background:#5d4037;color:white;border:none;padding:8px 4px;border-radius:5px;cursor:pointer;font-size:0.78em;font-weight:bold;">📦 Itens</button>
+                <button onclick="abrirGerenciarMagias('${doc.id}', '${nomeSeguro}')" style="background:#1565c0;color:white;border:none;padding:8px 4px;border-radius:5px;cursor:pointer;font-size:0.78em;font-weight:bold;">✨ Magias</button>
+                <button onclick="abrirGerenciarTibares('${doc.id}', '${nomeSeguro}')" style="background:#b8941f;color:white;border:none;padding:8px 4px;border-radius:5px;cursor:pointer;font-size:0.78em;font-weight:bold;">💰 Ouro</button>
+                </div>
                 </div>`;
             });
         });
     }
 
+    // ============================================================
+    // MESTRE: VISUALIZAÇÃO DE TODOS OS ITENS DOS JOGADORES
+    // ============================================================
+    async function abrirItensJogadores() {
+        abrirModal('modal-itens-jogadores');
+        const lista = document.getElementById('lista-itens-jogadores');
+        lista.innerHTML = "<p style='text-align:center; color:#666;'>⏳ Carregando...</p>";
+        const [snapJogadores, snapTesouro] = await Promise.all([
+            db.collection("personagens").get(),
+            db.collection("tesouro_grupo").orderBy('nome').get()
+        ]);
+        lista.innerHTML = "";
+        let temConteudo = false;
+        snapJogadores.forEach(doc => {
+            const h = doc.data();
+            if (h.itens && h.itens.length > 0) {
+                temConteudo = true;
+                lista.innerHTML += `<div class="categoria-titulo">⚔️ ${h.nome}</div>`;
+                h.itens.forEach(it => {
+                    let local = "👤 Com o Personagem";
+                    if (it.localizacao === 'ajudante') local = `🤝 Com ${it.nomeAjudante || 'Ajudante'}`;
+                    if (it.localizacao === 'tesouro') local = "💰 No Tesouro";
+                    let badge = '';
+                    if (it.estado === 'vestido') badge = `<span class="badge badge-vestido">👕 VESTIDO</span>`;
+                    if (it.estado === 'empunhado') badge = `<span class="badge badge-empunhado">⚔️ EMPUNHADO</span>`;
+                    lista.innerHTML += `
+                    <div style="background:#fff; padding:12px; margin-bottom:6px; border-radius:8px; border:1px solid #ddd;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><b>${it.nome}</b> ${badge}<br>
+                    <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x • ${it.espacos || 1} slots</small><br>
+                    <small style="color:#2e7d32; font-weight:bold;">${local}</small></div>
+                    </div></div>`;
+                });
+            }
+        });
+        if (!snapTesouro.empty) {
+            temConteudo = true;
+            lista.innerHTML += `<div class="categoria-titulo">💰 Tesouro do Grupo</div>`;
+            snapTesouro.forEach(doc => {
+                const it = doc.data();
+                lista.innerHTML += `
+                <div style="background:#fff; padding:12px; margin-bottom:6px; border-radius:8px; border:1px solid #ddd;">
+                <b>${it.nome}</b><br>
+                <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x</small><br>
+                <small style="color:#b8941f; font-weight:bold;">💰 Tesouro do Grupo</small>
+                </div>`;
+            });
+        }
+        if (!temConteudo) lista.innerHTML = "<p style='text-align:center; color:#777; padding:20px;'>📭 Nenhum item encontrado.</p>";
+    }
+
+    // ============================================================
+    // MESTRE: GERENCIAR ITENS DE UM JOGADOR
+    // ============================================================
+    async function abrirGerenciarItens(playerId, playerNome) {
+        mestreAlvoId = playerId;
+        mestreAlvoNome = playerNome;
+        document.getElementById('titulo-mestre-itens').innerText = `📦 Itens de: ${playerNome}`;
+        abrirModal('modal-mestre-itens');
+        await renderizarListaMestreItens();
+    }
+
+    async function renderizarListaMestreItens() {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        const lista = document.getElementById('lista-mestre-itens');
+        lista.innerHTML = "";
+        if (!h.itens || h.itens.length === 0) {
+            lista.innerHTML = "<p style='text-align:center; color:#777;'>🎒 Nenhum item no inventário.</p>";
+            return;
+        }
+        h.itens.forEach((it, idx) => {
+            let local = "👤 Personagem";
+            if (it.localizacao === 'ajudante') local = `🤝 ${it.nomeAjudante || 'Ajudante'}`;
+            if (it.localizacao === 'tesouro') local = "💰 Tesouro";
+            let estado = it.estado && it.estado !== 'nenhum' ? ` • ${it.estado === 'vestido' ? '👕' : '⚔️'} ${it.estado}` : '';
+            lista.innerHTML += `
+            <div class="mestre-item-row">
+            <div class="mestre-item-row-info">
+            <b>${it.nome}</b>
+            <small>${categoriasNomes[it.categoria] || '📦'} • ${it.qtd}x${estado}</small>
+            <small style="color:#2e7d32;">${local}</small>
+            </div>
+            <div class="mestre-acoes">
+            <button onclick="moverItemMestre(${idx})" style="background:#4a6572;" title="Mover">🔄</button>
+            <button onclick="enviarItemTesouroMestre(${idx})" style="background:#2e7d32;" title="Tesouro">💰</button>
+            <button onclick="removerItemMestre(${idx})" style="background:#d32f2f;" title="Remover">🗑️</button>
+            </div>
+            </div>`;
+        });
+    }
+
+    async function removerItemMestre(idx) {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (confirm(`🗑️ Remover "${h.itens[idx].nome}" do inventário de ${mestreAlvoNome}?`)) {
+            h.itens.splice(idx, 1);
+            await db.collection("personagens").doc(mestreAlvoId).update({ itens: h.itens });
+            await renderizarListaMestreItens();
+        }
+    }
+
+    async function enviarItemTesouroMestre(idx) {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        const item = h.itens[idx];
+        if (confirm(`💰 Mover "${item.nome}" para o Tesouro do Grupo?`)) {
+            const it = {...item}; delete it.estado; delete it.localizacao; delete it.nomeAjudante;
+            await db.collection("tesouro_grupo").add(it);
+            h.itens.splice(idx, 1);
+            await db.collection("personagens").doc(mestreAlvoId).update({ itens: h.itens });
+            await renderizarListaMestreItens();
+        }
+    }
+
+    async function moverItemMestre(idx) {
+        mestreItemIdx = idx;
+        const select = document.getElementById('select-mestre-destino');
+        select.innerHTML = "<option value='tesouro'>💰 Tesouro do Grupo</option>";
+        const snap = await db.collection("personagens").get();
+        snap.forEach(doc => {
+            if (doc.id !== mestreAlvoId) select.innerHTML += `<option value="${doc.id}">⚔️ ${doc.data().nome}</option>`;
+        });
+        abrirModal('modal-mestre-mover');
+    }
+
+    async function confirmarMoverItem() {
+        const destino = document.getElementById('select-mestre-destino').value;
+        const docOrigem = await db.collection("personagens").doc(mestreAlvoId).get();
+        const hOrigem = docOrigem.data();
+        const item = hOrigem.itens[mestreItemIdx];
+        hOrigem.itens.splice(mestreItemIdx, 1);
+        await db.collection("personagens").doc(mestreAlvoId).update({ itens: hOrigem.itens });
+        if (destino === 'tesouro') {
+            const it = {...item}; delete it.estado; delete it.localizacao; delete it.nomeAjudante;
+            await db.collection("tesouro_grupo").add(it);
+        } else {
+            const docDest = await db.collection("personagens").doc(destino).get();
+            const hDest = docDest.data();
+            if (!hDest.itens) hDest.itens = [];
+            const itMovido = {...item}; delete itMovido.estado; delete itMovido.localizacao; delete itMovido.nomeAjudante;
+            hDest.itens.push(itMovido);
+            await db.collection("personagens").doc(destino).update({ itens: hDest.itens });
+        }
+        fecharModal('modal-mestre-mover');
+        await renderizarListaMestreItens();
+    }
+
+    function abrirAdicionarItemAoJogador() {
+        document.getElementById('ma-nome').value = '';
+        document.getElementById('ma-desc').value = '';
+        document.getElementById('ma-espacos').value = '1';
+        document.getElementById('ma-qtd').value = '1';
+        document.getElementById('ma-categoria').value = 'mundanos';
+        document.getElementById('titulo-mestre-add-item').innerText = `➕ Adicionar Item a ${mestreAlvoNome}`;
+        fecharModal('modal-mestre-itens');
+        abrirModal('modal-mestre-add-item');
+    }
+
+    async function salvarItemMestre() {
+        const nome = document.getElementById('ma-nome').value.trim();
+        if (!nome) return alert("❌ Nome obrigatório!");
+        const item = {
+            nome, categoria: document.getElementById('ma-categoria').value,
+            desc: document.getElementById('ma-desc').value.trim(),
+            espacos: Number(document.getElementById('ma-espacos').value) || 1,
+            qtd: Number(document.getElementById('ma-qtd').value) || 1,
+            localizacao: 'personagem', estado: 'nenhum'
+        };
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (!h.itens) h.itens = [];
+        h.itens.push(item);
+        await db.collection("personagens").doc(mestreAlvoId).update({ itens: h.itens });
+        fecharModal('modal-mestre-add-item');
+        abrirModal('modal-mestre-itens');
+        await renderizarListaMestreItens();
+    }
+
+    async function abrirArsenalParaMestre() {
+        fecharModal('modal-mestre-itens');
+        abrirModal('modal-compendio');
+        document.getElementById('titulo-compendio').innerText = `⚔️ Arsenal → ${mestreAlvoNome}`;
+        document.getElementById('subtitulo-compendio').innerText = "Clique em '➕ Dar' para adicionar ao jogador.";
+        const snap = await db.collection("itens_globais").orderBy('nome').get();
+        const lista = document.getElementById('lista-compendio');
+        lista.innerHTML = "";
+        if (snap.empty) { lista.innerHTML = "<p style='text-align:center; color:#777;'>Arsenal vazio.</p>"; }
+        snap.forEach(doc => {
+            const m = doc.data();
+            const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
+            lista.innerHTML += `
+            <div style="background:white; margin-bottom:8px; border-radius:8px; border:1px solid #ddd; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div><b>${m.nome}</b><br><small style="color:#666;">${categoriasNomes[m.categoria] || '📦'}</small></div>
+            <button class="aba-btn ativa" style="padding:5px 10px; white-space:nowrap;" onclick="adicionarDoArsenalAoJogador(${safeData})">➕ Dar</button>
+            </div>`;
+        });
+        lista.innerHTML += `<button class="btn-grande" style="background:#555; margin-top:10px;" onclick="fecharModal('modal-compendio'); abrirModal('modal-mestre-itens');">🔙 Voltar para Itens</button>`;
+    }
+
+    async function adicionarDoArsenalAoJogador(itemData) {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (!h.itens) h.itens = [];
+        h.itens.push({...itemData, localizacao: 'personagem', estado: 'nenhum'});
+        await db.collection("personagens").doc(mestreAlvoId).update({ itens: h.itens });
+        alert(`✅ "${itemData.nome}" adicionado a ${mestreAlvoNome}!`);
+        fecharModal('modal-compendio');
+        abrirModal('modal-mestre-itens');
+        await renderizarListaMestreItens();
+    }
+
+    // ============================================================
+    // MESTRE: GERENCIAR MAGIAS DE UM JOGADOR
+    // ============================================================
+    async function abrirGerenciarMagias(playerId, playerNome) {
+        mestreAlvoId = playerId;
+        mestreAlvoNome = playerNome;
+        document.getElementById('titulo-mestre-magias').innerText = `✨ Magias de: ${playerNome}`;
+        abrirModal('modal-mestre-magias');
+        await renderizarListaMestreMagias();
+    }
+
+    async function renderizarListaMestreMagias() {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        const lista = document.getElementById('lista-mestre-magias');
+        lista.innerHTML = "";
+        if (!h.magias || h.magias.length === 0) {
+            lista.innerHTML = "<p style='text-align:center; color:#777;'>✨ Nenhuma magia no grimório.</p>";
+            return;
+        }
+        h.magias.forEach((m, idx) => {
+            lista.innerHTML += `
+            <div class="mestre-item-row">
+            <div class="mestre-item-row-info">
+            <b>✨ ${m.nome}</b>
+            <small>${m.escola || '—'} ${m.circulo ? '• ' + m.circulo : ''}</small>
+            </div>
+            <div class="mestre-acoes">
+            <button onclick="removerMagiaMestre(${idx})" style="background:#d32f2f;" title="Remover">🗑️</button>
+            </div>
+            </div>`;
+        });
+    }
+
+    async function removerMagiaMestre(idx) {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (confirm(`🗑️ Remover "${h.magias[idx].nome}" do grimório de ${mestreAlvoNome}?`)) {
+            h.magias.splice(idx, 1);
+            await db.collection("personagens").doc(mestreAlvoId).update({ magias: h.magias });
+            await renderizarListaMestreMagias();
+        }
+    }
+
+    function abrirAdicionarMagiaAoJogador() {
+        ['mm-nome','mm-escola','mm-circulo','mm-execucao','mm-alcance','mm-desc'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('titulo-mestre-add-magia').innerText = `✨ Adicionar Magia a ${mestreAlvoNome}`;
+        fecharModal('modal-mestre-magias');
+        abrirModal('modal-mestre-add-magia');
+    }
+
+    async function salvarMagiaMestre() {
+        const nome = document.getElementById('mm-nome').value.trim();
+        if (!nome) return alert("❌ Nome obrigatório!");
+        const magia = {
+            nome, escola: document.getElementById('mm-escola').value.trim(),
+            circulo: document.getElementById('mm-circulo').value.trim(),
+            execucao: document.getElementById('mm-execucao').value.trim(),
+            alcance: document.getElementById('mm-alcance').value.trim(),
+            desc: document.getElementById('mm-desc').value.trim()
+        };
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (!h.magias) h.magias = [];
+        h.magias.push(magia);
+        await db.collection("personagens").doc(mestreAlvoId).update({ magias: h.magias });
+        fecharModal('modal-mestre-add-magia');
+        abrirModal('modal-mestre-magias');
+        await renderizarListaMestreMagias();
+    }
+
+    async function abrirBibliotecaParaMestre() {
+        fecharModal('modal-mestre-magias');
+        abrirModal('modal-compendio');
+        document.getElementById('titulo-compendio').innerText = `📚 Biblioteca → ${mestreAlvoNome}`;
+        document.getElementById('subtitulo-compendio').innerText = "Clique em '➕ Ensinar' para adicionar ao grimório.";
+        const snap = await db.collection("magias_globais").orderBy('nome').get();
+        const lista = document.getElementById('lista-compendio');
+        lista.innerHTML = "";
+        if (snap.empty) { lista.innerHTML = "<p style='text-align:center; color:#777;'>Biblioteca vazia.</p>"; }
+        snap.forEach(doc => {
+            const m = doc.data();
+            const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
+            lista.innerHTML += `
+            <div style="background:white; margin-bottom:8px; border-radius:8px; border:1px solid #ddd; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div><b>✨ ${m.nome}</b><br><small style="color:#666;">${m.escola || ''} ${m.circulo ? '• ' + m.circulo : ''}</small></div>
+            <button class="aba-btn ativa" style="padding:5px 10px; white-space:nowrap;" onclick="adicionarMagiaAoJogadorMestre(${safeData})">➕ Ensinar</button>
+            </div>`;
+        });
+        lista.innerHTML += `<button class="btn-grande" style="background:#555; margin-top:10px;" onclick="fecharModal('modal-compendio'); abrirModal('modal-mestre-magias');">🔙 Voltar para Magias</button>`;
+    }
+
+    async function adicionarMagiaAoJogadorMestre(magiaData) {
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        if (!h.magias) h.magias = [];
+        h.magias.push({...magiaData});
+        await db.collection("personagens").doc(mestreAlvoId).update({ magias: h.magias });
+        alert(`✅ "${magiaData.nome}" adicionada ao grimório de ${mestreAlvoNome}!`);
+        fecharModal('modal-compendio');
+        abrirModal('modal-mestre-magias');
+        await renderizarListaMestreMagias();
+    }
+
+    // ============================================================
+    // MESTRE: GERENCIAR TIBARES DE UM JOGADOR
+    // ============================================================
+    async function abrirGerenciarTibares(playerId, playerNome) {
+        mestreAlvoId = playerId;
+        mestreAlvoNome = playerNome;
+        const docSnap = await db.collection("personagens").doc(playerId).get();
+        const h = docSnap.data();
+        document.getElementById('titulo-mestre-tibares').innerText = `💰 Tibares de: ${playerNome}`;
+        document.getElementById('tibares-mestre-atual').innerText = `${(h.tibares || 0).toLocaleString()} T$`;
+        document.getElementById('input-mestre-tibares').value = '';
+        abrirModal('modal-mestre-tibares');
+    }
+
+    async function aplicarTibaresMestre() {
+        const val = Number(document.getElementById('input-mestre-tibares').value);
+        if (isNaN(val) || val === 0) return alert("❌ Digite um valor válido (ex: 100 ou -50)!");
+        const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
+        const h = docSnap.data();
+        const novoValor = (h.tibares || 0) + val;
+        if (novoValor < 0 && !confirm(`⚠️ O saldo ficará negativo (${novoValor} T$). Confirmar?`)) return;
+        await db.collection("personagens").doc(mestreAlvoId).update({ tibares: novoValor });
+        document.getElementById('tibares-mestre-atual').innerText = `${novoValor.toLocaleString()} T$`;
+        document.getElementById('input-mestre-tibares').value = '';
+        const msg = val > 0 ? `➕ +${val} T$ adicionados` : `➖ ${Math.abs(val)} T$ removidos`;
+        alert(`✅ ${msg}!\nNovo saldo: ${novoValor.toLocaleString()} T$`);
+    }
+
+    // ============================================================
+    // FUNÇÕES GERAIS
+    // ============================================================
     async function aplicarCalculo() {
         const val = Number(document.getElementById('calc-input').value);
         if(isNaN(val)) return;
-
         if (campoAtual === 'defesaAtual') {
             if(heroiAtivo.defesaAtual === undefined) heroiAtivo.defesaAtual = heroiAtivo.defesa || 10;
             heroiAtivo.defesaAtual += val;
         } else {
             heroiAtivo[campoAtual] += val;
-            if(campoAtual === 'pv') if (heroiAtivo.pv > heroiAtivo.pvMax) heroiAtivo.pv = heroiAtivo.pvMax;
-            if(campoAtual === 'pm') {
-                if (heroiAtivo.pm > heroiAtivo.pmMax) heroiAtivo.pm = heroiAtivo.pmMax;
-                if (heroiAtivo.pm < 0) heroiAtivo.pm = 0;
-            }
+            if(campoAtual === 'pv' && heroiAtivo.pv > heroiAtivo.pvMax) heroiAtivo.pv = heroiAtivo.pvMax;
+            if(campoAtual === 'pm') { if (heroiAtivo.pm > heroiAtivo.pmMax) heroiAtivo.pm = heroiAtivo.pmMax; if (heroiAtivo.pm < 0) heroiAtivo.pm = 0; }
         }
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         fecharModal('modal-calculadora');
@@ -1199,70 +1316,47 @@
         const select = document.getElementById('select-destinatario');
         select.innerHTML = "<option>⏳ Carregando...</option>";
         abrirModal('modal-transferir');
-
         const snap = await db.collection("personagens").get();
         select.innerHTML = "";
-        snap.forEach(doc => {
-            if(doc.id !== heroiAtivo.id) select.innerHTML += `<option value="${doc.id}">⚔️ ${doc.data().nome}</option>`;
-        });
+        snap.forEach(doc => { if(doc.id !== heroiAtivo.id) select.innerHTML += `<option value="${doc.id}">⚔️ ${doc.data().nome}</option>`; });
     }
 
     async function confirmarTransferencia() {
         const idx = document.getElementById('detalhe-item-index').value;
         const targetId = document.getElementById('select-destinatario').value;
         if(!targetId) return;
-
         const item = heroiAtivo.itens[idx];
         const targetRef = db.collection("personagens").doc(targetId);
         const tSnap = await targetRef.get();
         const tData = tSnap.data();
-        const itemTransf = {...item};
-        delete itemTransf.estado; delete itemTransf.localizacao; delete itemTransf.nomeAjudante;
-
+        const itemTransf = {...item}; delete itemTransf.estado; delete itemTransf.localizacao; delete itemTransf.nomeAjudante;
         if(!tData.itens) tData.itens = [];
         tData.itens.push(itemTransf);
         await targetRef.update({ itens: tData.itens });
         heroiAtivo.itens.splice(idx, 1);
         await db.collection("personagens").doc(heroiAtivo.id).update({ itens: heroiAtivo.itens });
-
-        fecharModal('modal-transferir');
-        renderTudo();
+        fecharModal('modal-transferir'); renderTudo();
     }
 
     async function criarHeroi() {
         const p = {
             nome: document.getElementById('n-nome').value,
             senha: document.getElementById('n-senha').value,
-            nivel: 1,
-            forca: Number(document.getElementById('n-for').value) || 0,
-            pvMax: Number(document.getElementById('n-pv').value) || 20,
-            pv: Number(document.getElementById('n-pv').value) || 20,
-            pmMax: Number(document.getElementById('n-pm').value) || 10,
-            pm: Number(document.getElementById('n-pm').value) || 10,
-            defesaBase: Number(document.getElementById('n-def').value) || 10,
-            defesaAtual: Number(document.getElementById('n-def').value) || 10,
+            nivel: 1, forca: Number(document.getElementById('n-for').value) || 0,
+            pvMax: Number(document.getElementById('n-pv').value) || 20, pv: Number(document.getElementById('n-pv').value) || 20,
+            pmMax: Number(document.getElementById('n-pm').value) || 10, pm: Number(document.getElementById('n-pm').value) || 10,
+            defesaBase: Number(document.getElementById('n-def').value) || 10, defesaAtual: Number(document.getElementById('n-def').value) || 10,
             tibares: Number(document.getElementById('n-tib').value) || 0,
             preparaMagias: document.getElementById('n-prepara').value === 'sim',
-            bonusCarga: 0,
-            bonusCargaDesc: "",
-            magias: [], magiasPreparadas: [], itens: []
+            bonusCarga: 0, bonusCargaDesc: "", magias: [], magiasPreparadas: [], itens: []
         };
         if(!p.nome || !p.senha) return alert("❌ Preencha o nome e a senha obrigatórios!");
         await db.collection("personagens").add(p);
         location.reload();
     }
 
-    async function abrirCompendio() {
-        abrirModal('modal-compendio');
-        document.getElementById('titulo-compendio').innerText = "📚 Biblioteca Global";
-        carregarGlobal('magias_globais', 'magia');
-    }
-
-    async function abrirArsenal() {
-        abrirModal('modal-compendio');
-        document.getElementById('titulo-compendio').innerText = "⚔️ Arsenal Global";
-        carregarGlobal('itens_globais', 'item');
-    }
+    async function abrirCompendio() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "📚 Biblioteca Global"; carregarGlobal('magias_globais', 'magia'); }
+    async function abrirArsenal() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "⚔️ Arsenal Global"; carregarGlobal('itens_globais', 'item'); }
 
     async function carregarGlobal(col, type) {
         document.getElementById('subtitulo-compendio').innerText = "Base de dados compartilhada.";
@@ -1270,20 +1364,13 @@
         const lista = document.getElementById('lista-compendio');
         lista.innerHTML = "";
         if(modoMestreAtivo) {
-            lista.innerHTML += `
-            <button class="btn-grande" style="background:var(--cor-detalhe); margin-bottom:15px;"
-            onclick="fecharModal('modal-compendio'); abrirModal('modal-item'); document.getElementById('tipo-registro').value='${type}'; ajustarCampos();">
-            ➕ CADASTRAR NOVO (MESTRE)
-            </button>`;
+            lista.innerHTML += `<button class="btn-grande" style="background:var(--cor-detalhe); margin-bottom:15px;" onclick="fecharModal('modal-compendio'); abrirModal('modal-item'); document.getElementById('tipo-registro').value='${type}'; ajustarCampos();">➕ CADASTRAR NOVO (MESTRE)</button>`;
         }
         let i = 0;
         snap.forEach(doc => {
             i++;
-            const m = doc.data();
-            const dropId = `drop-global-${i}`;
-            let txtAprimora = '';
-            if (m.aprimora) txtAprimora = formatarAprimoramento(m.aprimora);
-
+            const m = doc.data(); const dropId = `drop-global-${i}`;
+            let txtAprimora = m.aprimora ? formatarAprimoramento(m.aprimora) : '';
             let infoDetalhe = [];
             if(m.execucao) infoDetalhe.push(`<b>Exec:</b> ${m.execucao}`);
             if(m.alcance) infoDetalhe.push(`<b>Alc:</b> ${m.alcance}`);
@@ -1292,27 +1379,18 @@
             let botoesAcao = '';
             if (modoMestreAtivo) {
                 const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
-                botoesAcao = `
-                <div style="display:flex; gap:5px;">
-                <button class="aba-btn" style="padding:5px; background:#4a6572; color:white;" onclick="editarGlobal('${doc.id}', '${col}', '${type}', ${safeData}); event.stopPropagation();">✏️</button>
-                <button class="aba-btn" style="padding:5px; background:#d32f2f; color:white;" onclick="excluirGlobal('${doc.id}', '${col}', '${type}'); event.stopPropagation();">🗑️</button>
-                </div>`;
+                botoesAcao = `<div style="display:flex; gap:5px;"><button class="aba-btn" style="padding:5px; background:#4a6572; color:white;" onclick="editarGlobal('${doc.id}', '${col}', '${type}', ${safeData}); event.stopPropagation();">✏️</button><button class="aba-btn" style="padding:5px; background:#d32f2f; color:white;" onclick="excluirGlobal('${doc.id}', '${col}', '${type}'); event.stopPropagation();">🗑️</button></div>`;
             } else {
                 const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
                 botoesAcao = `<button class="aba-btn ativa" style="padding:5px" onclick="aprenderGlobal(${safeData}, '${type}'); event.stopPropagation();">➕ Adicionar</button>`;
             }
             lista.innerHTML += `
             <div style="background:white; margin-bottom:8px; border-radius:8px; border:1px solid #ddd; overflow:hidden;">
-            <div style="padding:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;"
-            onclick="document.getElementById('${dropId}').style.display = document.getElementById('${dropId}').style.display === 'block' ? 'none' : 'block'">
+            <div style="padding:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('${dropId}').style.display = document.getElementById('${dropId}').style.display === 'block' ? 'none' : 'block'">
             <div><b>${m.nome}</b><br><small>${m.categoria ? categoriasNomes[m.categoria] : (m.escola || '')}</small></div>
             ${botoesAcao}
             </div>
-            <div id="${dropId}" style="display:none; padding:15px; border-top:1px solid #eee; background-color:#fffbf0; font-size:0.95em; color:#3e2723;">
-            ${divInfo}
-            <p style="margin-top:0;">${m.desc || 'Sem descrição cadastrada.'}</p>
-            ${txtAprimora}
-            </div>
+            <div id="${dropId}" style="display:none; padding:15px; border-top:1px solid #eee; background-color:#fffbf0; font-size:0.95em; color:#3e2723;">${divInfo}<p style="margin-top:0;">${m.desc || 'Sem descrição cadastrada.'}</p>${txtAprimora}</div>
             </div>`;
         });
     }
@@ -1326,9 +1404,7 @@
         alert("✅ Adicionado com sucesso!"); renderTudo();
     }
 
-    async function deletarPersonagem(id, nome) {
-        if(confirm("🗑️ Deletar " + nome + "?")) await db.collection("personagens").doc(id).delete();
-    }
+    async function deletarPersonagem(id, nome) { if(confirm("🗑️ Deletar " + nome + "?")) await db.collection("personagens").doc(id).delete(); }
 
     async function salvarEdicaoPerfil() {
         heroiAtivo.nome = document.getElementById('e-nome').value;
@@ -1342,17 +1418,12 @@
         heroiAtivo.preparaMagias = document.getElementById('e-prepara').value === 'sim';
         heroiAtivo.bonusCarga = Number(document.getElementById('e-bonus-carga').value);
         heroiAtivo.bonusCargaDesc = document.getElementById('e-bonus-desc').value;
-
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         fecharModal('modal-editar-perfil');
     }
 
     function abrirModal(id) {
-        if(id === 'modal-item') {
-            document.getElementById('modal-titulo').innerText = "📝 Novo Registro";
-            document.getElementById('div-enviar-arsenal').style.display = 'flex';
-            limparFormularioItem();
-        }
+        if(id === 'modal-item') { document.getElementById('modal-titulo').innerText = "📝 Novo Registro"; document.getElementById('div-enviar-arsenal').style.display = 'flex'; limparFormularioItem(); }
         if(id === 'modal-editar-perfil' && heroiAtivo) {
             document.getElementById('e-nome').value = heroiAtivo.nome;
             document.getElementById('e-nv').value = heroiAtivo.nivel;
@@ -1369,13 +1440,7 @@
     }
 
     function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    function abrirCalculadora(c, t) {
-        campoAtual = c;
-        document.getElementById('calc-input').value = "";
-        document.getElementById('calc-titulo').innerText = t;
-        abrirModal('modal-calculadora');
-    }
+    function abrirCalculadora(c, t) { campoAtual = c; document.getElementById('calc-input').value = ""; document.getElementById('calc-titulo').innerText = t; abrirModal('modal-calculadora'); }
 
     function mudarAba(aba) {
         document.getElementById('conteudo-grimorio').style.display = aba === 'grimorio' ? 'block' : 'none';
@@ -1386,17 +1451,8 @@
         document.getElementById('btn-aba-p').classList.toggle('ativa', aba === 'preparadas');
     }
 
-    function toggleMagia(i) {
-        const el = document.getElementById(`magia-info-${i}`);
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-    async function removerAlgo(c, i) {
-        if(confirm("🗑️ Remover permanentemente?")) {
-            heroiAtivo[c].splice(i, 1);
-            await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
-        }
-    }
+    function toggleMagia(i) { const el = document.getElementById(`magia-info-${i}`); el.style.display = el.style.display === 'block' ? 'none' : 'block'; }
+    async function removerAlgo(c, i) { if(confirm("🗑️ Remover permanentemente?")) { heroiAtivo[c].splice(i, 1); await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo); } }
 
     function ajustarCampos() {
         document.getElementById('campos-magia').style.display = document.getElementById('tipo-registro').value === 'magia' ? 'block' : 'none';
@@ -1405,30 +1461,26 @@
 
     async function carregarListaJogadores() {
         const snap = await db.collection("personagens").get();
-        const div = document.getElementById('lista-jogadores-login');
-        div.innerHTML = "";
+        const div = document.getElementById('lista-jogadores-login'); div.innerHTML = "";
         if(snap.empty) div.innerHTML = "<p>Nenhum herói registrado.</p>";
         snap.forEach(doc => div.innerHTML += `<button class="btn-grande" style="background:white;color:#3e2723" onclick="idTemp='${doc.id}';abrirModal('modal-login-jogador');"><b>⚔️ ${doc.data().nome}</b></button>`);
     }
 
     async function excluirGlobal(id, col, type) {
-        if(confirm("⚠️ ATENÇÃO MESTRE:\nDeseja apagar este registro permanentemente do banco de dados global?\nIsso não remove das fichas que já pegaram o item/magia.")) {
+        if(confirm("⚠️ ATENÇÃO MESTRE:\nDeseja apagar este registro permanentemente?")) {
             await db.collection(col).doc(id).delete();
-            if(type === 'magia') abrirCompendio();
-            else abrirArsenal();
+            if(type === 'magia') abrirCompendio(); else abrirArsenal();
         }
     }
 
     function editarGlobal(id, col, type, data) {
-        fecharModal('modal-compendio');
-        abrirModal('modal-item');
+        fecharModal('modal-compendio'); abrirModal('modal-item');
         document.getElementById('modal-titulo').innerText = "✏️ Editar Registro Global";
         document.getElementById('edit-id-global').value = id;
         document.getElementById('edit-index-local').value = "";
         document.getElementById('tipo-registro').value = type;
         document.getElementById('nome-reg').value = data.nome || "";
         document.getElementById('desc-reg').value = data.desc || "";
-
         if (type === 'magia') {
             document.getElementById('m-escola').value = data.escola || "";
             document.getElementById('m-circulo').value = data.circulo || "";
