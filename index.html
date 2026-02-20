@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bag of Holding | Tormenta20 System Manager</title>
+    <title>🎒 Bag of Holding | Tormenta20 System Manager</title>
     <style>
         /* =========================================
            VARIÁVEIS GLOBAIS E TEMA
@@ -342,37 +342,37 @@
 </head>
 <body>
 <div id="tela-login" class="tela fade-in" style="display: block;">
-    <h1 style="font-size: 2.5em; margin-bottom: 10px;">   Bag of Holding</h1>
+    <h1 style="font-size: 2.5em; margin-bottom: 10px;">🎒 Bag of Holding</h1>
     <p style="text-align: center; color: var(--cor-detalhe); margin-bottom: 30px; font-weight: bold;">Gerenciador Oficial Tormenta20</p>
 
-    <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">   Painel do Mestre</button>
-    <button class="btn-grande" style="background:#4a6572" onclick="carregarListaJogadores()">   Entrar como Herói</button>
+    <button class="btn-grande" onclick="abrirModal('modal-login-mestre')">👑 Painel do Mestre</button>
+    <button class="btn-grande" style="background:#4a6572" onclick="carregarListaJogadores()">⚔️ Entrar como Herói</button>
 
     <div id="lista-jogadores-login" style="margin-top: 25px; display: grid; gap: 10px;"></div>
 
     <div style="text-align: center; margin-top: 30px;">
         <button onclick="abrirModal('modal-criar')" style="background:none; border:none; color:var(--cor-detalhe); cursor:pointer; text-decoration:underline; font-weight:bold; font-size: 1.1em;">
-             Criar Novo Herói
+            ✨ Criar Novo Herói
         </button>
     </div>
 </div>
 <div id="tela-mestre" class="tela fade-in">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px;">
-        <h2 style="margin:0">   Monitor da Mesa</h2>
-        <button class="btn-sair" onclick="deslogar()">Sair</button>
+        <h2 style="margin:0">🎲 Monitor da Mesa</h2>
+        <button class="btn-sair" onclick="deslogar()">🚪 Sair</button>
     </div>
 
     <div class="switch-container">
-        <span class="switch-label">Regra: Peso da Moeda (1 slot a cada 1000 T$)</span>
+        <span class="switch-label">⚖️ Regra: Peso da Moeda (1 slot a cada 1000 T$)</span>
         <label class="switch-toggle">
             <input type="checkbox" id="chk-regras-moeda" onchange="toggleRegraMoeda()">
             <span class="slider"></span>
         </label>
     </div>
 
-    <button class="btn-grande" style="background:#8d2b2b" onclick="abrirCompendio()">   Gerenciar Magias Globais</button>
-    <button class="btn-grande" style="background:#d4af37; color: #3e2723;" onclick="abrirArsenal()">   Gerenciar Arsenal Global</button>
-    <button class="btn-grande" style="background:#2e7d32;" onclick="abrirTesouroGrupo()">   Ver Tesouro do Grupo</button>
+    <button class="btn-grande" style="background:#8d2b2b" onclick="abrirCompendio()">✨ Gerenciar Magias Globais</button>
+    <button class="btn-grande" style="background:#d4af37; color: #3e2723;" onclick="abrirArsenal()">⚔️ Gerenciar Arsenal Global</button>
+    <button class="btn-grande" style="background:#2e7d32;" onclick="abrirTesouroGrupo()">💰 Ver Tesouro do Grupo</button>
 
     <div id="grid-mestre"></div>
 </div>
@@ -383,41 +383,41 @@
             <small id="sub-nome" style="color:var(--cor-detalhe); font-weight: bold; font-size: 1.2em;">Nível 1</small>
         </div>
         <div style="display: flex; gap: 10px;">
-            <button ⚙️ onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">  </button>
-            <button class="btn-sair" onclick="deslogar()">Trocar</button>
+            <button onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">⚙️</button>
+            <button class="btn-sair" onclick="deslogar()">🔄 Trocar</button>
         </div>
     </div>
-    <div class="tibares-card" onclick="abrirCalculadora('tibares', '   Alterar Tibares')">
-          <span id="stat-tib">0</span> T$
+    <div class="tibares-card" onclick="abrirCalculadora('tibares', '💰 Alterar Tibares')">
+        💰 <span id="stat-tib">0</span> T$
     </div>
     <div class="status-container-pro">
-        <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '   Alterar Vida')">
-            <span class="status-label" id="lbl-pv" style="color:var(--cor-pv)">VIDA (PV)</span>
+        <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '❤️ Alterar Vida')">
+            <span class="status-label" id="lbl-pv" style="color:var(--cor-pv)">❤️ VIDA (PV)</span>
             <span class="status-main-val" id="v-pv" style="color:var(--cor-pv)">0</span>
             <span class="status-sub-info">MÁX: <span id="v-pv-max">0</span></span>
         </div>
-        <div class="status-hero-card card-pm" onclick="abrirCalculadora('pm', '   Alterar Mana')">
-            <span class="status-label" style="color:var(--cor-pm)">MANA (PM)</span>
+        <div class="status-hero-card card-pm" onclick="abrirCalculadora('pm', '💙 Alterar Mana')">
+            <span class="status-label" style="color:var(--cor-pm)">💙 MANA (PM)</span>
             <span class="status-main-val" id="v-pm" style="color:var(--cor-pm)">0</span>
             <span class="status-sub-info">MÁX: <span id="v-pm-max">0</span></span>
         </div>
-        <div class="status-hero-card card-def" onclick="abrirCalculadora('defesaAtual', '   Alterar Defesa Atual')">
-            <span class="status-label" style="color:var(--cor-def)">DEFESA</span>
+        <div class="status-hero-card card-def" onclick="abrirCalculadora('defesaAtual', '🛡️ Alterar Defesa Atual')">
+            <span class="status-label" style="color:var(--cor-def)">🛡️ DEFESA</span>
             <span class="status-main-val" id="v-def" style="color:var(--cor-def)">0</span>
             <span class="status-sub-info">BASE: <span id="v-def-base">0</span></span>
         </div>
     </div>
     <nav class="abas">
-        <button class="aba-btn ativa" id="btn-aba-g" onclick="mudarAba('grimorio')">   Grimório</button>
-        <button class="aba-btn" id="btn-aba-p" onclick="mudarAba('preparadas')" style="display:none;">   Preparadas</button>
-        <button class="aba-btn" id="btn-aba-i" onclick="mudarAba('inventario')">   Inventário</button>
+        <button class="aba-btn ativa" id="btn-aba-g" onclick="mudarAba('grimorio')">📖 Grimório</button>
+        <button class="aba-btn" id="btn-aba-p" onclick="mudarAba('preparadas')" style="display:none;">⭐ Preparadas</button>
+        <button class="aba-btn" id="btn-aba-i" onclick="mudarAba('inventario')">🎒 Inventário</button>
     </nav>
     <div id="conteudo-grimorio">
-        <button class="btn-grande" style="background:#4a6572; font-size:0.9em; padding: 12px;" onclick="abrirCompendio()">   Consultar Magias Globais</button>
+        <button class="btn-grande" style="background:#4a6572; font-size:0.9em; padding: 12px;" onclick="abrirCompendio()">🔍 Consultar Magias Globais</button>
         <div id="magias-lista"></div>
     </div>
     <div id="conteudo-preparadas" style="display:none">
-        <div style="background:var(--cor-borda); color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px; font-weight:bold;">   Magias Prontas para Uso</div>
+        <div style="background:var(--cor-borda); color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px; font-weight:bold;">⭐ Magias Prontas para Uso</div>
         <p style="font-size:0.85em; color:#666; text-align:center; margin-top:0;">Selecione as magias no seu Grimório para prepará-las.</p>
         <div id="magias-preparadas-lista"></div>
     </div>
@@ -425,14 +425,14 @@
         <div id="barra-carga" style="background:var(--cor-borda); color:white; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px; font-weight:bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);"></div>
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button class="btn-grande" style="background:#d4af37; color:#3e2723; font-size:0.8em; padding: 10px;" onclick="abrirArsenal()">   Arsenal Global</button>
-            <button class="btn-grande" style="background:#2e7d32; font-size:0.8em; padding: 10px;" onclick="abrirTesouroGrupo()">   Tesouro do Grupo</button>
+            <button class="btn-grande" style="background:#d4af37; color:#3e2723; font-size:0.8em; padding: 10px;" onclick="abrirArsenal()">⚔️ Arsenal Global</button>
+            <button class="btn-grande" style="background:#2e7d32; font-size:0.8em; padding: 10px;" onclick="abrirTesouroGrupo()">💰 Tesouro do Grupo</button>
         </div>
 
         <div id="itens-lista"></div>
     </div>
 
-    <button id="btn-mestre-voltar" style="display:none; background:#d32f2f; margin-top: 30px;" class="btn-grande" onclick="mostrarPainelMestre()">   VOLTAR AO MONITOR</button>
+    <button id="btn-mestre-voltar" style="display:none; background:#d32f2f; margin-top: 30px;" class="btn-grande" onclick="mostrarPainelMestre()">🔙 VOLTAR AO MONITOR</button>
 </div>
 <div id="modal-calculadora" class="modal">
     <div class="modal-content">
@@ -440,8 +440,8 @@
         <p style="text-align:center; color:#666">Valores negativos reduzem (ex: -5).</p>
         <input type="number" id="calc-input" placeholder="Digite o valor" autofocus>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="btn-grande" style="background:#2e7d32" onclick="aplicarCalculo()">Confirmar</button>
-            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-calculadora')">Cancelar</button>
+            <button class="btn-grande" style="background:#2e7d32" onclick="aplicarCalculo()">✅ Confirmar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-calculadora')">❌ Cancelar</button>
         </div>
     </div>
 </div>
@@ -460,69 +460,69 @@
             </div>
         </div>
         <div style="display: grid; gap: 10px;">
-            <button id="btn-usar-item" class="btn-grande" style="background:#e65100; display:none;" onclick="usarItemAtual()">   USAR ITEM (Consumir)</button>
-            <button class="btn-grande" style="background:#4a6572" onclick="abrirTransferencia()">   Transferir p/ Jogador</button>
-            <button class="btn-grande" style="background:#2e7d32" onclick="enviarParaTesouro()">   Enviar p/ Tesouro Grupo</button>
-            <button class="btn-grande" onclick="editarItemAtual()">   Editar Item</button>
-            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-detalhe-item')">Fechar</button>
+            <button id="btn-usar-item" class="btn-grande" style="background:#e65100; display:none;" onclick="usarItemAtual()">🧪 USAR ITEM (Consumir)</button>
+            <button class="btn-grande" style="background:#4a6572" onclick="abrirTransferencia()">🔄 Transferir p/ Jogador</button>
+            <button class="btn-grande" style="background:#2e7d32" onclick="enviarParaTesouro()">💰 Enviar p/ Tesouro Grupo</button>
+            <button class="btn-grande" onclick="editarItemAtual()">✏️ Editar Item</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-detalhe-item')">✖️ Fechar</button>
         </div>
     </div>
 </div>
 <div id="modal-transferir" class="modal">
     <div class="modal-content">
-        <h3>   Transferir Item</h3>
+        <h3>🔄 Transferir Item</h3>
         <p style="text-align:center; color:#555">Selecione o destinatário.</p>
         <select id="select-destinatario"></select>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="btn-grande" onclick="confirmarTransferencia()">Enviar</button>
-            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-transferir')">Cancelar</button>
+            <button class="btn-grande" onclick="confirmarTransferencia()">📤 Enviar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-transferir')">❌ Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="modal-editar-perfil" class="modal">
     <div class="modal-content">
-        <h3>   Editar Ficha</h3>
+        <h3>⚙️ Editar Ficha</h3>
         <label>Nome do Personagem</label>
         <input type="text" id="e-nome">
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div><label>Nível</label><input type="number" id="e-nv"></div>
-            <div><label>Força</label><input type="number" id="e-for"></div>
-            <div><label>PV Máximo</label><input type="number" id="e-pv-max"></div>
-            <div><label>PM Máximo</label><input type="number" id="e-pm-max"></div>
-            <div><label>Defesa Base</label><input type="number" id="e-def-base"></div>
-            <div><label>Tibares (Ouro)</label><input type="number" id="e-tib"></div>
+            <div><label>🌟 Nível</label><input type="number" id="e-nv"></div>
+            <div><label>💪 Força</label><input type="number" id="e-for"></div>
+            <div><label>❤️ PV Máximo</label><input type="number" id="e-pv-max"></div>
+            <div><label>💙 PM Máximo</label><input type="number" id="e-pm-max"></div>
+            <div><label>🛡️ Defesa Base</label><input type="number" id="e-def-base"></div>
+            <div><label>💰 Tibares (Ouro)</label><input type="number" id="e-tib"></div>
         </div>
 
         <div style="background:#fdfaf3; padding:10px; border:1px solid #bcaaa4; border-radius:8px; margin-top:15px;">
-            <label style="color:#2e7d32; font-weight:bold; display:block; margin-bottom:5px;"> Bônus de Carga (Mochila/Poder)</label>
+            <label style="color:#2e7d32; font-weight:bold; display:block; margin-bottom:5px;">🎒 Bônus de Carga (Mochila/Poder)</label>
             <div style="display:grid; grid-template-columns: 80px 1fr; gap:10px; align-items:center;">
                 <input type="number" id="e-bonus-carga" placeholder="+Slots" style="margin:0">
                 <input type="text" id="e-bonus-desc" placeholder="Fonte (Ex: Mochila Arcana)" style="margin:0">
             </div>
         </div>
 
-        <label style="margin-top:15px; display:block; font-weight:bold; color:#666">Prepara Magias?</label>
+        <label style="margin-top:15px; display:block; font-weight:bold; color:#666">✨ Prepara Magias?</label>
         <select id="e-prepara">
             <option value="nao">Não</option>
             <option value="sim">Sim</option>
         </select>
 
-        <button class="btn-grande" onclick="salvarEdicaoPerfil()">Salvar Alterações</button>
-        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-editar-perfil')">Fechar</button>
+        <button class="btn-grande" onclick="salvarEdicaoPerfil()">💾 Salvar Alterações</button>
+        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-editar-perfil')">✖️ Fechar</button>
     </div>
 </div>
 
 <div id="modal-item" class="modal">
     <div class="modal-content">
-        <h3 id="modal-titulo">Novo Registro</h3>
+        <h3 id="modal-titulo">📝 Novo Registro</h3>
         <input type="hidden" id="edit-id-global">
         <input type="hidden" id="edit-index-local">
 
         <select id="tipo-registro" onchange="ajustarCampos()">
-            <option value="magia">   Magia / Habilidade</option>
-            <option value="item">   Item / Equipamento</option>
+            <option value="magia">✨ Magia / Habilidade</option>
+            <option value="item">📦 Item / Equipamento</option>
         </select>
 
         <input type="text" id="nome-reg" placeholder="Nome do Registro">
@@ -541,111 +541,111 @@
                 <input type="text" id="m-tipo" placeholder="Alvo">
                 <input type="text" id="m-resistencia" placeholder="Resistência">
             </div>
-            <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">Aprimoramentos (+):</label>
+            <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">✨ Aprimoramentos (+):</label>
             <textarea id="m-aprimora" rows="3" style="margin-top:5px;" placeholder="+ Aumenta o dano em 1d6..."></textarea>
         </div>
 
-        <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">Descrição:</label>
+        <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📝 Descrição:</label>
         <textarea id="desc-reg" rows="5" style="margin-top:5px;"></textarea>
 
         <div id="campos-item" style="display:none">
-            <label style="color:#666; font-weight:bold; display:block; margin-bottom:5px;">Categoria:</label>
+            <label style="color:#666; font-weight:bold; display:block; margin-bottom:5px;">🏷️ Categoria:</label>
             <select id="i-categoria">
-                <option value="mundanos">   Itens Mundanos</option>
-                <option value="armaduras">   Armaduras e Escudos</option>
-                <option value="armas">   Armas</option>
-                <option value="pocoes">   Poções</option>
-                <option value="pergaminhos">   Pergaminhos</option>
-                <option value="magicos">   Itens Mágicos</option>
+                <option value="mundanos">🛍️ Itens Mundanos</option>
+                <option value="armaduras">🛡️ Armaduras e Escudos</option>
+                <option value="armas">⚔️ Armas</option>
+                <option value="pocoes">🧪 Poções</option>
+                <option value="pergaminhos">📜 Pergaminhos</option>
+                <option value="magicos">✨ Itens Mágicos</option>
             </select>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background:#f0eadd; padding:10px; border-radius:8px; border:1px solid #d7ccc8; margin-top:10px;">
                 <div>
-                    <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;"> Espaços (Slots)</label>
+                    <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;">📦 Espaços (Slots)</label>
                     <input type="number" id="i-espacos" placeholder="0" value="1" style="margin:0; text-align:center;">
                 </div>
                 <div>
-                    <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;"> Quantidade</label>
+                    <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;">🔢 Quantidade</label>
                     <input type="number" id="i-qtd" placeholder="1" value="1" style="margin:0; text-align:center;">
                 </div>
             </div>
 
-            <label style="color:#666; font-weight:bold; margin-top:15px; display:block;">Estado:</label>
+            <label style="color:#666; font-weight:bold; margin-top:15px; display:block;">🏷️ Estado:</label>
             <div class="radio-group">
                 <input type="radio" id="st-nenhum" name="estado-item" value="nenhum" checked>
-                <label for="st-nenhum">Guardado</label>
+                <label for="st-nenhum">🎒 Guardado</label>
                 <input type="radio" id="st-empunhado" name="estado-item" value="empunhado">
-                <label for="st-empunhado">   Empunhado</label>
+                <label for="st-empunhado">⚔️ Empunhado</label>
                 <input type="radio" id="st-vestido" name="estado-item" value="vestido">
-                <label for="st-vestido">   Vestido (Max 4)</label>
+                <label for="st-vestido">👕 Vestido (Max 4)</label>
             </div>
 
-            <label style="color:#666; font-weight:bold; margin-top:10px; display:block;">Onde está?</label>
+            <label style="color:#666; font-weight:bold; margin-top:10px; display:block;">📍 Onde está?</label>
             <select id="i-localizacao" onchange="toggleNomeAjudante()">
-                <option value="personagem">   Com o Personagem</option>
-                <option value="ajudante">   Com Ajudante</option>
-                <option value="tesouro">   No Tesouro (Se criar direto)</option>
+                <option value="personagem">👤 Com o Personagem</option>
+                <option value="ajudante">🤝 Com Ajudante</option>
+                <option value="tesouro">💰 No Tesouro (Se criar direto)</option>
             </select>
             <input type="text" id="i-nome-ajudante" placeholder="Nome do Ajudante" style="display:none; border-color:#2e7d32;">
         </div>
 
         <div id="div-enviar-arsenal" style="margin-top:15px; display:flex; align-items:center; gap:10px; padding-top:10px; border-top:1px solid #ddd;">
             <input type="checkbox" id="i-publico" style="width:auto; margin:0;">
-            <label for="i-publico" style="font-weight:bold; color:var(--cor-detalhe); font-size:0.9em;">Salvar também no Arsenal Global?</label>
+            <label for="i-publico" style="font-weight:bold; color:var(--cor-detalhe); font-size:0.9em;">🌐 Salvar também no Arsenal Global?</label>
         </div>
 
-        <button class="btn-grande" onclick="salvarNovo()">Salvar</button>
-        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-item')">Voltar</button>
+        <button class="btn-grande" onclick="salvarNovo()">💾 Salvar</button>
+        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-item')">🔙 Voltar</button>
     </div>
 </div>
 
 <div id="modal-login-jogador" class="modal">
     <div class="modal-content">
-        <h3 id="txt-login-nome">Login</h3>
+        <h3 id="txt-login-nome">🔐 Login</h3>
         <input type="password" id="pass-jogador" placeholder="Senha da Ficha">
-        <button class="btn-grande" onclick="validarJogador(false)">Acessar Ficha</button>
-        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-jogador')">Voltar</button>
+        <button class="btn-grande" onclick="validarJogador(false)">⚔️ Acessar Ficha</button>
+        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-jogador')">🔙 Voltar</button>
     </div>
 </div>
 <div id="modal-login-mestre" class="modal">
     <div class="modal-content">
-        <h3>Acesso do Mestre</h3>
+        <h3>👑 Acesso do Mestre</h3>
         <input type="password" id="pass-mestre" placeholder="Senha do Mestre">
-        <button class="btn-grande" onclick="validarMestre()">Entrar no Monitor</button>
-        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-mestre')">Voltar</button>
+        <button class="btn-grande" onclick="validarMestre()">🎲 Entrar no Monitor</button>
+        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-login-mestre')">🔙 Voltar</button>
     </div>
 </div>
 <div id="modal-criar" class="modal">
     <div class="modal-content">
-        <h3>Forjar Novo Herói</h3>
+        <h3>⚒️ Forjar Novo Herói</h3>
         <p style="color:#666; text-align:center">Preencha os dados iniciais obrigatórios.</p>
         <input type="text" id="n-nome" placeholder="Nome do Personagem">
         <input type="password" id="n-senha" placeholder="Crie uma Senha">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <input type="number" id="n-for" placeholder="Força (Ex: 2)">
-            <input type="number" id="n-def" placeholder="Defesa Base (Ex: 10)">
-            <input type="number" id="n-pv" placeholder="PV Máximo (Ex: 20)">
-            <input type="number" id="n-pm" placeholder="PM Máximo (Ex: 10)">
-            <input type="number" id="n-tib" placeholder="Tibares (Ex: 100)">
+            <input type="number" id="n-for" placeholder="💪 Força (Ex: 2)">
+            <input type="number" id="n-def" placeholder="🛡️ Defesa Base (Ex: 10)">
+            <input type="number" id="n-pv" placeholder="❤️ PV Máximo (Ex: 20)">
+            <input type="number" id="n-pm" placeholder="💙 PM Máximo (Ex: 10)">
+            <input type="number" id="n-tib" placeholder="💰 Tibares (Ex: 100)">
         </div>
-        <label style="margin-top:10px; display:block; color:#666; font-weight:bold;">O personagem prepara magias?</label>
+        <label style="margin-top:10px; display:block; color:#666; font-weight:bold;">✨ O personagem prepara magias?</label>
         <select id="n-prepara">
             <option value="nao">Não</option>
             <option value="sim">Sim</option>
         </select>
-        <button class="btn-grande" onclick="criarHeroi()">Criar Ficha</button>
-        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-criar')">Cancelar</button>
+        <button class="btn-grande" onclick="criarHeroi()">⚒️ Criar Ficha</button>
+        <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-criar')">❌ Cancelar</button>
     </div>
 </div>
 <div id="modal-compendio" class="modal">
     <div class="modal-content">
-        <h3 id="titulo-compendio">   Biblioteca Global</h3>
+        <h3 id="titulo-compendio">📚 Biblioteca Global</h3>
         <p id="subtitulo-compendio" style="text-align:center; font-size:0.9em; color:#555">Base de dados compartilhada.</p>
         <div id="lista-compendio" style="max-height: 400px; overflow-y: auto;"></div>
-        <button class="btn-grande" onclick="fecharModal('modal-compendio')">Fechar</button>
+        <button class="btn-grande" onclick="fecharModal('modal-compendio')">✖️ Fechar</button>
     </div>
 </div>
-<button class="btn-add" id="btn-flutuante" style="display:none" onclick="abrirModal('modal-item')">+</button>
+<button class="btn-add" id="btn-flutuante" style="display:none" onclick="abrirModal('modal-item')">➕</button>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
@@ -666,45 +666,42 @@
     let modoMestreAtivo = false;
     let listenerHeroi = null;
     
-    // --- NOVO: REGRAS GLOBAIS ---
+    // --- REGRAS GLOBAIS ---
     let regrasGlobais = { pesoMoeda: false };
     
     // Escuta mudanças nas regras (Tempo Real)
     db.collection("configuracoes").doc("geral").onSnapshot((doc) => {
         if (doc.exists) {
             regrasGlobais = doc.data();
-            // Atualiza UI do Mestre se estiver visível
             const chk = document.getElementById('chk-regras-moeda');
             if(chk) chk.checked = regrasGlobais.pesoMoeda;
-            
-            // Recalcula para o jogador em tempo real
             if(heroiAtivo) renderTudo();
         } else {
-            // Cria padrão se não existir
             db.collection("configuracoes").doc("geral").set({ pesoMoeda: false });
         }
     });
 
-    // Função para o mestre alterar a regra
     async function toggleRegraMoeda() {
         const estado = document.getElementById('chk-regras-moeda').checked;
         await db.collection("configuracoes").doc("geral").set({ pesoMoeda: estado }, { merge: true });
     }
 
     const categoriasNomes = {
-        'mundanos': '   Itens Mundanos',
-        'armaduras': '   Armaduras e Escudos',
-        'armas': '   Armas',
-        'pocoes': '   Poções',
-        'pergaminhos': '   Pergaminhos',
-        'magicos': '   Itens Mágicos'
+        'mundanos': '🛍️ Itens Mundanos',
+        'armaduras': '🛡️ Armaduras e Escudos',
+        'armas': '⚔️ Armas',
+        'pocoes': '🧪 Poções',
+        'pergaminhos': '📜 Pergaminhos',
+        'magicos': '✨ Itens Mágicos'
     };
+
     function formatarAprimoramento(texto) {
         if (!texto) return '';
         let formatado = texto.replace(/(\+\s*\b(?:[1-9]|[1-2][0-9]|30)\b\s*PM)/gi, '<br><br><b>$1</b>');
         formatado = formatado.replace(/^(?:<br\s*\/?>\s*)+/, '');
-        return `<div style="background:#fdfaf3;padding:10px;border-left:4px solid var(--cor-detalhe);margin-top:10px; color:#5d4037;"><b>   Aprimoramentos:</b><br>${formatado}</div>`;
+        return `<div style="background:#fdfaf3;padding:10px;border-left:4px solid var(--cor-detalhe);margin-top:10px; color:#5d4037;"><b>✨ Aprimoramentos:</b><br>${formatado}</div>`;
     }
+
     function renderTudo() {
         if(!heroiAtivo) return;
         document.getElementById('nome-exibicao').innerText = heroiAtivo.nome;
@@ -722,15 +719,16 @@
         document.getElementById('v-pm-max').innerText = heroiAtivo.pmMax;
         if (pv <= limiteMorte) {
             cardPv.classList.add('estado-morto');
-            lblPv.innerText = "   MORTO";
+            lblPv.innerText = "💀 MORTO";
         } else {
             cardPv.classList.remove('estado-morto');
-            lblPv.innerText = "VIDA (PV)";
+            lblPv.innerText = "❤️ VIDA (PV)";
         }
         const defBase = heroiAtivo.defesaBase !== undefined ? heroiAtivo.defesaBase : (heroiAtivo.defesa || 10);
         const defAtual = heroiAtivo.defesaAtual !== undefined ? heroiAtivo.defesaAtual : defBase;
         document.getElementById('v-def').innerText = defAtual;
         document.getElementById('v-def-base').innerText = defBase;
+
         // Render Magias
         const g = document.getElementById('magias-lista');
         g.innerHTML = "";
@@ -744,9 +742,9 @@
             let btnPrep = '';
             if(heroiAtivo.preparaMagias) {
                 if(isPrep) {
-                    btnPrep = `<button onclick="togglePrepararMagia('${m.nome}'); event.stopPropagation();" style="background:#4a6572;color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;margin-right:10px;font-size:0.8em">Despreparar</button>`;
+                    btnPrep = `<button onclick="togglePrepararMagia('${m.nome}'); event.stopPropagation();" style="background:#4a6572;color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;margin-right:10px;font-size:0.8em">➖ Despreparar</button>`;
                 } else {
-                    btnPrep = `<button onclick="togglePrepararMagia('${m.nome}'); event.stopPropagation();" style="background:var(--cor-detalhe);color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;margin-right:10px;font-size:0.8em">Preparar</button>`;
+                    btnPrep = `<button onclick="togglePrepararMagia('${m.nome}'); event.stopPropagation();" style="background:var(--cor-detalhe);color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;margin-right:10px;font-size:0.8em">⭐ Preparar</button>`;
                 }
             }
 
@@ -755,12 +753,12 @@
             <div class="magia-container">
             <div class="magia-header-click" onclick="toggleMagia(${idx})">
             <div>
-            <b style="font-size:1.1em">${m.nome}</b><br>
+            <b style="font-size:1.1em">✨ ${m.nome}</b><br>
             <small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small>
             </div>
             <div>
             ${btnPrep}
-            <button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">  </button>
+            <button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">🗑️</button>
             </div>
             </div>
             <div id="magia-info-${idx}" class="magia-conteudo-oculto">
@@ -770,6 +768,7 @@
             </div>
             </div>`;
         });
+
         // Render Magias Preparadas
         const pList = document.getElementById('magias-preparadas-lista');
         if(heroiAtivo.preparaMagias && pList) {
@@ -782,13 +781,14 @@
                     pList.innerHTML += `
                     <div class="magia-container" style="border-left: 4px solid var(--cor-pm);">
                     <div style="padding:15px; display:flex; justify-content:space-between; align-items:center; background:#fff;">
-                    <div><b style="font-size:1.1em">${m.nome}</b><br><small>${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
-                    <button onclick="togglePrepararMagia('${m.nome}')" style="background:#d32f2f;color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-weight:bold;font-size:0.8em;">Remover</button>
+                    <div><b style="font-size:1.1em">✨ ${m.nome}</b><br><small>${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
+                    <button onclick="togglePrepararMagia('${m.nome}')" style="background:#d32f2f;color:white;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-weight:bold;font-size:0.8em;">➖ Remover</button>
                     </div>
                     </div>`;
                 });
             }
         }
+
         // Render Inventário
         const iL = document.getElementById('itens-lista');
         iL.innerHTML = "";
@@ -809,56 +809,51 @@
                 iL.innerHTML += `<div class="categoria-titulo">${categoriasNomes[catKey]}</div>`;
                 lista.forEach(it => {
                     let iconState = "";
-                    if(it.estado === 'vestido') iconState = `<span class="badge badge-vestido">   VESTIDO</span>`;
-                    if(it.estado === 'empunhado') iconState = `<span class="badge badge-empunhado">   EMPUNHADO</span>`;
+                    if(it.estado === 'vestido') iconState = `<span class="badge badge-vestido">👕 VESTIDO</span>`;
+                    if(it.estado === 'empunhado') iconState = `<span class="badge badge-empunhado">⚔️ EMPUNHADO</span>`;
 
                     let iconLocal = "";
-                    if(it.localizacao === 'ajudante') iconLocal = `<span class="badge badge-ajudante">   ${it.nomeAjudante || 'Ajudante'}</span>`;
-                    if(it.localizacao === 'tesouro') iconLocal = `<span class="badge badge-ajudante">   No Tesouro</span>`;
+                    if(it.localizacao === 'ajudante') iconLocal = `<span class="badge badge-ajudante">🤝 ${it.nomeAjudante || 'Ajudante'}</span>`;
+                    if(it.localizacao === 'tesouro') iconLocal = `<span class="badge badge-ajudante">💰 No Tesouro</span>`;
                     iL.innerHTML += `
                     <div class="item-card" onclick="verItemDetalhe(${it.originalIndex})">
                     <div>
                     <b style="font-size:1.1em">${it.nome}</b> ${iconState} ${iconLocal}<br>
                     <span style="color:#666">${it.qtd}x • ${it.espacos || 1} slots</span>
                     </div>
-                    <button onclick="removerAlgo('itens', ${it.originalIndex}); event.stopPropagation();" style="color:#d32f2f;border:none;background:none;font-size:22px;cursor:pointer">  </button>
+                    <button onclick="removerAlgo('itens', ${it.originalIndex}); event.stopPropagation();" style="color:#d32f2f;border:none;background:none;font-size:22px;cursor:pointer">🗑️</button>
                     </div>`;
                 });
             }
         });
 
-        if(heroiAtivo.itens.length === 0) iL.innerHTML = "<p style='text-align:center; color:#777; margin-top:20px'>Mochila vazia.</p>";
+        if(heroiAtivo.itens.length === 0) iL.innerHTML = "<p style='text-align:center; color:#777; margin-top:20px'>🎒 Mochila vazia.</p>";
         
-        // --- CÁLCULO DE CARGA CONDICIONAL (REGRAS) ---
+        // CÁLCULO DE CARGA CONDICIONAL
         let pesoMoedas = 0;
-        
-        // Só calcula se a regra estiver ativa pelo Mestre
         if (regrasGlobais.pesoMoeda) {
             pesoMoedas = Math.floor((heroiAtivo.tibares || 0) / 1000);
         }
 
         const pesoTotal = slotsUsados + pesoMoedas;
-
-        // CÁLCULO CAPACIDADE
         const forca = Number(heroiAtivo.forca) || 0;
         const bonusCarga = Number(heroiAtivo.bonusCarga) || 0;
         const cargaMax = 10 + (2 * forca) + bonusCarga;
 
-        // Atualiza barra visual
         const barraCarga = document.getElementById('barra-carga');
         if (barraCarga) {
             let corBarra = pesoTotal > cargaMax ? '#d32f2f' : 'var(--cor-borda)';
             barraCarga.style.background = corBarra;
-            
             let infoMoedas = (regrasGlobais.pesoMoeda && pesoMoedas > 0) ? ` <small>(+${pesoMoedas} das moedas)</small>` : '';
             barraCarga.innerHTML = `
-                <div style="font-size: 1.1em;">   CARGA: ${pesoTotal} / ${cargaMax}</div>
+                <div style="font-size: 1.1em;">⚖️ CARGA: ${pesoTotal} / ${cargaMax}</div>
                 <div style="font-size: 0.75em; opacity: 0.9; margin-top: 5px;">
                     Capacidade: 10 + (2x Força ${forca}) + Bônus ${bonusCarga}${infoMoedas}
                 </div>
             `;
         }
     }
+
     async function togglePrepararMagia(nomeMagia) {
         if(!heroiAtivo.magiasPreparadas) heroiAtivo.magiasPreparadas = [];
         const pos = heroiAtivo.magiasPreparadas.indexOf(nomeMagia);
@@ -867,6 +862,7 @@
         await db.collection("personagens").doc(heroiAtivo.id).update({magiasPreparadas: heroiAtivo.magiasPreparadas});
         renderTudo();
     }
+
     function limparFormularioItem() {
         document.getElementById('edit-id-global').value = "";
         document.getElementById('edit-index-local').value = "";
@@ -888,22 +884,23 @@
         document.getElementById('i-publico').checked = false;
         toggleNomeAjudante();
     }
+
     function verItemDetalhe(idx) {
         const item = heroiAtivo.itens[idx];
         document.getElementById('detalhe-item-index').value = idx;
         document.getElementById('detalhe-titulo-item').innerText = item.nome;
-        document.getElementById('detalhe-badge-cat').innerText = categoriasNomes[item.categoria] || 'Item';
+        document.getElementById('detalhe-badge-cat').innerText = categoriasNomes[item.categoria] || '📦 Item';
         document.getElementById('detalhe-desc-item').innerText = item.desc || "Sem descrição.";
         document.getElementById('detalhe-qtd').innerText = item.qtd;
         document.getElementById('detalhe-espacos').innerText = item.espacos || 1;
 
-        let txtEstado = "Estado: Guardado";
-        if(item.estado === 'vestido') txtEstado = "Estado:    Vestido (+ Bônus Ativo)";
-        if(item.estado === 'empunhado') txtEstado = "Estado:    Empunhado";
+        let txtEstado = "Estado: 🎒 Guardado";
+        if(item.estado === 'vestido') txtEstado = "Estado: 👕 Vestido (+ Bônus Ativo)";
+        if(item.estado === 'empunhado') txtEstado = "Estado: ⚔️ Empunhado";
         document.getElementById('detalhe-estado-txt').innerText = txtEstado;
-        let txtLocal = "Local: Com Personagem";
-        if(item.localizacao === 'ajudante') txtLocal = `Local:    Com ${item.nomeAjudante || 'Ajudante'}`;
-        if(item.localizacao === 'tesouro') txtLocal = "Local:    No Tesouro";
+        let txtLocal = "📍 Local: Com Personagem";
+        if(item.localizacao === 'ajudante') txtLocal = `📍 Local: 🤝 Com ${item.nomeAjudante || 'Ajudante'}`;
+        if(item.localizacao === 'tesouro') txtLocal = "📍 Local: 💰 No Tesouro";
         document.getElementById('detalhe-local-txt').innerText = txtLocal;
         const btnUsar = document.getElementById('btn-usar-item');
         if (item.categoria === 'pocoes' || item.categoria === 'pergaminhos') btnUsar.style.display = 'block';
@@ -911,10 +908,11 @@
 
         abrirModal('modal-detalhe-item');
     }
+
     async function usarItemAtual() {
         const idx = document.getElementById('detalhe-item-index').value;
         const item = heroiAtivo.itens[idx];
-        if(confirm(`Deseja usar 1x ${item.nome}?`)) {
+        if(confirm(`🧪 Deseja usar 1x ${item.nome}?`)) {
             item.qtd--;
             if(item.qtd <= 0) {
                 heroiAtivo.itens.splice(idx, 1);
@@ -924,10 +922,11 @@
             renderTudo();
         }
     }
+
     async function enviarParaTesouro() {
         const idx = document.getElementById('detalhe-item-index').value;
         const item = heroiAtivo.itens[idx];
-        if(confirm(`Enviar ${item.nome} para o Tesouro do Grupo?`)) {
+        if(confirm(`💰 Enviar ${item.nome} para o Tesouro do Grupo?`)) {
             const itemTesouro = {...item};
             itemTesouro.localizacao = 'tesouro';
             delete itemTesouro.estado; delete itemTesouro.nomeAjudante;
@@ -936,18 +935,19 @@
             heroiAtivo.itens.splice(idx, 1);
             await db.collection("personagens").doc(heroiAtivo.id).update({itens: heroiAtivo.itens});
 
-            alert("Item enviado para o Baú!");
+            alert("💰 Item enviado para o Baú!");
             fecharModal('modal-detalhe-item');
             renderTudo();
         }
     }
+
     function editarItemAtual() {
         const idx = document.getElementById('detalhe-item-index').value;
         const item = heroiAtivo.itens[idx];
         fecharModal('modal-detalhe-item');
         abrirModal('modal-item');
 
-        document.getElementById('modal-titulo').innerText = "Editar Item";
+        document.getElementById('modal-titulo').innerText = "✏️ Editar Item";
         document.getElementById('edit-index-local').value = idx;
         document.getElementById('tipo-registro').value = 'item';
         document.getElementById('nome-reg').value = item.nome;
@@ -965,25 +965,26 @@
         document.getElementById('div-enviar-arsenal').style.display = 'flex';
         ajustarCampos();
     }
+
     async function abrirTesouroGrupo() {
         abrirModal('modal-compendio');
-        document.getElementById('titulo-compendio').innerText = "   Tesouro do Grupo";
+        document.getElementById('titulo-compendio').innerText = "💰 Tesouro do Grupo";
         document.getElementById('subtitulo-compendio').innerText = "Itens compartilhados. Não ocupam espaço.";
 
         const snap = await db.collection("tesouro_grupo").orderBy('nome').get();
         const lista = document.getElementById('lista-compendio');
         lista.innerHTML = "";
 
-        if(snap.empty) { lista.innerHTML = "<p style='text-align:center'>O baú está vazio.</p>"; return; }
+        if(snap.empty) { lista.innerHTML = "<p style='text-align:center'>🎒 O baú está vazio.</p>"; return; }
 
         snap.forEach(doc => {
             const m = doc.data(); const id = doc.id;
-            let btns = heroiAtivo ? `<button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick='pegarDoTesouro("${id}", ${JSON.stringify(m)})'>   Pegar</button>` : `<small>Apenas Jogadores</small>`;
+            let btns = heroiAtivo ? `<button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick='pegarDoTesouro("${id}", ${JSON.stringify(m)})'>🤝 Pegar</button>` : `<small>Apenas Jogadores</small>`;
 
             lista.innerHTML += `
             <div style="background:white;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || 'Item'}</span></div>
+            <div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || '📦 Item'}</span></div>
             <div>${btns}</div>
             </div>
             <p style="font-size:0.9em; margin:5px 0">${m.desc}</p>
@@ -991,9 +992,10 @@
             </div>`;
         });
     }
+
     async function pegarDoTesouro(idDoc, itemData) {
         if(!heroiAtivo) return;
-        if(confirm(`Pegar ${itemData.nome} do baú?`)) {
+        if(confirm(`🤝 Pegar ${itemData.nome} do baú?`)) {
             const novoItem = {...itemData};
             novoItem.localizacao = 'personagem';
             heroiAtivo.itens.push(novoItem);
@@ -1001,11 +1003,12 @@
             await db.collection("tesouro_grupo").doc(idDoc).delete();
             await db.collection("personagens").doc(heroiAtivo.id).update({ itens: heroiAtivo.itens });
 
-            alert("Item retirado do baú!");
+            alert("✅ Item retirado do baú!");
             abrirTesouroGrupo();
             renderTudo();
         }
     }
+
     async function salvarNovo() {
         const tipo = document.getElementById('tipo-registro').value;
         const globalId = document.getElementById('edit-id-global').value;
@@ -1015,7 +1018,7 @@
             nome: document.getElementById('nome-reg').value,
             desc: document.getElementById('desc-reg').value
         };
-        if(!d.nome) return alert("O nome é obrigatório!");
+        if(!d.nome) return alert("❌ O nome é obrigatório!");
         if (tipo === 'magia') {
             d.escola = document.getElementById('m-escola').value;
             d.circulo = document.getElementById('m-circulo').value;
@@ -1027,7 +1030,7 @@
             d.resistencia = document.getElementById('m-resistencia').value;
             if (globalId) {
                 await db.collection("magias_globais").doc(globalId).update(d);
-                alert("Magia Global atualizada!");
+                alert("✅ Magia Global atualizada!");
             } else {
                 if (modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Biblioteca")) {
                     await db.collection("magias_globais").add(d);
@@ -1052,24 +1055,24 @@
                         if (it.estado === 'vestido') countVestidos++;
                     }
                 });
-                if(countVestidos >= 4) return alert("Você já tem 4 itens vestidos! Remova um antes.");
+                if(countVestidos >= 4) return alert("👕 Você já tem 4 itens vestidos! Remova um antes.");
             }
             if(d.localizacao === 'ajudante') {
                 d.nomeAjudante = document.getElementById('i-nome-ajudante').value;
-                if(!d.nomeAjudante) return alert("Informe o nome do Ajudante!");
+                if(!d.nomeAjudante) return alert("🤝 Informe o nome do Ajudante!");
             }
             if (globalId) {
                 delete d.estado;
                 delete d.localizacao; delete d.nomeAjudante;
                 await db.collection("itens_globais").doc(globalId).update(d);
-                alert("Item Global atualizado!");
+                alert("✅ Item Global atualizado!");
             } else if (localIndex !== "") {
                 heroiAtivo.itens[localIndex] = d;
                 if(document.getElementById('i-publico').checked) {
                     const copy = {...d};
                     delete copy.estado; delete copy.localizacao; delete copy.nomeAjudante;
                     await db.collection("itens_globais").add(copy);
-                    alert("Cópia enviada ao Arsenal Global!");
+                    alert("🌐 Cópia enviada ao Arsenal Global!");
                 }
             } else {
                 const enviarArsenal = document.getElementById('i-publico').checked;
@@ -1089,7 +1092,7 @@
         }
         if(heroiAtivo && !globalId) await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         if(localIndex === "" && !globalId && !document.getElementById('modal-titulo').innerText.includes("Global") && !modoMestreAtivo) {
-            alert("Salvo com sucesso!");
+            alert("✅ Salvo com sucesso!");
             limparFormularioItem();
         } else {
             fecharModal('modal-item');
@@ -1099,6 +1102,7 @@
             if(tipo === 'item') abrirArsenal();
         }
     }
+
     function deslogar() {
         if(listenerHeroi) { listenerHeroi(); listenerHeroi = null; }
         heroiAtivo = null; modoMestreAtivo = false;
@@ -1106,10 +1110,11 @@
         document.getElementById('tela-login').style.display = 'block';
         document.getElementById('btn-flutuante').style.display = 'none';
     }
+
     async function validarJogador(viaMestre) {
         const docRef = db.collection("personagens").doc(idTemp);
         const doc = await docRef.get();
-        if (!doc.exists) return alert("Erro no personagem.");
+        if (!doc.exists) return alert("❌ Erro no personagem.");
         if(viaMestre || doc.data().senha === document.getElementById('pass-jogador').value) {
             listenerHeroi = docRef.onSnapshot((snapshot) => {
                 if (snapshot.exists) { heroiAtivo = { id: snapshot.id, ...snapshot.data() }; renderTudo(); }
@@ -1120,18 +1125,19 @@
             document.getElementById('tela-mochila').style.display = 'block';
             document.getElementById('btn-flutuante').style.display = 'block';
             document.getElementById('btn-mestre-voltar').style.display = modoMestreAtivo ? 'block' : 'none';
-        } else alert("Senha incorreta!");
+        } else alert("❌ Senha incorreta!");
     }
+
     async function validarMestre() {
         if(document.getElementById('pass-mestre').value === "mestre123") {
             modoMestreAtivo = true;
             fecharModal('modal-login-mestre'); mostrarPainelMestre();
-            // Atualiza o estado visual do botão quando o mestre loga
             if(document.getElementById('chk-regras-moeda')) {
                 document.getElementById('chk-regras-moeda').checked = regrasGlobais.pesoMoeda;
             }
-        } else alert("Senha inválida!");
+        } else alert("❌ Senha inválida!");
     }
+
     function mostrarPainelMestre() {
         if(listenerHeroi) { listenerHeroi(); listenerHeroi = null; }
         document.querySelectorAll('.tela').forEach(t => t.style.display = 'none');
@@ -1144,25 +1150,26 @@
                 if(pvCalc < 0) pvCalc = 0;
                 const perPV = Math.min((pvCalc / h.pvMax) * 100, 100);
                 const perPM = Math.min((h.pm / h.pmMax) * 100, 100);
-                const mortoLbl = h.pv <= -Math.floor(h.pvMax/2) ? '<span style="color:red; font-weight:bold"> (MORTO)</span>' : '';
+                const mortoLbl = h.pv <= -Math.floor(h.pvMax/2) ? '<span style="color:red; font-weight:bold"> 💀 (MORTO)</span>' : '';
                 grid.innerHTML += `
                 <div class="monitor-mestre-card">
                 <div class="monitor-header">
                 <div>
                 <b>${h.nome} ${mortoLbl}</b><br>
-                <small style="color:#666; font-weight:normal">Senha: ${h.senha}</small>
+                <small style="color:#666; font-weight:normal">🔑 Senha: ${h.senha}</small>
                 </div>
                 <div style="display:flex; gap:5px;">
-                <button onclick="idTemp='${doc.id}'; validarJogador(true)" style="background:var(--cor-borda);color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">ABRIR</button>
-                <button onclick="deletarPersonagem('${doc.id}', '${h.nome}')" style="background:#d32f2f;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">X</button>
+                <button onclick="idTemp='${doc.id}'; validarJogador(true)" style="background:var(--cor-borda);color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">👁️ ABRIR</button>
+                <button onclick="deletarPersonagem('${doc.id}', '${h.nome}')" style="background:#d32f2f;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">🗑️</button>
                 </div>
                 </div>
-                <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPV}%; background:var(--cor-pv)"></div><div class="bar-label">${h.pv} / ${h.pvMax} PV</div></div>
-                <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPM}%; background:var(--cor-pm)"></div><div class="bar-label">${h.pm} / ${h.pmMax} PM</div></div>
+                <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPV}%; background:var(--cor-pv)"></div><div class="bar-label">❤️ ${h.pv} / ${h.pvMax} PV</div></div>
+                <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPM}%; background:var(--cor-pm)"></div><div class="bar-label">💙 ${h.pm} / ${h.pmMax} PM</div></div>
                 </div>`;
             });
         });
     }
+
     async function aplicarCalculo() {
         const val = Number(document.getElementById('calc-input').value);
         if(isNaN(val)) return;
@@ -1181,22 +1188,25 @@
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         fecharModal('modal-calculadora');
     }
+
     function toggleNomeAjudante() {
         const val = document.getElementById('i-localizacao').value;
         document.getElementById('i-nome-ajudante').style.display = val === 'ajudante' ? 'block' : 'none';
     }
+
     async function abrirTransferencia() {
         fecharModal('modal-detalhe-item');
         const select = document.getElementById('select-destinatario');
-        select.innerHTML = "<option>Carregando...</option>";
+        select.innerHTML = "<option>⏳ Carregando...</option>";
         abrirModal('modal-transferir');
 
         const snap = await db.collection("personagens").get();
         select.innerHTML = "";
         snap.forEach(doc => {
-            if(doc.id !== heroiAtivo.id) select.innerHTML += `<option value="${doc.id}">${doc.data().nome}</option>`;
+            if(doc.id !== heroiAtivo.id) select.innerHTML += `<option value="${doc.id}">⚔️ ${doc.data().nome}</option>`;
         });
     }
+
     async function confirmarTransferencia() {
         const idx = document.getElementById('detalhe-item-index').value;
         const targetId = document.getElementById('select-destinatario').value;
@@ -1218,6 +1228,7 @@
         fecharModal('modal-transferir');
         renderTudo();
     }
+
     async function criarHeroi() {
         const p = {
             nome: document.getElementById('n-nome').value,
@@ -1236,13 +1247,21 @@
             bonusCargaDesc: "",
             magias: [], magiasPreparadas: [], itens: []
         };
-        if(!p.nome || !p.senha) return alert("Preencha o nome e a senha obrigatórios!");
+        if(!p.nome || !p.senha) return alert("❌ Preencha o nome e a senha obrigatórios!");
         await db.collection("personagens").add(p);
         location.reload();
     }
-    async function abrirCompendio() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "   Biblioteca Global"; carregarGlobal('magias_globais', 'magia');
+
+    async function abrirCompendio() {
+        abrirModal('modal-compendio');
+        document.getElementById('titulo-compendio').innerText = "📚 Biblioteca Global";
+        carregarGlobal('magias_globais', 'magia');
     }
-    async function abrirArsenal() { abrirModal('modal-compendio'); document.getElementById('titulo-compendio').innerText = "   Arsenal Global"; carregarGlobal('itens_globais', 'item');
+
+    async function abrirArsenal() {
+        abrirModal('modal-compendio');
+        document.getElementById('titulo-compendio').innerText = "⚔️ Arsenal Global";
+        carregarGlobal('itens_globais', 'item');
     }
 
     async function carregarGlobal(col, type) {
@@ -1254,7 +1273,7 @@
             lista.innerHTML += `
             <button class="btn-grande" style="background:var(--cor-detalhe); margin-bottom:15px;"
             onclick="fecharModal('modal-compendio'); abrirModal('modal-item'); document.getElementById('tipo-registro').value='${type}'; ajustarCampos();">
-            + CADASTRAR NOVO (MESTRE)
+            ➕ CADASTRAR NOVO (MESTRE)
             </button>`;
         }
         let i = 0;
@@ -1275,12 +1294,12 @@
                 const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
                 botoesAcao = `
                 <div style="display:flex; gap:5px;">
-                <button class="aba-btn" style="padding:5px; background:#4a6572; color:white;" onclick="editarGlobal('${doc.id}', '${col}', '${type}', ${safeData}); event.stopPropagation();">  </button>
-                <button class="aba-btn" style="padding:5px; background:#d32f2f; color:white;" onclick="excluirGlobal('${doc.id}', '${col}', '${type}'); event.stopPropagation();">  </button>
+                <button class="aba-btn" style="padding:5px; background:#4a6572; color:white;" onclick="editarGlobal('${doc.id}', '${col}', '${type}', ${safeData}); event.stopPropagation();">✏️</button>
+                <button class="aba-btn" style="padding:5px; background:#d32f2f; color:white;" onclick="excluirGlobal('${doc.id}', '${col}', '${type}'); event.stopPropagation();">🗑️</button>
                 </div>`;
             } else {
                 const safeData = JSON.stringify(m).replace(/"/g, '&quot;');
-                botoesAcao = `<button class="aba-btn ativa" style="padding:5px" onclick="aprenderGlobal(${safeData}, '${type}'); event.stopPropagation();">+ Adicionar</button>`;
+                botoesAcao = `<button class="aba-btn ativa" style="padding:5px" onclick="aprenderGlobal(${safeData}, '${type}'); event.stopPropagation();">➕ Adicionar</button>`;
             }
             lista.innerHTML += `
             <div style="background:white; margin-bottom:8px; border-radius:8px; border:1px solid #ddd; overflow:hidden;">
@@ -1297,16 +1316,20 @@
             </div>`;
         });
     }
+
     async function aprenderGlobal(obj, tipo) {
-        if(!heroiAtivo) return alert("Somente acessando a ficha de um personagem para adicionar algo a ela!");
+        if(!heroiAtivo) return alert("⚔️ Somente acessando a ficha de um personagem para adicionar algo a ela!");
         const novo = {...obj};
         if(tipo === 'magia') heroiAtivo.magias.push(novo);
         else heroiAtivo.itens.push(novo);
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
-        alert("Adicionado com sucesso!"); renderTudo();
+        alert("✅ Adicionado com sucesso!"); renderTudo();
     }
-    async function deletarPersonagem(id, nome) { if(confirm("Deletar " + nome + "?")) await db.collection("personagens").doc(id).delete();
+
+    async function deletarPersonagem(id, nome) {
+        if(confirm("🗑️ Deletar " + nome + "?")) await db.collection("personagens").doc(id).delete();
     }
+
     async function salvarEdicaoPerfil() {
         heroiAtivo.nome = document.getElementById('e-nome').value;
         heroiAtivo.nivel = Number(document.getElementById('e-nv').value);
@@ -1317,16 +1340,16 @@
         if(heroiAtivo.defesaAtual === undefined) heroiAtivo.defesaAtual = heroiAtivo.defesaBase;
         heroiAtivo.tibares = Number(document.getElementById('e-tib').value);
         heroiAtivo.preparaMagias = document.getElementById('e-prepara').value === 'sim';
-        // NOVOS CAMPOS DE BÔNUS
         heroiAtivo.bonusCarga = Number(document.getElementById('e-bonus-carga').value);
         heroiAtivo.bonusCargaDesc = document.getElementById('e-bonus-desc').value;
 
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         fecharModal('modal-editar-perfil');
     }
+
     function abrirModal(id) {
         if(id === 'modal-item') {
-            document.getElementById('modal-titulo').innerText = "Novo Registro";
+            document.getElementById('modal-titulo').innerText = "📝 Novo Registro";
             document.getElementById('div-enviar-arsenal').style.display = 'flex';
             limparFormularioItem();
         }
@@ -1339,17 +1362,21 @@
             document.getElementById('e-def-base').value = heroiAtivo.defesaBase || 10;
             document.getElementById('e-tib').value = heroiAtivo.tibares;
             document.getElementById('e-prepara').value = heroiAtivo.preparaMagias ? 'sim' : 'nao';
-            
-            // CARREGAR BÔNUS
             document.getElementById('e-bonus-carga').value = heroiAtivo.bonusCarga || 0;
             document.getElementById('e-bonus-desc').value = heroiAtivo.bonusCargaDesc || "";
         }
         document.getElementById(id).style.display = 'flex';
     }
-    function fecharModal(id) { document.getElementById(id).style.display = 'none';
+
+    function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function abrirCalculadora(c, t) {
+        campoAtual = c;
+        document.getElementById('calc-input').value = "";
+        document.getElementById('calc-titulo').innerText = t;
+        abrirModal('modal-calculadora');
     }
-    function abrirCalculadora(c, t) { campoAtual = c; document.getElementById('calc-input').value = ""; document.getElementById('calc-titulo').innerText = t; abrirModal('modal-calculadora');
-    }
+
     function mudarAba(aba) {
         document.getElementById('conteudo-grimorio').style.display = aba === 'grimorio' ? 'block' : 'none';
         document.getElementById('conteudo-inventario').style.display = aba === 'inventario' ? 'block' : 'none';
@@ -1358,31 +1385,44 @@
         document.getElementById('btn-aba-i').classList.toggle('ativa', aba === 'inventario');
         document.getElementById('btn-aba-p').classList.toggle('ativa', aba === 'preparadas');
     }
-    function toggleMagia(i) { const el = document.getElementById(`magia-info-${i}`); el.style.display = el.style.display === 'block' ? 'none' : 'block';
+
+    function toggleMagia(i) {
+        const el = document.getElementById(`magia-info-${i}`);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
     }
-    async function removerAlgo(c, i) { if(confirm("Remover permanentemente?")) { heroiAtivo[c].splice(i, 1); await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
-    } }
+
+    async function removerAlgo(c, i) {
+        if(confirm("🗑️ Remover permanentemente?")) {
+            heroiAtivo[c].splice(i, 1);
+            await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
+        }
+    }
+
     function ajustarCampos() {
         document.getElementById('campos-magia').style.display = document.getElementById('tipo-registro').value === 'magia' ? 'block' : 'none';
         document.getElementById('campos-item').style.display = document.getElementById('tipo-registro').value === 'item' ? 'block' : 'none';
     }
+
     async function carregarListaJogadores() {
         const snap = await db.collection("personagens").get();
-        const div = document.getElementById('lista-jogadores-login'); div.innerHTML = "";
+        const div = document.getElementById('lista-jogadores-login');
+        div.innerHTML = "";
         if(snap.empty) div.innerHTML = "<p>Nenhum herói registrado.</p>";
-        snap.forEach(doc => div.innerHTML += `<button class="btn-grande" style="background:white;color:#3e2723" onclick="idTemp='${doc.id}';abrirModal('modal-login-jogador');"><b>${doc.data().nome}</b></button>`);
+        snap.forEach(doc => div.innerHTML += `<button class="btn-grande" style="background:white;color:#3e2723" onclick="idTemp='${doc.id}';abrirModal('modal-login-jogador');"><b>⚔️ ${doc.data().nome}</b></button>`);
     }
+
     async function excluirGlobal(id, col, type) {
-        if(confirm("ATENÇÃO MESTRE:\nDeseja apagar este registro permanentemente do banco de dados global?\nIsso não remove das fichas que já pegaram o item/magia.")) {
+        if(confirm("⚠️ ATENÇÃO MESTRE:\nDeseja apagar este registro permanentemente do banco de dados global?\nIsso não remove das fichas que já pegaram o item/magia.")) {
             await db.collection(col).doc(id).delete();
             if(type === 'magia') abrirCompendio();
             else abrirArsenal();
         }
     }
+
     function editarGlobal(id, col, type, data) {
         fecharModal('modal-compendio');
         abrirModal('modal-item');
-        document.getElementById('modal-titulo').innerText = "Editar Registro Global";
+        document.getElementById('modal-titulo').innerText = "✏️ Editar Registro Global";
         document.getElementById('edit-id-global').value = id;
         document.getElementById('edit-index-local').value = "";
         document.getElementById('tipo-registro').value = type;
