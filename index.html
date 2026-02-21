@@ -133,8 +133,9 @@
         </div>
     </div>
     <div class="tibares-card" onclick="abrirModal('modal-tibares')">
-        🥇 Ouro: <span id="stat-tib-ouro">0</span> • 🥈 Prata: <span id="stat-tib-prata">0</span>
+        🥇 TO: <span id="stat-tib-ouro">0</span> • 🥈 T: <span id="stat-tib-prata">0</span>
     </div>
+    <button class="btn-grande" style="background:#4a6572; margin-top:8px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter Moedas</button>
     <div class="status-container-pro">
         <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '❤️ Alterar Vida')">
             <span class="status-label" id="lbl-pv" style="color:var(--cor-pv)">❤️ VIDA (PV)</span>
@@ -196,17 +197,42 @@
         <p style="text-align:center; color:#666">Use valores negativos para remover.</p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div>
-                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Ouro</label>
-                <input type="number" id="ajuste-tib-ouro" placeholder="+/- Ouro">
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥇 TO (Ouro)</label>
+                <input type="number" id="ajuste-tib-ouro" placeholder="+/- TO">
             </div>
             <div>
-                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Prata</label>
-                <input type="number" id="ajuste-tib-prata" placeholder="+/- Prata">
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥈 T (Prata)</label>
+                <input type="number" id="ajuste-tib-prata" placeholder="+/- T">
             </div>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <button class="btn-grande" style="background:#2e7d32" onclick="aplicarTibaresJogador()">✅ Confirmar</button>
             <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-tibares')">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONVERSÃO DE MOEDAS -->
+<div id="modal-conversao-moedas" class="modal">
+    <div class="modal-content">
+        <h3>🔄 Converter Moedas</h3>
+        <p style="text-align:center; color:#666">10 T = 1 TO</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Direção</label>
+                <select id="conv-dir">
+                    <option value="t_to_to">T → TO</option>
+                    <option value="to_to_t">TO → T</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Quantidade</label>
+                <input type="number" id="conv-qtd" placeholder="Ex: 20" min="1" step="1">
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="aplicarConversaoMoedas()">✅ Converter</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-conversao-moedas')">❌ Cancelar</button>
         </div>
     </div>
 </div>
@@ -730,9 +756,9 @@
         const pesoTotal = slotsUsados + pesoMoedas;
         const forca = Number(heroiAtivo.forca) || 0;
         const bonusCarga = Number(heroiAtivo.bonusCarga) || 0;
-        const cargaMax = forca >= 0
+        const cargaMax = forca > 0
             ? 10 + (2 * forca) + bonusCarga
-            : 10 - forca + bonusCarga;
+            : 10 + forca + bonusCarga;
 
         const barraCarga = document.getElementById('barra-carga');
         if (barraCarga) {
@@ -969,6 +995,21 @@
                 const perPM = Math.min((h.pm / h.pmMax) * 100, 100);
                 const mortoLbl = h.pv <= -Math.floor(h.pvMax/2) ? '<span style="color:red; font-weight:bold"> 💀 (MORTO)</span>' : '';
                 const nomeSeguro = (h.nome || '').replace(/'/g, "\\'");
+                const ouro = h.tibOuro !== undefined ? h.tibOuro : (h.tibares || 0);
+                const prata = h.tibPrata || 0;
+                let slotsUsados = 0;
+                (h.itens || []).forEach(it => {
+                    if(!it.localizacao || it.localizacao === 'personagem') {
+                        const slotsItem = it.espacos !== undefined ? Number(it.espacos) : (it.peso || 1);
+                        slotsUsados += (slotsItem * Number(it.qtd));
+                    }
+                });
+                const totalMoedas = ((h.tibOuro !== undefined ? h.tibOuro : (h.tibares || 0)) || 0) + (h.tibPrata || 0);
+                const pesoMoedas = regrasGlobais.pesoMoeda ? Math.floor(totalMoedas / 1000) : 0;
+                const bonusCarga = Number(h.bonusCarga) || 0;
+                const forca = Number(h.forca) || 0;
+                const cargaMax = forca > 0 ? 10 + (2 * forca) + bonusCarga : 10 + forca + bonusCarga;
+                const pesoTotal = slotsUsados + pesoMoedas;
                 grid.innerHTML += `
                 <div class="monitor-mestre-card">
                 <div class="monitor-header">
@@ -979,6 +1020,11 @@
                 </div></div>
                 <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPV}%; background:var(--cor-pv)"></div><div class="bar-label">❤️ ${h.pv} / ${h.pvMax} PV</div></div>
                 <div class="monitor-bar-bg"><div class="monitor-bar-fill" style="width:${perPM}%; background:var(--cor-pm)"></div><div class="bar-label">💙 ${h.pm} / ${h.pmMax} PM</div></div>
+                <div style="background:#fdfaf3; border:1px solid #bcaaa4; border-radius:8px; padding:8px; margin-top:8px; font-size:0.9em;">
+                    <div style="margin-bottom:4px;"><b>Moedas:</b> 🥇 TO ${Number(ouro || 0).toLocaleString()} • 🥈 T ${Number(prata || 0).toLocaleString()}</div>
+                    <div><b>Carga:</b> Usada ${pesoTotal} / Máx ${cargaMax}</div>
+                    <div style="font-size:0.85em; color:#555; margin-top:3px;">Itens ${slotsUsados}${regrasGlobais.pesoMoeda ? ` • Moedas ${pesoMoedas}` : ''} • Bônus ${bonusCarga}</div>
+                </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-top:10px; padding-top:10px; border-top:1px solid #eee;">
                 <button onclick="abrirGerenciarItens('${doc.id}', '${nomeSeguro}')" style="background:#5d4037;color:white;border:none;padding:8px 4px;border-radius:5px;cursor:pointer;font-size:0.78em;font-weight:bold;">📦 Itens</button>
                 <button onclick="abrirGerenciarMagias('${doc.id}', '${nomeSeguro}')" style="background:#1565c0;color:white;border:none;padding:8px 4px;border-radius:5px;cursor:pointer;font-size:0.78em;font-weight:bold;">✨ Magias</button>
@@ -1402,6 +1448,30 @@
         document.getElementById('ajuste-tib-ouro').value = "";
         document.getElementById('ajuste-tib-prata').value = "";
         fecharModal('modal-tibares');
+        renderTudo();
+    }
+
+    async function aplicarConversaoMoedas() {
+        if (!heroiAtivo) return;
+        const dir = document.getElementById('conv-dir').value;
+        const qtd = Number(document.getElementById('conv-qtd').value);
+        if (!Number.isInteger(qtd) || qtd <= 0) { alert("❌ Informe um número inteiro positivo."); return; }
+        const ouro = heroiAtivo.tibOuro !== undefined ? Number(heroiAtivo.tibOuro) : Number(heroiAtivo.tibares || 0);
+        const prata = Number(heroiAtivo.tibPrata || 0);
+        if (dir === 't_to_to') {
+            if (qtd % 10 !== 0) { alert("❌ Para converter T → TO, o valor deve ser múltiplo de 10."); return; }
+            if (prata < qtd) { alert("❌ T insuficiente para conversão."); return; }
+            heroiAtivo.tibPrata = prata - qtd;
+            heroiAtivo.tibOuro = ouro + (Math.floor(qtd / 10));
+        } else {
+            if (ouro < qtd) { alert("❌ TO insuficiente para conversão."); return; }
+            heroiAtivo.tibOuro = ouro - qtd;
+            heroiAtivo.tibPrata = prata + (qtd * 10);
+        }
+        heroiAtivo.tibares = (heroiAtivo.tibOuro || 0) + (heroiAtivo.tibPrata || 0);
+        await db.collection("personagens").doc(heroiAtivo.id).update({ tibOuro: heroiAtivo.tibOuro, tibPrata: heroiAtivo.tibPrata, tibares: heroiAtivo.tibares });
+        document.getElementById('conv-qtd').value = "";
+        fecharModal('modal-conversao-moedas');
         renderTudo();
     }
 
