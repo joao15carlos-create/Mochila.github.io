@@ -538,17 +538,31 @@
     </div>
 </div>
 
-<!-- MODAL: GERENCIAR TIBARES DE UM JOGADOR -->
+<!-- MODAL: GERENCIAR MOEDAS DE UM JOGADOR -->
 <div id="modal-mestre-tibares" class="modal">
     <div class="modal-content">
-        <h3 id="titulo-mestre-tibares">💰 Tibares de: Jogador</h3>
-        <div style="background:var(--cor-tibares); padding:20px; border-radius:10px; text-align:center; margin:15px 0; border:2px solid #b8941f;">
+        <h3 id="titulo-mestre-tibares">💰 Moedas de: Jogador</h3>
+        <div style="background:var(--cor-tibares); padding:16px; border-radius:10px; text-align:center; margin:15px 0; border:2px solid #b8941f;">
             <div style="font-size:0.85em; color:#5d4037; margin-bottom:5px; font-weight:bold; text-transform:uppercase;">Saldo Atual</div>
-            <div id="tibares-mestre-atual" style="font-size:2.5em; font-weight:900; color:#3e2723;">0 T$</div>
+            <div style="display:flex; justify-content:center; gap:20px; font-weight:900; color:#3e2723;">
+                <div>🥇 TO: <span id="tibares-mestre-ouro">0</span></div>
+                <div>🥈 T: <span id="tibares-mestre-prata">0</span></div>
+            </div>
         </div>
-        <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">💰 Valor (negativo para remover):</label>
-        <input type="number" id="input-mestre-tibares" placeholder="Ex: 100 para adicionar, -50 para remover">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Tipo</label>
+                <select id="input-mestre-tipo">
+                    <option value="ouro">🥇 TO (Ouro)</option>
+                    <option value="prata">🥈 T (Prata)</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Valor (negativo para remover)</label>
+                <input type="number" id="input-mestre-valor" placeholder="Ex: 10 ou -5">
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
             <button class="btn-grande" style="background:#2e7d32; margin:0;" onclick="aplicarTibaresMestre()">✅ Aplicar</button>
             <button class="btn-grande" style="background:#555; margin:0;" onclick="fecharModal('modal-mestre-tibares')">❌ Cancelar</button>
         </div>
@@ -1385,24 +1399,40 @@
         mestreAlvoNome = playerNome;
         const docSnap = await db.collection("personagens").doc(playerId).get();
         const h = docSnap.data();
-        document.getElementById('titulo-mestre-tibares').innerText = `💰 Tibares de: ${playerNome}`;
-        document.getElementById('tibares-mestre-atual').innerText = `${(h.tibares || 0).toLocaleString()} T$`;
-        document.getElementById('input-mestre-tibares').value = '';
+        document.getElementById('titulo-mestre-tibares').innerText = `💰 Moedas de: ${playerNome}`;
+        const ouro = h.tibOuro !== undefined ? h.tibOuro : (h.tibares || 0);
+        const prata = h.tibPrata || 0;
+        document.getElementById('tibares-mestre-ouro').innerText = Number(ouro || 0).toLocaleString();
+        document.getElementById('tibares-mestre-prata').innerText = Number(prata || 0).toLocaleString();
+        document.getElementById('input-mestre-tipo').value = 'ouro';
+        document.getElementById('input-mestre-valor').value = '';
         abrirModal('modal-mestre-tibares');
     }
 
     async function aplicarTibaresMestre() {
-        const val = Number(document.getElementById('input-mestre-tibares').value);
-        if (isNaN(val) || val === 0) return alert("❌ Digite um valor válido (ex: 100 ou -50)!");
+        const tipo = document.getElementById('input-mestre-tipo').value;
+        const val = Number(document.getElementById('input-mestre-valor').value);
+        if (isNaN(val) || val === 0) return alert("❌ Digite um valor inteiro (ex: 10 ou -5)!");
         const docSnap = await db.collection("personagens").doc(mestreAlvoId).get();
         const h = docSnap.data();
-        const novoValor = (h.tibares || 0) + val;
-        if (novoValor < 0 && !confirm(`⚠️ O saldo ficará negativo (${novoValor} T$). Confirmar?`)) return;
-        await db.collection("personagens").doc(mestreAlvoId).update({ tibares: novoValor });
-        document.getElementById('tibares-mestre-atual').innerText = `${novoValor.toLocaleString()} T$`;
-        document.getElementById('input-mestre-tibares').value = '';
-        const msg = val > 0 ? `➕ +${val} T$ adicionados` : `➖ ${Math.abs(val)} T$ removidos`;
-        alert(`✅ ${msg}!\nNovo saldo: ${novoValor.toLocaleString()} T$`);
+        const atualOuro = h.tibOuro !== undefined ? Number(h.tibOuro) : Number(h.tibares || 0);
+        const atualPrata = Number(h.tibPrata || 0);
+        let novoOuro = atualOuro;
+        let novoPrata = atualPrata;
+        if (tipo === 'ouro') {
+            novoOuro = atualOuro + val;
+            if (novoOuro < 0) return alert("❌ TO insuficiente.");
+        } else {
+            novoPrata = atualPrata + val;
+            if (novoPrata < 0) return alert("❌ T insuficiente.");
+        }
+        const novoTotal = (novoOuro || 0) + (novoPrata || 0);
+        await db.collection("personagens").doc(mestreAlvoId).update({ tibOuro: novoOuro, tibPrata: novoPrata, tibares: novoTotal });
+        document.getElementById('tibares-mestre-ouro').innerText = Number(novoOuro || 0).toLocaleString();
+        document.getElementById('tibares-mestre-prata').innerText = Number(novoPrata || 0).toLocaleString();
+        document.getElementById('input-mestre-valor').value = '';
+        const msg = val > 0 ? `➕ +${val} ${tipo === 'ouro' ? 'TO' : 'T'} adicionados` : `➖ ${Math.abs(val)} ${tipo === 'ouro' ? 'TO' : 'T'} removidos`;
+        alert(`✅ ${msg}!`);
     }
 
     // ============================================================
