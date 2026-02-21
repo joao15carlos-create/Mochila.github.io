@@ -72,6 +72,7 @@
         .modal-content { background: var(--cor-fundo); padding: 30px; border: 5px solid var(--cor-borda); width: 100%; max-width: 550px; border-radius: 20px; max-height: 85vh; overflow-y: auto; box-sizing: border-box; animation: popIn 0.3s; }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .badge-categoria { display: inline-block; padding: 4px 8px; border-radius: 4px; background: #eee; font-size: 0.8em; font-weight: bold; color: #555; margin-bottom: 10px; }
+        .highlight-busca { background: #fff3cd; border: 2px solid #ffca65; border-radius: 8px; padding: 10px; }
         .radio-group { display: flex; gap: 10px; margin: 10px 0; }
         .radio-group label { flex: 1; background: #fff; padding: 10px; border: 2px solid #ccc; border-radius: 6px; text-align: center; cursor: pointer; font-size: 0.9em; }
         .radio-group input[type="radio"] { display: none; }
@@ -127,11 +128,13 @@
         </div>
         <div style="display: flex; gap: 10px;">
             <button onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">⚙️</button>
-            <button class="btn-sair" onclick="deslogar()">🔄 Trocar</button>
+            <button id="btn-mestre-voltar" class="btn-sair" style="display:none" onclick="mostrarPainelMestre()">🔙 Voltar</button>
+            <button id="btn-jogador-sair" class="btn-sair" onclick="deslogar()">🚪 Sair</button>
         </div>
     </div>
-    <div class="tibares-card" onclick="abrirCalculadora('tibares', '💰 Alterar Tibares')">
-        💰 <span id="stat-tib">0</span> T$
+    <div class="tibares-card" onclick="abrirModal('modal-tibares')">
+        💰 Ouro: <span id="stat-tib-ouro">0</span> • Prata: <span id="stat-tib-prata">0</span><br>
+        <small>Total: <span id="stat-tib-total">0</span> T$</small>
     </div>
     <div class="status-container-pro">
         <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '❤️ Alterar Vida')">
@@ -172,7 +175,6 @@
         </div>
         <div id="itens-lista"></div>
     </div>
-    <button id="btn-mestre-voltar" style="display:none; background:#d32f2f; margin-top: 30px;" class="btn-grande" onclick="mostrarPainelMestre()">🔙 VOLTAR AO MONITOR</button>
 </div>
 
 <!-- MODAL CALCULADORA -->
@@ -184,6 +186,28 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <button class="btn-grande" style="background:#2e7d32" onclick="aplicarCalculo()">✅ Confirmar</button>
             <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-calculadora')">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AJUSTE TIBARES (OURO/PRATA) -->
+<div id="modal-tibares" class="modal">
+    <div class="modal-content">
+        <h3>💰 Ajustar Tibares</h3>
+        <p style="text-align:center; color:#666">Use valores negativos para remover.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Ouro</label>
+                <input type="number" id="ajuste-tib-ouro" placeholder="+/- Ouro">
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Prata</label>
+                <input type="number" id="ajuste-tib-prata" placeholder="+/- Prata">
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="aplicarTibaresJogador()">✅ Confirmar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-tibares')">❌ Cancelar</button>
         </div>
     </div>
 </div>
@@ -288,13 +312,14 @@
         <textarea id="desc-reg" rows="5" style="margin-top:5px;"></textarea>
         <div id="campos-item" style="display:none">
             <label style="color:#666; font-weight:bold; display:block; margin-bottom:5px;">🏷️ Categoria:</label>
-            <select id="i-categoria">
+            <select id="i-categoria" onchange="onCategoriaChange()">
                 <option value="mundanos">🛍️ Itens Mundanos</option>
                 <option value="armaduras">🛡️ Armaduras e Escudos</option>
                 <option value="armas">⚔️ Armas</option>
                 <option value="pocoes">🧪 Poções</option>
                 <option value="pergaminhos">📜 Pergaminhos</option>
                 <option value="magicos">✨ Itens Mágicos</option>
+                <option value="municao">🔫 Munição</option>
             </select>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background:#f0eadd; padding:10px; border-radius:8px; border:1px solid #d7ccc8; margin-top:10px;">
                 <div>
@@ -393,6 +418,9 @@
     <div class="modal-content" style="max-width:700px;">
         <h3>📦 Itens dos Jogadores</h3>
         <p style="text-align:center; font-size:0.9em; color:#555;">Visão geral de todos os itens em jogo.</p>
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+            <input type="text" id="busca-itens-jogadores" placeholder="🔎 Pesquisar..." oninput="atualizarItensJogadores()" style="flex:1; padding:8px; border:1px solid #ddd; border-radius:8px;">
+        </div>
         <div id="lista-itens-jogadores" style="max-height:500px; overflow-y:auto;"></div>
         <button class="btn-grande" style="margin-top:10px;" onclick="fecharModal('modal-itens-jogadores')">✖️ Fechar</button>
     </div>
@@ -428,7 +456,7 @@
         <textarea id="ma-desc" rows="3" placeholder="Descrição (opcional)"></textarea>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
             <div><label style="font-weight:bold; color:#666;">📦 Espaços</label><input type="number" id="ma-espacos" value="1" min="0" style="margin-top:5px;"></div>
-            <div><label style="font-weight:bold; color:#666;">🔢 Quantidade</label><input type="number" id="ma-qtd" value="1" min="1" style="margin-top:5px;"></div>
+            <div><label style="font-weight:bold; color:#666;">🔢 Quantidade</label><input type="number" id="ma-qtd" value="1" min="0" style="margin-top:5px;"></div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
             <button class="btn-grande" style="background:#2e7d32; margin:0;" onclick="salvarItemMestre()">💾 Adicionar</button>
@@ -524,6 +552,7 @@
     let modoMestreAtivo = false;
     let listenerHeroi = null;
     let regrasGlobais = { pesoMoeda: false };
+    let cacheItensJogadores = { jogadores: [], tesouro: [] };
 
     // Variáveis do modo mestre
     let mestreAlvoId = null;
@@ -552,7 +581,8 @@
         'armas': '⚔️ Armas',
         'pocoes': '🧪 Poções',
         'pergaminhos': '📜 Pergaminhos',
-        'magicos': '✨ Itens Mágicos'
+        'magicos': '✨ Itens Mágicos',
+        'municao': '🔫 Munição'
     };
 
     function formatarAprimoramento(texto) {
@@ -566,7 +596,18 @@
         if(!heroiAtivo) return;
         document.getElementById('nome-exibicao').innerText = heroiAtivo.nome;
         document.getElementById('sub-nome').innerText = `Nível ${heroiAtivo.nivel}`;
-        document.getElementById('stat-tib').innerText = (heroiAtivo.tibares || 0).toLocaleString();
+        const ouro = heroiAtivo.tibOuro !== undefined ? heroiAtivo.tibOuro : (heroiAtivo.tibares || 0);
+        const prata = heroiAtivo.tibPrata || 0;
+        const elOuro = document.getElementById('stat-tib-ouro');
+        const elPrata = document.getElementById('stat-tib-prata');
+        const elTotal = document.getElementById('stat-tib-total');
+        if(elOuro) elOuro.innerText = (ouro || 0).toLocaleString();
+        if(elPrata) elPrata.innerText = (prata || 0).toLocaleString();
+        if(elTotal) elTotal.innerText = ((ouro || 0) + (prata || 0)).toLocaleString();
+        const btnSair = document.getElementById('btn-jogador-sair');
+        if(btnSair) btnSair.style.display = modoMestreAtivo ? 'none' : 'inline-block';
+        const btnVoltarMestre = document.getElementById('btn-mestre-voltar');
+        if(btnVoltarMestre) btnVoltarMestre.style.display = modoMestreAtivo ? 'inline-block' : 'none';
         document.getElementById('btn-aba-p').style.display = heroiAtivo.preparaMagias ? 'block' : 'none';
 
         let pv = heroiAtivo.pv;
@@ -644,7 +685,7 @@
         const iL = document.getElementById('itens-lista');
         iL.innerHTML = "";
         let slotsUsados = 0;
-        const itensPorCat = { 'mundanos':[], 'armaduras':[], 'armas':[], 'pocoes':[], 'pergaminhos':[], 'magicos':[] };
+        const itensPorCat = { 'mundanos':[], 'armaduras':[], 'armas':[], 'municao':[], 'pocoes':[], 'pergaminhos':[], 'magicos':[] };
         (heroiAtivo.itens || []).forEach((it, idx) => {
             if(!it.localizacao || it.localizacao === 'personagem') {
                 const slotsItem = it.espacos !== undefined ? Number(it.espacos) : (it.peso || 1);
@@ -653,7 +694,7 @@
             const cat = it.categoria && itensPorCat[it.categoria] ? it.categoria : 'mundanos';
             itensPorCat[cat].push({ ...it, originalIndex: idx });
         });
-        const ordem = ['armas', 'armaduras', 'pocoes', 'pergaminhos', 'magicos', 'mundanos'];
+        const ordem = ['armas', 'armaduras', 'municao', 'pocoes', 'pergaminhos', 'magicos', 'mundanos'];
         ordem.forEach(catKey => {
             const lista = itensPorCat[catKey];
             if(lista.length > 0) {
@@ -665,10 +706,18 @@
                     let iconLocal = "";
                     if(it.localizacao === 'ajudante') iconLocal = `<span class="badge badge-ajudante">🤝 ${it.nomeAjudante || 'Ajudante'}</span>`;
                     if(it.localizacao === 'tesouro') iconLocal = `<span class="badge badge-ajudante">💰 No Tesouro</span>`;
+                    const controlesMunicao = it.categoria === 'municao' ? `
+                        <div style="display:flex; gap:8px; align-items:center; margin-left:10px;">
+                            <button onclick="ajustarQtdMunicao(${it.originalIndex}, -1); event.stopPropagation();" title="Diminuir" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+                            <button onclick="ajustarQtdMunicao(${it.originalIndex}, 1); event.stopPropagation();" title="Aumentar" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+                        </div>` : '';
                     iL.innerHTML += `
                     <div class="item-card" onclick="verItemDetalhe(${it.originalIndex})">
-                    <div><b style="font-size:1.1em">${it.nome}</b> ${iconState} ${iconLocal}<br><span style="color:#666">${it.qtd}x • ${it.espacos || 1} slots</span></div>
-                    <button onclick="removerAlgo('itens', ${it.originalIndex}); event.stopPropagation();" style="color:#d32f2f;border:none;background:none;font-size:22px;cursor:pointer">🗑️</button>
+                    <div><b style="font-size:1.1em">${it.nome}</b> ${iconState} ${iconLocal}<br><span style="color:#666">${it.qtd}x • ${(it.espacos !== undefined ? it.espacos : 1)} slots</span></div>
+                    <div style="display:flex; align-items:center;">
+                        ${controlesMunicao}
+                        <button onclick="removerAlgo('itens', ${it.originalIndex}); event.stopPropagation();" style="color:#d32f2f;border:none;background:none;font-size:22px;cursor:pointer">🗑️</button>
+                    </div>
                     </div>`;
                 });
             }
@@ -678,7 +727,8 @@
 
         // ✅ CÁLCULO DE CARGA COM FORÇA NEGATIVA CORRIGIDO
         let pesoMoedas = 0;
-        if (regrasGlobais.pesoMoeda) pesoMoedas = Math.floor((heroiAtivo.tibares || 0) / 1000);
+        const totalMoedas = ((heroiAtivo.tibOuro !== undefined ? heroiAtivo.tibOuro : (heroiAtivo.tibares || 0)) || 0) + (heroiAtivo.tibPrata || 0);
+        if (regrasGlobais.pesoMoeda) pesoMoedas = Math.floor(totalMoedas / 1000);
         const pesoTotal = slotsUsados + pesoMoedas;
         const forca = Number(heroiAtivo.forca) || 0;
         const bonusCarga = Number(heroiAtivo.bonusCarga) || 0;
@@ -736,7 +786,7 @@
         document.getElementById('detalhe-badge-cat').innerText = categoriasNomes[item.categoria] || '📦 Item';
         document.getElementById('detalhe-desc-item').innerText = item.desc || "Sem descrição.";
         document.getElementById('detalhe-qtd').innerText = item.qtd;
-        document.getElementById('detalhe-espacos').innerText = item.espacos || 1;
+        document.getElementById('detalhe-espacos').innerText = (item.espacos !== undefined ? item.espacos : 1);
         let txtEstado = "Estado: 🎒 Guardado";
         if(item.estado === 'vestido') txtEstado = "Estado: 👕 Vestido (+ Bônus Ativo)";
         if(item.estado === 'empunhado') txtEstado = "Estado: ⚔️ Empunhado";
@@ -787,7 +837,7 @@
         document.getElementById('nome-reg').value = item.nome;
         document.getElementById('desc-reg').value = item.desc;
         document.getElementById('i-categoria').value = item.categoria || 'mundanos';
-        document.getElementById('i-espacos').value = item.espacos || 1;
+        document.getElementById('i-espacos').value = (item.espacos !== undefined ? item.espacos : 1);
         document.getElementById('i-qtd').value = item.qtd;
         if(item.estado === 'vestido') document.getElementById('st-vestido').checked = true;
         else if(item.estado === 'empunhado') document.getElementById('st-empunhado').checked = true;
@@ -955,14 +1005,38 @@
             db.collection("personagens").get(),
             db.collection("tesouro_grupo").orderBy('nome').get()
         ]);
-        lista.innerHTML = "";
-        let temConteudo = false;
+        cacheItensJogadores.jogadores = [];
         snapJogadores.forEach(doc => {
             const h = doc.data();
-            if (h.itens && h.itens.length > 0) {
+            cacheItensJogadores.jogadores.push({ nome: h.nome, itens: h.itens || [] });
+        });
+        cacheItensJogadores.tesouro = [];
+        snapTesouro.forEach(doc => {
+            cacheItensJogadores.tesouro.push(doc.data());
+        });
+        atualizarItensJogadores();
+    }
+
+    function highlightText(texto, busca) {
+        if (!busca) return texto;
+        const esc = busca.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re = new RegExp(esc, 'gi');
+        return String(texto).replace(re, m => `<span class="highlight-busca">${m}</span>`);
+    }
+
+    function atualizarItensJogadores() {
+        const lista = document.getElementById('lista-itens-jogadores');
+        const qEl = document.getElementById('busca-itens-jogadores');
+        const q = qEl ? qEl.value.trim() : "";
+        const ql = q.toLowerCase();
+        lista.innerHTML = "";
+        let temConteudo = false;
+        cacheItensJogadores.jogadores.forEach(h => {
+            const itensFiltrados = q ? (h.itens || []).filter(it => (it.nome || '').toLowerCase().includes(ql)) : (h.itens || []);
+            if (itensFiltrados.length > 0) {
                 temConteudo = true;
-                lista.innerHTML += `<div class="categoria-titulo">⚔️ ${h.nome}</div>`;
-                h.itens.forEach(it => {
+                lista.innerHTML += `<div class="categoria-titulo">⚔️ ${highlightText(h.nome || '', q)}</div>`;
+                itensFiltrados.forEach(it => {
                     let local = "👤 Com o Personagem";
                     if (it.localizacao === 'ajudante') local = `🤝 Com ${it.nomeAjudante || 'Ajudante'}`;
                     if (it.localizacao === 'tesouro') local = "💰 No Tesouro";
@@ -972,25 +1046,27 @@
                     lista.innerHTML += `
                     <div style="background:#fff; padding:12px; margin-bottom:6px; border-radius:8px; border:1px solid #ddd;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div><b>${it.nome}</b> ${badge}<br>
-                    <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x • ${it.espacos || 1} slots</small><br>
+                    <div><b>${highlightText(it.nome || '', q)}</b> ${badge}<br>
+                    <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x • ${(it.espacos !== undefined ? it.espacos : 1)} slots</small><br>
                     <small style="color:#2e7d32; font-weight:bold;">${local}</small></div>
                     </div></div>`;
                 });
             }
         });
-        if (!snapTesouro.empty) {
-            temConteudo = true;
-            lista.innerHTML += `<div class="categoria-titulo">💰 Tesouro do Grupo</div>`;
-            snapTesouro.forEach(doc => {
-                const it = doc.data();
-                lista.innerHTML += `
-                <div style="background:#fff; padding:12px; margin-bottom:6px; border-radius:8px; border:1px solid #ddd;">
-                <b>${it.nome}</b><br>
-                <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x</small><br>
-                <small style="color:#b8941f; font-weight:bold;">💰 Tesouro do Grupo</small>
-                </div>`;
-            });
+        if ((cacheItensJogadores.tesouro || []).length > 0) {
+            const tesouroFiltrado = q ? cacheItensJogadores.tesouro.filter(it => (it.nome || '').toLowerCase().includes(ql)) : cacheItensJogadores.tesouro;
+            if (tesouroFiltrado.length > 0) {
+                temConteudo = true;
+                lista.innerHTML += `<div class="categoria-titulo">💰 Tesouro do Grupo</div>`;
+                tesouroFiltrado.forEach(it => {
+                    lista.innerHTML += `
+                    <div style="background:#fff; padding:12px; margin-bottom:6px; border-radius:8px; border:1px solid #ddd;">
+                    <b>${highlightText(it.nome || '', q)}</b><br>
+                    <small style="color:#666;">${categoriasNomes[it.categoria] || '📦 Item'} • ${it.qtd}x</small><br>
+                    <small style="color:#b8941f; font-weight:bold;">💰 Tesouro do Grupo</small>
+                    </div>`;
+                });
+            }
         }
         if (!temConteudo) lista.innerHTML = "<p style='text-align:center; color:#777; padding:20px;'>📭 Nenhum item encontrado.</p>";
     }
@@ -1311,6 +1387,29 @@
         document.getElementById('i-nome-ajudante').style.display = val === 'ajudante' ? 'block' : 'none';
     }
 
+    function onCategoriaChange() {
+        const val = document.getElementById('i-categoria').value;
+        if (val === 'municao') document.getElementById('i-espacos').value = "0";
+    }
+
+    async function aplicarTibaresJogador() {
+        if (!heroiAtivo) return;
+        const difOuro = Number(document.getElementById('ajuste-tib-ouro').value) || 0;
+        const difPrata = Number(document.getElementById('ajuste-tib-prata').value) || 0;
+        const atualOuro = heroiAtivo.tibOuro !== undefined ? Number(heroiAtivo.tibOuro) : Number(heroiAtivo.tibares || 0);
+        const atualPrata = Number(heroiAtivo.tibPrata || 0);
+        let novoOuro = atualOuro + difOuro; if (novoOuro < 0) novoOuro = 0;
+        let novoPrata = atualPrata + difPrata; if (novoPrata < 0) novoPrata = 0;
+        heroiAtivo.tibOuro = novoOuro;
+        heroiAtivo.tibPrata = novoPrata;
+        heroiAtivo.tibares = novoOuro + novoPrata;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ tibOuro: novoOuro, tibPrata: novoPrata, tibares: heroiAtivo.tibares });
+        document.getElementById('ajuste-tib-ouro').value = "";
+        document.getElementById('ajuste-tib-prata').value = "";
+        fecharModal('modal-tibares');
+        renderTudo();
+    }
+
     async function abrirTransferencia() {
         fecharModal('modal-detalhe-item');
         const select = document.getElementById('select-destinatario');
@@ -1453,6 +1552,18 @@
 
     function toggleMagia(i) { const el = document.getElementById(`magia-info-${i}`); el.style.display = el.style.display === 'block' ? 'none' : 'block'; }
     async function removerAlgo(c, i) { if(confirm("🗑️ Remover permanentemente?")) { heroiAtivo[c].splice(i, 1); await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo); } }
+
+    async function ajustarQtdMunicao(idx, delta) {
+        if (!heroiAtivo) return;
+        const it = heroiAtivo.itens[idx];
+        if (!it || it.categoria !== 'municao') return;
+        const atual = Number(it.qtd || 0);
+        let novo = atual + delta;
+        if (novo < 0) novo = 0;
+        it.qtd = novo;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ itens: heroiAtivo.itens });
+        renderTudo();
+    }
 
     function ajustarCampos() {
         document.getElementById('campos-magia').style.display = document.getElementById('tipo-registro').value === 'magia' ? 'block' : 'none';
