@@ -136,11 +136,29 @@
             <button id="btn-jogador-sair" class="btn-sair" onclick="deslogar()">🚪 Sair</button>
         </div>
     </div>
-    <div class="tibares-card" onclick="abrirModal('modal-tibares')">
-        🥇 TO: <span id="stat-tib-ouro">0</span> • 🥈 T$: <span id="stat-tib-prata">0</span>
+    <div class="tibares-card">
+        <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
+            <div>🥇 TO: <span id="stat-tib-ouro">0</span></div>
+            <div style="display:flex; gap:6px;">
+                <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Somar TO', 'add')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➕</button>
+                <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Subtrair TO', 'sub')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➖</button>
+            </div>
+            <div>•</div>
+            <div>🥈 T$: <span id="stat-tib-prata">0</span></div>
+            <div style="display:flex; gap:6px;">
+                <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Somar T$', 'add')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➕</button>
+                <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Subtrair T$', 'sub')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➖</button>
+            </div>
+        </div>
         <div style="font-size:0.85em; color:#666; margin-top:4px;">TO x10: <span id="stat-to-x10">0</span></div>
+        <div style="font-size:0.85em; color:#666; margin-top:4px;">Contribuiu: 🥇 TO <span id="contrib-ouro">0</span> • 🥈 T$ <span id="contrib-prata">0</span></div>
+        <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+            <button class="btn-grande" style="background:#4a6572; font-size:0.85em; padding:6px 10px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter</button>
+            <button class="btn-grande" style="background:#2e7d32; font-size:0.85em; padding:6px 10px;" onclick="abrirTransferenciaMoedas()">📤 Enviar</button>
+            <button class="btn-grande" style="background:#8d2b2b; font-size:0.85em; padding:6px 10px;" onclick="abrirRetirarMoedas()">📥 Retirar do Tesouro</button>
+        </div>
     </div>
-    <button class="btn-grande" style="background:#4a6572; margin-top:8px; font-size:0.85em; padding:6px 10px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter Moedas</button>
+ 
     <div class="status-container-pro">
         <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '❤️ Alterar Vida')">
             <span class="status-label" id="lbl-pv" style="color:var(--cor-pv)">❤️ VIDA (PV)</span>
@@ -148,8 +166,8 @@
             <span class="status-sub-info">MÁX: <span id="v-pv-max">0</span></span>
         </div>
         <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:-10px; margin-bottom:10px;">
-            <button onclick="abrirCalculadora('pv', '❤️ Somar Vida')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
-            <button onclick="abrirCalculadora('pv', '❤️ Subtrair Vida')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+            <button onclick="abrirCalculadoraOper('pv', '❤️ Somar Vida', 'add')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+            <button onclick="abrirCalculadoraOper('pv', '❤️ Subtrair Vida', 'sub')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
         </div>
         <div class="status-hero-card card-pm" onclick="abrirCalculadora('pm', '💙 Alterar Mana')">
             <span class="status-label" style="color:var(--cor-pm)">💙 MANA (PM)</span>
@@ -157,8 +175,8 @@
             <span class="status-sub-info">MÁX: <span id="v-pm-max">0</span></span>
         </div>
         <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:-10px; margin-bottom:10px;">
-            <button onclick="abrirCalculadora('pm', '💙 Somar Mana')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
-            <button onclick="abrirCalculadora('pm', '💙 Subtrair Mana')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+            <button onclick="abrirCalculadoraOper('pm', '💙 Somar Mana', 'add')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+            <button onclick="abrirCalculadoraOper('pm', '💙 Subtrair Mana', 'sub')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
         </div>
         <div class="status-hero-card card-def" onclick="abrirCalculadora('defesaAtual', '🛡️ Alterar Defesa Atual')">
             <span class="status-label" style="color:var(--cor-def)">🛡️ DEFESA</span>
@@ -278,6 +296,50 @@
     </div>
 </div>
 
+<!-- MODAL: ENVIAR MOEDAS -->
+<div id="modal-transf-moedas" class="modal">
+    <div class="modal-content">
+        <h3>📤 Enviar Moedas</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-weight:bold; color:#666;">Destinatário</label>
+                <select id="moedas-dest"></select>
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666;">Tipo</label>
+                <select id="moedas-tipo"><option value="ouro">🥇 TO</option><option value="prata">🥈 T$</option></select>
+            </div>
+        </div>
+        <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">Quantidade</label>
+        <input type="number" id="moedas-qtd" placeholder="Ex: 10">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="confirmarTransferenciaMoedas()">✅ Enviar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-transf-moedas')">❌ Cancelar</button>
+        </div>
+    </div>
+    </div>
+
+<!-- MODAL: RETIRAR MOEDAS DO TESOURO -->
+<div id="modal-retirar-moedas" class="modal">
+    <div class="modal-content">
+        <h3>📥 Retirar Moedas do Tesouro</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-weight:bold; color:#666;">Tipo</label>
+                <select id="retirar-tipo"><option value="ouro">🥇 TO</option><option value="prata">🥈 T$</option></select>
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666;">Quantidade</label>
+                <input type="number" id="retirar-qtd" placeholder="Ex: 10">
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="confirmarRetiradaMoedas()">✅ Retirar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-retirar-moedas')">❌ Cancelar</button>
+        </div>
+    </div>
+    </div>
+
 <!-- MODAL DETALHE ITEM -->
 <div id="modal-detalhe-item" class="modal">
     <div class="modal-content">
@@ -344,16 +406,7 @@
             <option value="nao">Não</option>
             <option value="sim">Sim</option>
         </select>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
-            <div>
-                <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📸 Upload da Imagem</label>
-                <input type="file" accept="image/*" onchange="carregarImagemPerfil(this)">
-            </div>
-            <div>
-                <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📸 Upload Imagem da Magia</label>
-                <input type="file" accept="image/*" onchange="carregarImagemMagia(this)">
-            </div>
-        </div>
+        
         <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">🗒️ Anotações do Jogador</label>
         <textarea id="e-anot" rows="4" placeholder="Escreva suas anotações aqui..."></textarea>
         <button class="btn-grande" onclick="salvarEdicaoPerfil()">💾 Salvar Alterações</button>
@@ -666,6 +719,7 @@
     let heroiAtivo = null;
     let idTemp = null;
     let campoAtual = '';
+    let calcOper = 'add';
     let modoMestreAtivo = false;
     let listenerHeroi = null;
     let regrasGlobais = { pesoMoeda: false };
@@ -725,6 +779,10 @@
         if(elPrata) elPrata.innerText = (prata || 0).toLocaleString();
         const elTOX10 = document.getElementById('stat-to-x10');
         if(elTOX10) elTOX10.innerText = ((ouro || 0) * 10).toLocaleString();
+        const cOuro = document.getElementById('contrib-ouro');
+        const cPrata = document.getElementById('contrib-prata');
+        if (cOuro) cOuro.innerText = Number((heroiAtivo.contribTesouro && heroiAtivo.contribTesouro.ouro) || 0).toLocaleString();
+        if (cPrata) cPrata.innerText = Number((heroiAtivo.contribTesouro && heroiAtivo.contribTesouro.prata) || 0).toLocaleString();
         const btnSair = document.getElementById('btn-jogador-sair');
         if(btnSair) btnSair.style.display = modoMestreAtivo ? 'none' : 'inline-block';
         const btnVoltarMestre = document.getElementById('btn-mestre-voltar');
@@ -734,7 +792,8 @@
         const anotTxt = document.getElementById('anotacoes-texto');
         if (anotCard && anotTxt) {
             const a = heroiAtivo.anotacoes || "";
-            if (a.trim()) { anotTxt.innerText = a; anotCard.style.display = 'block'; } else { anotCard.style.display = 'none'; }
+            anotTxt.innerText = a.trim() ? a : "Nenhuma anotação.";
+            anotCard.style.display = 'block';
         }
 
         let pv = heroiAtivo.pv;
@@ -783,7 +842,7 @@
             <div class="magia-container">
             <div class="magia-header-click" onclick="toggleMagia(${idx})">
             <div><b style="font-size:1.1em">✨ ${m.nome}</b><br><small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
-            <div>${btnPrep}<button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">🗑️</button></div>
+            <div>${btnPrep}<button onclick="editarMagiaJogador(${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer" title="Editar">✏️</button><button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer" title="Excluir">🗑️</button></div>
             </div>
             <div id="magia-info-${idx}" class="magia-conteudo-oculto">${linhaDetalhes}${m.imagem ? `<img src="${m.imagem}" alt="imagem" style="max-width:100%; border-radius:8px; margin-bottom:8px;">` : ''}<p style="margin-top:0">${m.desc}</p>${aprimoraHtml}</div>
             </div>`;
@@ -1004,8 +1063,20 @@
     async function pegarDoTesouro(idDoc, itemData) {
         if(!heroiAtivo) return;
         if(confirm(`🤝 Pegar ${itemData.nome} do baú?`)) {
-            const novoItem = {...itemData, localizacao: 'personagem'};
-            heroiAtivo.itens.push(novoItem);
+            const isOwner = itemData.ownerId && itemData.ownerId === heroiAtivo.id;
+            if (isOwner) {
+                const idxExist = (heroiAtivo.itens || []).findIndex(it => it.localizacao === 'tesouro' && it.nome === itemData.nome && (it.categoria || '') === (itemData.categoria || ''));
+                if (idxExist >= 0) {
+                    heroiAtivo.itens[idxExist].localizacao = 'personagem';
+                    heroiAtivo.itens[idxExist].estado = heroiAtivo.itens[idxExist].estado || 'nenhum';
+                } else {
+                    const novoItem = {...itemData, localizacao: 'personagem', estado: 'nenhum'};
+                    heroiAtivo.itens.push(novoItem);
+                }
+            } else {
+                const novoItem = {...itemData, localizacao: 'personagem', estado: 'nenhum'};
+                heroiAtivo.itens.push(novoItem);
+            }
             await db.collection("tesouro_grupo").doc(idDoc).delete();
             await db.collection("personagens").doc(heroiAtivo.id).update({ itens: heroiAtivo.itens });
             alert("✅ Item retirado do baú!");
@@ -1031,7 +1102,9 @@
             d.resistencia = document.getElementById('m-resistencia').value;
             d.imagem = document.getElementById('m-imagem').value;
             if (globalId) { await db.collection("magias_globais").doc(globalId).update(d); alert("✅ Magia Global atualizada!"); }
-            else {
+            else if (localIndex !== "") {
+                if (heroiAtivo) heroiAtivo.magias[localIndex] = d;
+            } else {
                 if (modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Biblioteca")) await db.collection("magias_globais").add(d);
                 else if (heroiAtivo) { heroiAtivo.magias.push(d); await db.collection("magias_globais").add(d); }
             }
@@ -1259,11 +1332,13 @@
         const h = docSnap.data();
         const lista = document.getElementById('lista-mestre-itens');
         lista.innerHTML = "";
-        if (!h.itens || h.itens.length === 0) {
-            lista.innerHTML = "<p style='text-align:center; color:#777;'>🎒 Nenhum item no inventário.</p>";
+        const vestidos = (h.itens || []).filter(it => it.estado === 'vestido');
+        if (vestidos.length === 0) {
+            lista.innerHTML = "<p style='text-align:center; color:#777;'>👕 Nenhum item vestido.</p>";
             return;
         }
-        h.itens.forEach((it, idx) => {
+        vestidos.forEach((it, idxVest) => {
+            const idx = (h.itens || []).findIndex(orig => orig === it);
             let local = "👤 Personagem";
             if (it.localizacao === 'ajudante') local = `🤝 ${it.nomeAjudante || 'Ajudante'}`;
             if (it.localizacao === 'tesouro') local = "💰 Tesouro";
@@ -1567,11 +1642,22 @@
     // FUNÇÕES GERAIS
     // ============================================================
     async function aplicarCalculo() {
-        const val = Number(document.getElementById('calc-input').value);
-        if(isNaN(val)) return;
+        const valRaw = Number(document.getElementById('calc-input').value);
+        if(isNaN(valRaw)) return;
+        const val = Math.abs(valRaw) * (calcOper === 'sub' ? -1 : 1);
         if (campoAtual === 'defesaAtual') {
             if(heroiAtivo.defesaAtual === undefined) heroiAtivo.defesaAtual = heroiAtivo.defesa || 10;
             heroiAtivo.defesaAtual += val;
+        } else if (campoAtual === 'tibOuro' || campoAtual === 'tibPrata') {
+            const atual = Number(heroiAtivo[campoAtual] || 0);
+            let novo = atual + val;
+            if (novo < 0) novo = 0;
+            heroiAtivo[campoAtual] = novo;
+            const ou = heroiAtivo.tibOuro !== undefined ? Number(heroiAtivo.tibOuro) : Number(heroiAtivo.tibares || 0);
+            const pr = Number(heroiAtivo.tibPrata || 0);
+            heroiAtivo.tibares = ou + pr;
+            await db.collection("personagens").doc(heroiAtivo.id).update({ tibOuro: heroiAtivo.tibOuro, tibPrata: heroiAtivo.tibPrata, tibares: heroiAtivo.tibares });
+            fecharModal('modal-calculadora'); renderTudo(); return;
         } else {
             heroiAtivo[campoAtual] += val;
             if(campoAtual === 'pv' && heroiAtivo.pv > heroiAtivo.pvMax) heroiAtivo.pv = heroiAtivo.pvMax;
@@ -1579,6 +1665,7 @@
         }
         await db.collection("personagens").doc(heroiAtivo.id).update(heroiAtivo);
         fecharModal('modal-calculadora');
+        renderTudo();
     }
 
     function toggleNomeAjudante() {
@@ -1648,6 +1735,70 @@
         fecharModal('modal-tesouro-moedas');
         alert("✅ Moedas do Tesouro atualizadas!");
         abrirTesouroGrupo();
+    }
+
+    async function abrirTransferenciaMoedas() {
+        const sel = document.getElementById('moedas-dest');
+        sel.innerHTML = "<option value='tesouro'>💰 Tesouro do Grupo</option>";
+        const snap = await db.collection("personagens").get();
+        snap.forEach(doc => { if (doc.id !== heroiAtivo.id) sel.innerHTML += `<option value="${doc.id}">⚔️ ${doc.data().nome}</option>`; });
+        document.getElementById('moedas-qtd').value = "";
+        abrirModal('modal-transf-moedas');
+    }
+
+    async function confirmarTransferenciaMoedas() {
+        const dest = document.getElementById('moedas-dest').value;
+        const tipo = document.getElementById('moedas-tipo').value; // ouro|prata
+        const qtd = Number(document.getElementById('moedas-qtd').value);
+        if (!Number.isInteger(qtd) || qtd <= 0) return alert("❌ Informe um inteiro positivo.");
+        const campo = tipo === 'ouro' ? 'tibOuro' : 'tibPrata';
+        const atual = Number(heroiAtivo[campo] || 0);
+        if (atual < qtd) return alert("❌ Moedas insuficientes.");
+        heroiAtivo[campo] = atual - qtd;
+        const ou = Number(heroiAtivo.tibOuro || 0); const pr = Number(heroiAtivo.tibPrata || 0);
+        heroiAtivo.tibares = ou + pr;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: heroiAtivo[campo], tibares: heroiAtivo.tibares });
+        if (dest === 'tesouro') {
+            const ref = db.collection("tesouro_grupo").doc('saldo_moedas');
+            const snap = await ref.get();
+            const atualTes = snap.exists ? snap.data() : { tibOuro: 0, tibPrata: 0 };
+            const novoOuro = Number(atualTes.tibOuro || 0) + (tipo === 'ouro' ? qtd : 0);
+            const novoPrata = Number(atualTes.tibPrata || 0) + (tipo === 'prata' ? qtd : 0);
+            await ref.set({ tibOuro: novoOuro, tibPrata: novoPrata });
+            const contrib = heroiAtivo.contribTesouro || { ouro: 0, prata: 0 };
+            contrib[tipo === 'ouro' ? 'ouro' : 'prata'] += qtd;
+            heroiAtivo.contribTesouro = contrib;
+            await db.collection("personagens").doc(heroiAtivo.id).update({ contribTesouro: contrib });
+            alert("✅ Enviado ao Tesouro!");
+        } else {
+            const docDest = await db.collection("personagens").doc(dest).get();
+            const hDest = docDest.data();
+            const valAtual = Number((tipo === 'ouro' ? hDest.tibOuro : hDest.tibPrata) || 0);
+            const novoDest = valAtual + qtd;
+            if (tipo === 'ouro') hDest.tibOuro = novoDest; else hDest.tibPrata = novoDest;
+            hDest.tibares = Number(hDest.tibOuro || 0) + Number(hDest.tibPrata || 0);
+            await db.collection("personagens").doc(dest).update({ tibOuro: hDest.tibOuro, tibPrata: hDest.tibPrata, tibares: hDest.tibares });
+            alert("✅ Transferência realizada!");
+        }
+        fecharModal('modal-transf-moedas'); renderTudo();
+    }
+
+    async function abrirRetirarMoedas() { document.getElementById('retirar-qtd').value = ""; abrirModal('modal-retirar-moedas'); }
+
+    async function confirmarRetiradaMoedas() {
+        const tipo = document.getElementById('retirar-tipo').value; const qtd = Number(document.getElementById('retirar-qtd').value);
+        if (!Number.isInteger(qtd) || qtd <= 0) return alert("❌ Informe um inteiro positivo.");
+        const ref = db.collection("tesouro_grupo").doc('saldo_moedas'); const snap = await ref.get();
+        const atual = snap.exists ? snap.data() : { tibOuro: 0, tibPrata: 0 };
+        const campo = tipo === 'ouro' ? 'tibOuro' : 'tibPrata';
+        let saldo = Number(atual[campo] || 0);
+        if (saldo < qtd) return alert("❌ Saldo insuficiente no Tesouro.");
+        saldo -= qtd; atual[campo] = saldo;
+        await ref.set(atual);
+        const valJog = Number(heroiAtivo[campo] || 0) + qtd;
+        heroiAtivo[campo] = valJog; heroiAtivo.tibares = Number(heroiAtivo.tibOuro || 0) + Number(heroiAtivo.tibPrata || 0);
+        await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: valJog, tibares: heroiAtivo.tibares });
+        fecharModal('modal-retirar-moedas'); alert("✅ Retirada realizada!"); renderTudo();
     }
 
     async function abrirTransferencia() {
@@ -1799,23 +1950,7 @@
         fecharModal('modal-editar-perfil');
     }
 
-    function carregarImagemPerfil(input) {
-        const file = input.files && input.files[0];
-        if (!file) return;
-        if (file.size > 300 * 1024) { alert("❌ Imagem muito grande (máx 300KB)."); return; }
-        const reader = new FileReader();
-        reader.onload = () => { document.getElementById('e-avatar').value = reader.result; };
-        reader.readAsDataURL(file);
-    }
-
-    function carregarImagemMagia(input) {
-        const file = input.files && input.files[0];
-        if (!file) return;
-        if (file.size > 300 * 1024) { alert("❌ Imagem muito grande (máx 300KB)."); return; }
-        const reader = new FileReader();
-        reader.onload = () => { document.getElementById('m-imagem').value = reader.result; };
-        reader.readAsDataURL(file);
-    }
+    
     function abrirModal(id) {
         if(id === 'modal-item') { document.getElementById('modal-titulo').innerText = "📝 Novo Registro"; document.getElementById('div-enviar-arsenal').style.display = 'flex'; limparFormularioItem(); }
         if(id === 'modal-editar-perfil' && heroiAtivo) {
@@ -1836,8 +1971,31 @@
         document.getElementById(id).style.display = 'flex';
     }
 
+    function editarMagiaJogador(idx) {
+        if(!heroiAtivo) return;
+        const m = heroiAtivo.magias[idx];
+        document.getElementById('modal-titulo').innerText = "✏️ Editar Magia";
+        document.getElementById('tipo-registro').value = 'magia';
+        document.getElementById('edit-id-global').value = "";
+        document.getElementById('edit-index-local').value = idx;
+        document.getElementById('nome-reg').value = m.nome || "";
+        document.getElementById('desc-reg').value = m.desc || "";
+        document.getElementById('m-escola').value = m.escola || "";
+        document.getElementById('m-circulo').value = m.circulo || "";
+        document.getElementById('m-execucao').value = m.execucao || "";
+        document.getElementById('m-alcance').value = m.alcance || "";
+        document.getElementById('m-duracao').value = m.duracao || "";
+        document.getElementById('m-tipo').value = m.tipo || "";
+        document.getElementById('m-resistencia').value = m.resistencia || "";
+        document.getElementById('m-aprimora').value = m.aprimora || "";
+        document.getElementById('m-imagem').value = m.imagem || "";
+        document.getElementById('div-enviar-arsenal').style.display = 'none';
+        abrirModal('modal-item');
+    }
+
     function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
-    function abrirCalculadora(c, t) { campoAtual = c; document.getElementById('calc-input').value = ""; document.getElementById('calc-titulo').innerText = t; abrirModal('modal-calculadora'); }
+    function abrirCalculadora(c, t) { campoAtual = c; calcOper = 'add'; document.getElementById('calc-input').value = ""; document.getElementById('calc-titulo').innerText = t; abrirModal('modal-calculadora'); }
+    function abrirCalculadoraOper(c, t, oper) { campoAtual = c; calcOper = oper; document.getElementById('calc-input').value = ""; document.getElementById('calc-titulo').innerText = t; abrirModal('modal-calculadora'); }
 
     function mudarAba(aba) {
         document.getElementById('conteudo-grimorio').style.display = aba === 'grimorio' ? 'block' : 'none';
