@@ -385,6 +385,19 @@
     </div>
 </div>
 
+<!-- MODAL VER MAGIA -->
+<div id="modal-ver-magia" class="modal" style="z-index:10000;">
+    <div class="modal-content">
+        <h3 id="vm-titulo">✨ Magia</h3>
+        <img id="vm-imagem" src="" alt="magia" style="max-width:100%; border-radius:8px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:var(--cor-pm);" onclick="conjurarMagiaAtual()">🪄 Conjurar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-ver-magia')">✖️ Fechar</button>
+        </div>
+        <input type="hidden" id="vm-index">
+    </div>
+</div>
+
 <!-- MODAL TRANSFERIR -->
 <div id="modal-transferir" class="modal">
     <div class="modal-content">
@@ -443,6 +456,7 @@
         <input type="hidden" id="edit-index-local">
         <select id="tipo-registro" onchange="ajustarCampos()">
             <option value="magia">✨ Magia / Habilidade</option>
+            <option value="magia-img">🖼️ Adicionar Magia com Imagem</option>
             <option value="item">📦 Item / Equipamento</option>
         </select>
         <input type="text" id="nome-reg" placeholder="Nome do Registro">
@@ -464,6 +478,10 @@
             <input type="text" id="m-imagem" placeholder="https://...">
             <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">✨ Aprimoramentos (+):</label>
             <textarea id="m-aprimora" rows="3" style="margin-top:5px;" placeholder="+ Aumenta o dano em 1d6..."></textarea>
+        </div>
+        <div id="campos-magia-img" style="display:none">
+            <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📸 URL da Imagem da Magia</label>
+            <input type="text" id="mi-imagem" placeholder="https://...">
         </div>
         <label style="display:block; margin-top:10px; color:#666; font-weight:bold;">📝 Descrição:</label>
         <textarea id="desc-reg" rows="5" style="margin-top:5px;"></textarea>
@@ -863,7 +881,7 @@
             g.innerHTML += `
             <div class="magia-container">
             <div class="magia-header-click" onclick="toggleMagia(${idx})">
-            <div><b style="font-size:1.1em">✨ ${m.nome}</b><br><small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
+            <div><b style="font-size:1.1em" onclick="verMagiaImagem(${idx}); event.stopPropagation();">✨ ${m.nome}</b><br><small style="opacity:0.9">${m.escola || ''} ${m.circulo ? ' - ' + m.circulo : ''}</small></div>
             <div>${btnPrep}<button onclick="editarMagiaJogador(${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer" title="Editar">✏️</button><button onclick="removerAlgo('magias', ${idx}); event.stopPropagation();" style="background:none;border:none;color:white;font-size:20px;cursor:pointer" title="Excluir">🗑️</button></div>
             </div>
             <div id="magia-info-${idx}" class="magia-conteudo-oculto">${linhaDetalhes}${m.imagem ? `<img src="${m.imagem}" alt="imagem" style="max-width:100%; border-radius:8px; margin-bottom:8px;">` : ''}<p style="margin-top:0">${m.desc}</p>${aprimoraHtml}</div>
@@ -1133,6 +1151,10 @@
                 if (modoMestreAtivo || document.getElementById('modal-titulo').innerText.includes("Biblioteca")) await db.collection("magias_globais").add(d);
                 else if (heroiAtivo) { heroiAtivo.magias.push(d); await db.collection("magias_globais").add(d); }
             }
+        } else if (tipo === 'magia-img') {
+            d.imagem = document.getElementById('mi-imagem').value;
+            d.circulo = ""; d.execucao=""; d.alcance=""; d.duracao=""; d.tipo=""; d.resistencia="";
+            if (heroiAtivo) { if(!heroiAtivo.magias) heroiAtivo.magias = []; heroiAtivo.magias.push(d); }
         } else {
             d.categoria = document.getElementById('i-categoria').value;
             d.espacos = Number(document.getElementById('i-espacos').value);
@@ -2103,8 +2125,10 @@
     }
 
     function ajustarCampos() {
-        document.getElementById('campos-magia').style.display = document.getElementById('tipo-registro').value === 'magia' ? 'block' : 'none';
-        document.getElementById('campos-item').style.display = document.getElementById('tipo-registro').value === 'item' ? 'block' : 'none';
+        const tipo = document.getElementById('tipo-registro').value;
+        document.getElementById('campos-magia').style.display = tipo === 'magia' ? 'block' : 'none';
+        document.getElementById('campos-magia-img').style.display = tipo === 'magia-img' ? 'block' : 'none';
+        document.getElementById('campos-item').style.display = tipo === 'item' ? 'block' : 'none';
     }
 
     async function carregarListaJogadores() {
@@ -2145,6 +2169,37 @@
         }
         document.getElementById('div-enviar-arsenal').style.display = 'none';
         ajustarCampos();
+    }
+
+    function verMagiaImagem(idx) {
+        const m = (heroiAtivo.magias || [])[idx];
+        if (!m) return;
+        document.getElementById('vm-index').value = idx;
+        document.getElementById('vm-titulo').innerText = `✨ ${m.nome}`;
+        const img = document.getElementById('vm-imagem');
+        if (m.imagem) { img.src = m.imagem; img.style.display = 'block'; }
+        else { img.style.display = 'none'; }
+        abrirModal('modal-ver-magia');
+    }
+
+    async function conjurarMagiaAtual() {
+        const idx = Number(document.getElementById('vm-index').value);
+        const m = (heroiAtivo.magias || [])[idx];
+        if (!m) return;
+        let custo = 0;
+        const texto = (m.circulo || '') + ' ' + (m.desc || '') + ' ' + (m.aprimora || '');
+        const match = texto.match(/(\d+)\s*PM/gi);
+        if (match) {
+            const nums = match.map(t => Number((t.match(/\d+/) || [0])[0]));
+            custo = Math.max(...nums);
+        }
+        if (custo <= 0) custo = 1;
+        if (Number(heroiAtivo.pm || 0) < custo) return alert("❌ PM insuficiente para conjurar.");
+        heroiAtivo.pm = Number(heroiAtivo.pm) - custo;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ pm: heroiAtivo.pm });
+        fecharModal('modal-ver-magia');
+        renderTudo();
+        alert(`✨ Magia conjurada! (-${custo} PM)`);
     }
 </script>
 </body>
