@@ -99,6 +99,18 @@
     </div>
 </div>
 
+<!-- MODAL: ANOTAÇÕES DO PERSONAGEM -->
+<div id="modal-anotacoes" class="modal" style="z-index:10000;">
+    <div class="modal-content">
+        <h3>🗒️ Anotações do Personagem</h3>
+        <textarea id="anot-editor" rows="8" placeholder="Escreva suas anotações..."></textarea>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="salvarAnotacoes()">💾 Salvar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-anotacoes')">✖️ Fechar</button>
+        </div>
+    </div>
+    </div>
+
 <!-- TELA MESTRE -->
 <div id="tela-mestre" class="tela fade-in">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--cor-borda); padding-bottom: 10px;">
@@ -131,31 +143,43 @@
             <small id="sub-nome" style="color:var(--cor-detalhe); font-weight: bold; font-size: 1.2em;">Nível 1</small>
         </div>
         <div style="display: flex; gap: 10px;">
+            <button onclick="abrirAnotacoes()" title="Anotações" style="background:none; border:none; font-size:30px; cursor:pointer;">🗒️</button>
             <button onclick="abrirModal('modal-editar-perfil')" title="Configurações" style="background:none; border:none; font-size:30px; cursor:pointer;">⚙️</button>
             <button id="btn-mestre-voltar" class="btn-sair" style="display:none" onclick="mostrarPainelMestre()">🔙 Voltar</button>
             <button id="btn-jogador-sair" class="btn-sair" onclick="deslogar()">🚪 Sair</button>
         </div>
     </div>
-    <div class="tibares-card">
-        <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-            <div>🥇 TO: <span id="stat-tib-ouro">0</span></div>
-            <div style="display:flex; gap:6px;">
-                <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Somar TO', 'add')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➕</button>
-                <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Subtrair TO', 'sub')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➖</button>
-            </div>
-            <div>•</div>
-            <div>🥈 T$: <span id="stat-tib-prata">0</span></div>
-            <div style="display:flex; gap:6px;">
-                <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Somar T$', 'add')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➕</button>
-                <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Subtrair T$', 'sub')" style="border:none; background:#eee; padding:4px 8px; border-radius:6px;">➖</button>
-            </div>
+    <div class="tibares-card" style="background:#fff; border-radius:12px; padding:12px; border:2px solid var(--cor-borda);">
+        <div onclick="toggleTibActions()" style="display:flex; justify-content:center; align-items:center; gap:16px; cursor:pointer;">
+            <div style="font-weight:900; color:#3e2723;">🥇 TO: <span id="stat-tib-ouro">0</span></div>
+            <div style="opacity:0.5; font-weight:bold;">•</div>
+            <div style="font-weight:900; color:#3e2723;">🥈 T$: <span id="stat-tib-prata">0</span></div>
+            <div style="opacity:0.6; font-size:0.9em;">▼</div>
         </div>
-        <div style="font-size:0.85em; color:#666; margin-top:4px;">TO x10: <span id="stat-to-x10">0</span></div>
-        <div style="font-size:0.85em; color:#666; margin-top:4px;">Contribuiu: 🥇 TO <span id="contrib-ouro">0</span> • 🥈 T$ <span id="contrib-prata">0</span></div>
-        <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
-            <button class="btn-grande" style="background:#4a6572; font-size:0.85em; padding:6px 10px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter</button>
-            <button class="btn-grande" style="background:#2e7d32; font-size:0.85em; padding:6px 10px;" onclick="abrirTransferenciaMoedas()">📤 Enviar</button>
-            <button class="btn-grande" style="background:#8d2b2b; font-size:0.85em; padding:6px 10px;" onclick="abrirRetirarMoedas()">📥 Retirar do Tesouro</button>
+        <div id="tib-actions" style="display:none; margin-top:10px;">
+            <div style="font-size:0.85em; color:#666;">TO x10: <span id="stat-to-x10">0</span></div>
+            <div style="font-size:0.85em; color:#666; margin-top:4px;">Contribuiu: 🥇 TO <span id="contrib-ouro">0</span> • 🥈 T$ <span id="contrib-prata">0</span></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;">
+                <div style="background:#f7f2e7; padding:8px; border-radius:8px; border:1px solid #e0cfa7;">
+                    <div style="font-weight:bold; color:#5d4037; margin-bottom:6px;">🥇 TO</div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Somar TO', 'add')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+                        <button onclick="abrirCalculadoraOper('tibOuro', '🥇 Subtrair TO', 'sub')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+                    </div>
+                </div>
+                <div style="background:#f7f2e7; padding:8px; border-radius:8px; border:1px solid #e0cfa7;">
+                    <div style="font-weight:bold; color:#5d4037; margin-bottom:6px;">🥈 T$</div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Somar T$', 'add')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+                        <button onclick="abrirCalculadoraOper('tibPrata', '🥈 Subtrair T$', 'sub')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                <button class="btn-grande" style="background:#4a6572; font-size:0.85em; padding:6px 10px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter</button>
+                <button class="btn-grande" style="background:#2e7d32; font-size:0.85em; padding:6px 10px;" onclick="abrirTransferenciaMoedas()">📤 Enviar</button>
+                <button class="btn-grande" style="background:#8d2b2b; font-size:0.85em; padding:6px 10px;" onclick="abrirRetirarMoedas()">📥 Retirar do Tesouro</button>
+            </div>
         </div>
     </div>
  
@@ -276,19 +300,16 @@
 </div>
 
 <!-- MODAL MOEDAS DO TESOURO -->
-<div id="modal-tesouro-moedas" class="modal">
+<div id="modal-tesouro-moedas" class="modal" style="z-index:10000;">
     <div class="modal-content">
         <h3>💰 Moedas do Tesouro do Grupo</h3>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
-                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥇 TO (Ouro)</label>
-                <input type="number" id="tesouro-ouro" placeholder="+/- TO">
-            </div>
-            <div>
-                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥈 T$ (Prata)</label>
-                <input type="number" id="tesouro-prata" placeholder="+/- T$">
-            </div>
-        </div>
+        <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">Tipo</label>
+        <select id="tesouro-tipo">
+            <option value="ouro">🥇 TO (Ouro)</option>
+            <option value="prata">🥈 T$ (Prata)</option>
+        </select>
+        <label style="font-weight:bold; color:#666; display:block; margin:10px 0 5px;">Quantidade</label>
+        <input type="number" id="tesouro-qtd" placeholder="Ex: 10">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
             <button class="btn-grande" style="background:#2e7d32" onclick="aplicarMoedasTesouro()">✅ Aplicar</button>
             <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-tesouro-moedas')">❌ Fechar</button>
@@ -297,7 +318,7 @@
 </div>
 
 <!-- MODAL: ENVIAR MOEDAS -->
-<div id="modal-transf-moedas" class="modal">
+<div id="modal-transf-moedas" class="modal" style="z-index:10000;">
     <div class="modal-content">
         <h3>📤 Enviar Moedas</h3>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -320,7 +341,7 @@
     </div>
 
 <!-- MODAL: RETIRAR MOEDAS DO TESOURO -->
-<div id="modal-retirar-moedas" class="modal">
+<div id="modal-retirar-moedas" class="modal" style="z-index:10000;">
     <div class="modal-content">
         <h3>📥 Retirar Moedas do Tesouro</h3>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -731,6 +752,7 @@
     let mestreAlvoId = null;
     let mestreAlvoNome = null;
     let mestreItemIdx = null;
+    let tesOp = 'add';
 
     db.collection("configuracoes").doc("geral").onSnapshot((doc) => {
         if (doc.exists) {
@@ -1048,7 +1070,10 @@
         lista.innerHTML += `<div style="background:#fff;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div><b>💰 Moedas do Tesouro</b><br><small>🥇 TO: ${Number(saldoMoedas.tibOuro || 0).toLocaleString()} • 🥈 T$: ${Number(saldoMoedas.tibPrata || 0).toLocaleString()}</small><br><small style="color:#666">TO x10: ${toX10.toLocaleString()}</small></div>
-                <div><button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick="abrirModal('modal-tesouro-moedas')">➕ Adicionar/Remover</button></div>
+                <div style="display:flex; gap:6px;">
+                    <button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick="abrirTesouroAdd()">➕ Adicionar</button>
+                    <button class="aba-btn" style="padding:5px 10px; font-size:0.8em; background:#8d2b2b; color:white;" onclick="abrirTesouroRetirar()">➖ Retirar</button>
+                </div>
             </div>
         </div>`;
         const snap = await db.collection("tesouro_grupo").orderBy('nome').get();
@@ -1721,21 +1746,57 @@
         renderTudo();
     }
 
+    function toggleTibActions() {
+        const box = document.getElementById('tib-actions');
+        if (!box) return;
+        const cur = box.style.display;
+        box.style.display = (!cur || cur === 'none') ? 'block' : 'none';
+    }
+
     async function aplicarMoedasTesouro() {
-        const difOuro = Number(document.getElementById('tesouro-ouro').value) || 0;
-        const difPrata = Number(document.getElementById('tesouro-prata').value) || 0;
+        const tipo = document.getElementById('tesouro-tipo').value; // ouro|prata
+        const qtd = Number(document.getElementById('tesouro-qtd').value) || 0;
+        if (!Number.isInteger(qtd) || qtd <= 0) { alert("❌ Informe um inteiro positivo."); return; }
         const ref = db.collection("tesouro_grupo").doc('saldo_moedas');
         const snap = await ref.get();
         const atual = snap.exists ? snap.data() : { tibOuro: 0, tibPrata: 0 };
-        let novoOuro = Number(atual.tibOuro || 0) + difOuro; if (novoOuro < 0) novoOuro = 0;
-        let novoPrata = Number(atual.tibPrata || 0) + difPrata; if (novoPrata < 0) novoPrata = 0;
-        await ref.set({ tibOuro: novoOuro, tibPrata: novoPrata });
-        document.getElementById('tesouro-ouro').value = "";
-        document.getElementById('tesouro-prata').value = "";
+        const campo = tipo === 'ouro' ? 'tibOuro' : 'tibPrata';
+        let saldoTes = Number(atual[campo] || 0);
+        if (tesOp === 'add') {
+            const jogadorSaldo = Number(heroiAtivo[campo] || 0);
+            if (jogadorSaldo < qtd) return alert("❌ Moedas insuficientes.");
+            heroiAtivo[campo] = jogadorSaldo - qtd;
+            heroiAtivo.tibares = Number(heroiAtivo.tibOuro || 0) + Number(heroiAtivo.tibPrata || 0);
+            await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: heroiAtivo[campo], tibares: heroiAtivo.tibares });
+            saldoTes += qtd;
+            const contrib = heroiAtivo.contribTesouro || { ouro: 0, prata: 0 };
+            contrib[tipo === 'ouro' ? 'ouro' : 'prata'] += qtd;
+            heroiAtivo.contribTesouro = contrib;
+            await db.collection("personagens").doc(heroiAtivo.id).update({ contribTesouro: contrib });
+        } else {
+            if (saldoTes < qtd) return alert("❌ Saldo insuficiente no Tesouro.");
+            saldoTes -= qtd;
+            const jogadorSaldo = Number(heroiAtivo[campo] || 0);
+            heroiAtivo[campo] = jogadorSaldo + qtd;
+            heroiAtivo.tibares = Number(heroiAtivo.tibOuro || 0) + Number(heroiAtivo.tibPrata || 0);
+            await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: heroiAtivo[campo], tibares: heroiAtivo.tibares });
+            const contrib = heroiAtivo.contribTesouro || { ouro: 0, prata: 0 };
+            const key = tipo === 'ouro' ? 'ouro' : 'prata';
+            contrib[key] = Math.max(0, Number(contrib[key] || 0) - qtd);
+            heroiAtivo.contribTesouro = contrib;
+            await db.collection("personagens").doc(heroiAtivo.id).update({ contribTesouro: contrib });
+        }
+        atual[campo] = saldoTes;
+        await ref.set(atual);
+        document.getElementById('tesouro-qtd').value = "";
         fecharModal('modal-tesouro-moedas');
         alert("✅ Moedas do Tesouro atualizadas!");
         abrirTesouroGrupo();
+        renderTudo();
     }
+
+    function abrirTesouroAdd() { tesOp = 'add'; abrirModal('modal-tesouro-moedas'); }
+    function abrirTesouroRetirar() { tesOp = 'sub'; abrirModal('modal-tesouro-moedas'); }
 
     async function abrirTransferenciaMoedas() {
         const sel = document.getElementById('moedas-dest');
@@ -1797,7 +1858,12 @@
         await ref.set(atual);
         const valJog = Number(heroiAtivo[campo] || 0) + qtd;
         heroiAtivo[campo] = valJog; heroiAtivo.tibares = Number(heroiAtivo.tibOuro || 0) + Number(heroiAtivo.tibPrata || 0);
-        await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: valJog, tibares: heroiAtivo.tibares });
+        const contrib = heroiAtivo.contribTesouro || { ouro: 0, prata: 0 };
+        const key = tipo === 'ouro' ? 'ouro' : 'prata';
+        const atualContrib = Number(contrib[key] || 0);
+        contrib[key] = Math.max(0, atualContrib - qtd);
+        heroiAtivo.contribTesouro = contrib;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ [campo]: valJog, tibares: heroiAtivo.tibares, contribTesouro: contrib });
         fecharModal('modal-retirar-moedas'); alert("✅ Retirada realizada!"); renderTudo();
     }
 
@@ -1971,6 +2037,21 @@
         document.getElementById(id).style.display = 'flex';
     }
 
+    function abrirAnotacoes() {
+        if (!heroiAtivo) return;
+        const ta = document.getElementById('anot-editor');
+        if (ta) ta.value = heroiAtivo.anotacoes || "";
+        abrirModal('modal-anotacoes');
+    }
+
+    async function salvarAnotacoes() {
+        if (!heroiAtivo) return;
+        const txt = document.getElementById('anot-editor').value;
+        heroiAtivo.anotacoes = txt;
+        await db.collection("personagens").doc(heroiAtivo.id).update({ anotacoes: txt });
+        fecharModal('modal-anotacoes');
+        renderTudo();
+    }
     function editarMagiaJogador(idx) {
         if(!heroiAtivo) return;
         const m = heroiAtivo.magias[idx];
