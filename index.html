@@ -112,8 +112,8 @@
             <span class="slider"></span>
         </label>
     </div>
-    <button class="btn-grande" style="background:#8d2b2b" onclick="abrirCompendio()">✨ Gerenciar Magias Globais</button>
-    <button class="btn-grande" style="background:#d4af37; color: #3e2723;" onclick="abrirArsenal()">⚔️ Gerenciar Arsenal Global</button>
+    <button class="btn-grande" style="background:#8d2b2b" onclick="abrirCompendio()">✨ Lista de Magias</button>
+    <button class="btn-grande" style="background:#d4af37; color: #3e2723;" onclick="abrirArsenal()">⚔️ Lista de Armas</button>
     <button class="btn-grande" style="background:#2e7d32;" onclick="abrirTesouroGrupo()">💰 Ver Tesouro do Grupo</button>
     <button class="btn-grande" style="background:#4a3572;" onclick="abrirItensJogadores()">📦 Itens dos Jogadores</button>
     <div id="grid-mestre"></div>
@@ -133,9 +133,10 @@
         </div>
     </div>
     <div class="tibares-card" onclick="abrirModal('modal-tibares')">
-        🥇 TO: <span id="stat-tib-ouro">0</span> • 🥈 T: <span id="stat-tib-prata">0</span>
+        🥇 TO: <span id="stat-tib-ouro">0</span> • 🥈 T$: <span id="stat-tib-prata">0</span>
+        <div style="font-size:0.85em; color:#666; margin-top:4px;">TO x10: <span id="stat-to-x10">0</span></div>
     </div>
-    <button class="btn-grande" style="background:#4a6572; margin-top:8px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter Moedas</button>
+    <button class="btn-grande" style="background:#4a6572; margin-top:8px; font-size:0.85em; padding:6px 10px;" onclick="abrirModal('modal-conversao-moedas')">🔄 Converter Moedas</button>
     <div class="status-container-pro">
         <div class="status-hero-card card-pv" id="card-pv-visual" onclick="abrirCalculadora('pv', '❤️ Alterar Vida')">
             <span class="status-label" id="lbl-pv" style="color:var(--cor-pv)">❤️ VIDA (PV)</span>
@@ -201,8 +202,8 @@
                 <input type="number" id="ajuste-tib-ouro" placeholder="+/- TO">
             </div>
             <div>
-                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥈 T (Prata)</label>
-                <input type="number" id="ajuste-tib-prata" placeholder="+/- T">
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥈 T$ (Prata)</label>
+                <input type="number" id="ajuste-tib-prata" placeholder="+/- T$">
             </div>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -233,6 +234,27 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
             <button class="btn-grande" style="background:#2e7d32" onclick="aplicarConversaoMoedas()">✅ Converter</button>
             <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-conversao-moedas')">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MOEDAS DO TESOURO -->
+<div id="modal-tesouro-moedas" class="modal">
+    <div class="modal-content">
+        <h3>💰 Moedas do Tesouro do Grupo</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥇 TO (Ouro)</label>
+                <input type="number" id="tesouro-ouro" placeholder="+/- TO">
+            </div>
+            <div>
+                <label style="font-weight:bold; color:#666; display:block; margin-bottom:5px;">🥈 T$ (Prata)</label>
+                <input type="number" id="tesouro-prata" placeholder="+/- T$">
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <button class="btn-grande" style="background:#2e7d32" onclick="aplicarMoedasTesouro()">✅ Aplicar</button>
+            <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-tesouro-moedas')">❌ Fechar</button>
         </div>
     </div>
 </div>
@@ -593,6 +615,8 @@
     let listenerHeroi = null;
     let regrasGlobais = { pesoMoeda: false };
     let cacheItensJogadores = { jogadores: [], tesouro: [] };
+    const savedHero = localStorage.getItem('activeHeroId');
+    if (savedHero) { idTemp = savedHero; validarJogador(true); }
 
     // Variáveis do modo mestre
     let mestreAlvoId = null;
@@ -727,7 +751,7 @@
         (heroiAtivo.itens || []).forEach((it, idx) => {
             if(!it.localizacao || it.localizacao === 'personagem') {
                 const slotsItem = it.espacos !== undefined ? Number(it.espacos) : (it.peso || 1);
-                slotsUsados += (slotsItem * Number(it.qtd));
+                slotsUsados += slotsItem;
             }
             const cat = it.categoria && itensPorCat[it.categoria] ? it.categoria : 'mundanos';
             itensPorCat[cat].push({ ...it, originalIndex: idx });
@@ -852,6 +876,8 @@
         if(confirm(`💰 Enviar ${item.nome} para o Tesouro do Grupo?`)) {
             const itemTesouro = {...item};
             delete itemTesouro.estado; delete itemTesouro.localizacao; delete itemTesouro.nomeAjudante;
+            itemTesouro.ownerId = heroiAtivo.id;
+            itemTesouro.ownerNome = heroiAtivo.nome;
             await db.collection("tesouro_grupo").add(itemTesouro);
             heroiAtivo.itens.splice(idx, 1);
             await db.collection("personagens").doc(heroiAtivo.id).update({itens: heroiAtivo.itens});
@@ -888,14 +914,23 @@
         abrirModal('modal-compendio');
         document.getElementById('titulo-compendio').innerText = "💰 Tesouro do Grupo";
         document.getElementById('subtitulo-compendio').innerText = "Itens compartilhados. Não ocupam espaço.";
-        const snap = await db.collection("tesouro_grupo").orderBy('nome').get();
+        const moedasDoc = await db.collection("tesouro_grupo").doc('saldo_moedas').get();
+        const saldoMoedas = moedasDoc.exists ? moedasDoc.data() : { tibOuro: 0, tibPrata: 0 };
         const lista = document.getElementById('lista-compendio');
         lista.innerHTML = "";
+        const toX10 = Number(saldoMoedas.tibOuro || 0) * 10;
+        lista.innerHTML += `<div style="background:#fff;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><b>💰 Moedas do Tesouro</b><br><small>🥇 TO: ${Number(saldoMoedas.tibOuro || 0).toLocaleString()} • 🥈 T$: ${Number(saldoMoedas.tibPrata || 0).toLocaleString()}</small><br><small style="color:#666">TO x10: ${toX10.toLocaleString()}</small></div>
+                <div><button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick="abrirModal('modal-tesouro-moedas')">➕ Adicionar/Remover</button></div>
+            </div>
+        </div>`;
+        const snap = await db.collection("tesouro_grupo").orderBy('nome').get();
         if(snap.empty) { lista.innerHTML = "<p style='text-align:center'>🎒 O baú está vazio.</p>"; return; }
         snap.forEach(doc => {
             const m = doc.data(); const id = doc.id;
             let btns = heroiAtivo ? `<button class="aba-btn ativa" style="padding:5px 10px; font-size:0.8em" onclick='pegarDoTesouro("${id}", ${JSON.stringify(m).replace(/"/g,'&quot;')})'>🤝 Pegar</button>` : `<small>Apenas Jogadores</small>`;
-            lista.innerHTML += `<div style="background:white;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd"><div style="display:flex;justify-content:space-between;align-items:center;"><div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || '📦 Item'}</span></div><div>${btns}</div></div><p style="font-size:0.9em; margin:5px 0">${m.desc || ''}</p><small>Qtd: ${m.qtd}</small></div>`;
+            lista.innerHTML += `<div style="background:white;padding:12px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd"><div style="display:flex;justify-content:space-between;align-items:center;"><div><b>${m.nome}</b> <span class="badge-categoria">${categoriasNomes[m.categoria] || '📦 Item'}</span><br><small style="color:#666">Dono: ${m.ownerNome || '—'}</small></div><div>${btns}</div></div><p style="font-size:0.9em; margin:5px 0">${m.desc || ''}</p><small>Qtd: ${m.qtd}</small></div>`;
         });
     }
 
@@ -969,6 +1004,7 @@
         document.querySelectorAll('.tela').forEach(t => t.style.display = 'none');
         document.getElementById('tela-login').style.display = 'block';
         document.getElementById('btn-flutuante').style.display = 'none';
+        localStorage.removeItem('activeHeroId');
     }
 
     async function validarJogador(viaMestre) {
@@ -985,6 +1021,7 @@
             document.getElementById('tela-mochila').style.display = 'block';
             document.getElementById('btn-flutuante').style.display = 'block';
             document.getElementById('btn-mestre-voltar').style.display = modoMestreAtivo ? 'block' : 'none';
+            localStorage.setItem('activeHeroId', idTemp);
         } else alert("❌ Senha incorreta!");
     }
 
@@ -1478,6 +1515,7 @@
         document.getElementById('ajuste-tib-ouro').value = "";
         document.getElementById('ajuste-tib-prata').value = "";
         fecharModal('modal-tibares');
+        const toX10El = document.getElementById('stat-to-x10'); if (toX10El) toX10El.innerText = (heroiAtivo.tibOuro * 10).toLocaleString();
         renderTudo();
     }
 
@@ -1490,7 +1528,7 @@
         const prata = Number(heroiAtivo.tibPrata || 0);
         if (dir === 't_to_to') {
             if (qtd % 10 !== 0) { alert("❌ Para converter T → TO, o valor deve ser múltiplo de 10."); return; }
-            if (prata < qtd) { alert("❌ T insuficiente para conversão."); return; }
+            if (prata < qtd) { alert("❌ T$ insuficiente para conversão."); return; }
             heroiAtivo.tibPrata = prata - qtd;
             heroiAtivo.tibOuro = ouro + (Math.floor(qtd / 10));
         } else {
@@ -1503,6 +1541,22 @@
         document.getElementById('conv-qtd').value = "";
         fecharModal('modal-conversao-moedas');
         renderTudo();
+    }
+
+    async function aplicarMoedasTesouro() {
+        const difOuro = Number(document.getElementById('tesouro-ouro').value) || 0;
+        const difPrata = Number(document.getElementById('tesouro-prata').value) || 0;
+        const ref = db.collection("tesouro_grupo").doc('saldo_moedas');
+        const snap = await ref.get();
+        const atual = snap.exists ? snap.data() : { tibOuro: 0, tibPrata: 0 };
+        let novoOuro = Number(atual.tibOuro || 0) + difOuro; if (novoOuro < 0) novoOuro = 0;
+        let novoPrata = Number(atual.tibPrata || 0) + difPrata; if (novoPrata < 0) novoPrata = 0;
+        await ref.set({ tibOuro: novoOuro, tibPrata: novoPrata });
+        document.getElementById('tesouro-ouro').value = "";
+        document.getElementById('tesouro-prata').value = "";
+        fecharModal('modal-tesouro-moedas');
+        alert("✅ Moedas do Tesouro atualizadas!");
+        abrirTesouroGrupo();
     }
 
     async function abrirTransferencia() {
