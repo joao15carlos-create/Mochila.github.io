@@ -207,6 +207,10 @@
             <span class="status-main-val" id="v-def" style="color:var(--cor-def)">0</span>
             <span class="status-sub-info">BASE: <span id="v-def-base">0</span></span>
         </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:-10px; margin-bottom:10px;">
+            <button onclick="abrirCalculadoraOper('defesaAtual', '🛡️ Somar Defesa', 'add')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➕</button>
+            <button onclick="abrirCalculadoraOper('defesaAtual', '🛡️ Subtrair Defesa', 'sub')" style="border:none; background:#eee; padding:6px 10px; border-radius:6px;">➖</button>
+        </div>
     </div>
     <nav class="abas">
         <button class="aba-btn ativa" id="btn-aba-g" onclick="mudarAba('grimorio')">📖 Grimório</button>
@@ -499,7 +503,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background:#f0eadd; padding:10px; border-radius:8px; border:1px solid #d7ccc8; margin-top:10px;">
                 <div>
                     <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;">📦 Espaços (Slots)</label>
-                    <input type="number" id="i-espacos" placeholder="0" value="1" style="margin:0; text-align:center;">
+                    <input type="number" id="i-espacos" placeholder="0" value="1" step="any" style="margin:0; text-align:center;">
                 </div>
                 <div>
                     <label style="color:#5d4037; font-weight:bold; font-size:0.85em; display:block; margin-bottom:5px; text-transform:uppercase;">🔢 Quantidade</label>
@@ -646,7 +650,7 @@
         <input type="text" id="ma-nome" placeholder="Nome do Item">
         <textarea id="ma-desc" rows="3" placeholder="Descrição (opcional)"></textarea>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div><label style="font-weight:bold; color:#666;">📦 Espaços</label><input type="number" id="ma-espacos" value="1" min="0" style="margin-top:5px;"></div>
+            <div><label style="font-weight:bold; color:#666;">📦 Espaços</label><input type="number" id="ma-espacos" value="1" min="0" step="any" style="margin-top:5px;"></div>
             <div><label style="font-weight:bold; color:#666;">🔢 Quantidade</label><input type="number" id="ma-qtd" value="1" min="0" style="margin-top:5px;"></div>
         </div>
         <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
