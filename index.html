@@ -224,6 +224,9 @@
         </div>
         <div id="anotacoes-texto" style="white-space:pre-wrap; color:#3e2723; font-size:0.95em;"></div>
     </div>
+
+    <!-- BOTÃO CHAT MESTRE (GEMINI) -->
+    <button class="btn-grande" style="background:#673ab7; margin-bottom:15px;" onclick="abrirChatMestre()">🔮 Conversar com o Mestre (IA)</button>
     <div id="conteudo-grimorio">
         <button class="btn-grande" style="background:#4a6572; font-size:0.9em; padding: 12px;" onclick="abrirCompendio()">🔍 Consultar Magias Globais</button>
         <div id="magias-lista"></div>
@@ -412,6 +415,24 @@
             <button class="btn-grande" onclick="confirmarTransferencia()">📤 Enviar</button>
             <button class="btn-grande" style="background:#555" onclick="fecharModal('modal-transferir')">❌ Cancelar</button>
         </div>
+    </div>
+</div>
+
+<!-- MODAL CHAT MESTRE (GEMINI) -->
+<div id="modal-chat-mestre" class="modal" style="z-index:10001;">
+    <div class="modal-content" style="max-width:500px; height:80vh; display:flex; flex-direction:column;">
+        <h3 style="margin-top:0;">🔮 Mestre de Tormenta 20</h3>
+        <div id="chat-container" style="flex:1; overflow-y:auto; background:#f7f2e7; border-radius:8px; padding:15px; border:1px solid #e0cfa7; margin-bottom:10px; display:flex; flex-direction:column; gap:10px;">
+            <div style="background:#fff; padding:10px; border-radius:8px; border-left:4px solid #673ab7; font-size:0.9em;">
+                <b>Mestre:</b> Olá, aventureiro! Sou o seu mestre de Tormenta 20. Como posso ajudar com regras, magias ou perícias hoje?
+            </div>
+        </div>
+        <div id="chat-typing" style="display:none; font-size:0.8em; color:#666; margin-bottom:5px; margin-left:5px;">O mestre está pensando... 🎲</div>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="chat-input" placeholder="Pergunte algo sobre T20..." style="flex:1; margin:0;" onkeypress="if(event.key==='Enter') enviarMensagemChat()">
+            <button class="btn-grande" style="background:#673ab7; width:auto; padding:0 20px; margin:0;" onclick="enviarMensagemChat()">🏹</button>
+        </div>
+        <button class="btn-grande" style="background:#555; margin-top:10px;" onclick="fecharModal('modal-chat-mestre')">✖️ Fechar</button>
     </div>
 </div>
 
@@ -747,6 +768,13 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyCwv-I1QdEZJlAJAMX4aOvGxaCRRQiHGM8",
@@ -757,6 +785,62 @@
         appId: "1:823862724587:web:d452ced78e9848e4f8fbae"
     };
     firebase.initializeApp(firebaseConfig);
+</script>
+
+    <script type="module">
+      import { GoogleGenerativeAI } from "@google/generative-ai";
+      // Chave de API do Gemini
+      const GEMINI_API_KEY = "AIzaSyCFiMEZtU2D8f7nuzCzuuetyjlGUMGwPAE";
+      const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+      let chatSession = null;
+
+      window.inicializarChatMestre = async function() {
+          const model = genAI.getGenerativeModel({
+              model: "gemini-1.5-flash",
+              systemInstruction: "Você é um Mestre de RPG especialista no sistema Tormenta 20 (Edição Jogo do Ano). " +
+                  "Sua base de conhecimento é o site https://referencet20.vercel.app/. " +
+                  "Responda perguntas sobre regras, magias, perícias e combate de forma clara, amigável e imersiva. " +
+                  "Sempre que possível, cite a regra oficial ou dê exemplos práticos de jogo. " +
+                  "Mantenha as respostas concisas e formatadas em Markdown."
+          });
+          chatSession = model.startChat({ history: [] });
+      }
+
+      window.abrirChatMestre = async function() {
+          if (!chatSession) await window.inicializarChatMestre();
+          abrirModal('modal-chat-mestre');
+          document.getElementById('chat-input').focus();
+      }
+
+      window.enviarMensagemChat = async function() {
+          const input = document.getElementById('chat-input');
+          const container = document.getElementById('chat-container');
+          const typing = document.getElementById('chat-typing');
+          const prompt = input.value.trim();
+          if (!prompt) return;
+
+          container.innerHTML += `<div style="align-self: flex-end; background: #e0f7fa; padding: 10px; border-radius: 8px; border-right: 4px solid #00acc1; font-size: 0.9em; max-width: 90%;"><b>Você:</b> ${prompt}</div>`;
+          input.value = "";
+          container.scrollTop = container.scrollHeight;
+
+          typing.style.display = "block";
+
+          try {
+              const result = await chatSession.sendMessage(prompt);
+              const response = await result.response;
+              const text = response.text();
+
+              container.innerHTML += `<div style="background: #fff; padding: 10px; border-radius: 8px; border-left: 4px solid #673ab7; font-size: 0.9em;"><b>Mestre:</b> ${text.replace(/\n/g, '<br>')}</div>`;
+          } catch (error) {
+              console.error("Erro no Gemini:", error);
+              container.innerHTML += `<div style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; font-size: 0.8em;">❌ Erro ao contatar o Mestre. Verifique sua chave de API e conexão.</div>`;
+          } finally {
+              typing.style.display = "none";
+              container.scrollTop = container.scrollHeight;
+          }
+      }
+    </script>
+    <script>
     const db = firebase.firestore();
 
     let heroiAtivo = null;
